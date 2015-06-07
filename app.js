@@ -1,5 +1,16 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+var config = require('./config.json');
+var knex = require('knex')({
+	client: 'mysql',
+	connection: {
+		host : config.database.host,
+		port : config.database.port,
+		user : config.database.user,
+		password : config.database.password,
+		database : config.database.database
+	}
+});
 
 var admin = require('./lib/admin');
 var articles = require('./lib/articles');
@@ -31,7 +42,7 @@ router.route('/users')
 	// create user
 	.post(users.create)
 	// list users
-	.get(users.list)
+	.get(users.list);
 
 // user
 router.route('/users/:user_id')
@@ -40,7 +51,7 @@ router.route('/users/:user_id')
 	// update user
 	.put(users.update)
 	// remove user
-	.delete(users.remove)
+	.delete(users.remove);
 
 
 // register routes
