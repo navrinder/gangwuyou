@@ -1,3 +1,4 @@
+var config = require('./config.json');
 var knex = require('knex')({
 	client: 'mysql',
 	connection: {
@@ -12,7 +13,7 @@ var knex = require('knex')({
 // create users table
 knex.schema.hasTable('users').then(function(exists) {
 	if (!exists) {
-		knex.schema.createTable('users', function (table) {
+		return knex.schema.createTable('users', function (table) {
 			table.increments('id');
 			table.string('user_name');
 			table.string('email_address');
@@ -27,7 +28,8 @@ knex.schema.hasTable('users').then(function(exists) {
 	return knex.insert({
 		user_name: 'Test',
 		email_address: 'test@test.test',
-		password: 'password'
+		password: 'password',
+		created_at: knex.raw('NOW()')
 	}).into('users');
 })
 
