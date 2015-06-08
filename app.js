@@ -18,7 +18,6 @@ var feed = require('./lib/feed');
 var info = require('./lib/information');
 var login = require('./lib/login');
 var questions = require('./lib/questions');
-var users = require('./lib/users');
 
 var app = express();
 var router = express.Router();
@@ -26,6 +25,11 @@ var port = process.env.PORT || 8080;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+app.set('knex', knex);
+
+var users = require('./lib/users')(app);
+
 
 // routes
 router.use(function(req, res, next) {
@@ -45,13 +49,13 @@ router.route('/users')
 	.get(users.list);
 
 // user
-router.route('/users/:user_id')
-	// show user
-	.get(users.show)
-	// update user
-	.put(users.update)
-	// remove user
-	.delete(users.remove);
+// router.route('/users/:user_id')
+// 	// show user
+// 	.get(users.show)
+// 	// update user
+// 	.put(users.update)
+// 	// remove user
+// 	.delete(users.remove);
 
 
 // register routes
