@@ -1,22 +1,16 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var config = require('./config.json');
+
 var knex = require('knex')({
 	client: 'mysql',
-	connection: {
-		host : config.database.host,
-		port : config.database.port,
-		user : config.database.user,
-		password : config.database.password,
-		database : config.database.database
-	}
+	connection: config.database
 });
 
 var admin = require('./lib/admin');
 var articles = require('./lib/articles');
 var feed = require('./lib/feed');
 var info = require('./lib/information');
-var login = require('./lib/login');
 var questions = require('./lib/questions');
 
 var app = express();
@@ -29,6 +23,7 @@ app.use(bodyParser.json());
 app.set('knex', knex);
 
 var users = require('./lib/users')(app);
+var login = require('./lib/login')(app);
 
 
 // routes
@@ -49,13 +44,17 @@ router.route('/users')
 	.get(users.list);
 
 // user
-// router.route('/users/:user_id')
-// 	// show user
-// 	.get(users.show)
-// 	// update user
-// 	.put(users.update)
-// 	// remove user
-// 	.delete(users.remove);
+router.route('/users/:user_id')
+	// show user
+	.get(users.show)
+	// update user
+	.put(users.update)
+	// remove user
+	.delete(users.remove);
+
+// login
+router.route('/login')
+	.post(login.login);
 
 
 // register routes
