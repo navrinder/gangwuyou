@@ -1,4 +1,5 @@
 var config = require('./config.json');
+
 var knex = require('knex')({
 	client: 'mysql',
 	connection: config.database
