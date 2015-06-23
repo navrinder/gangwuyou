@@ -1,3 +1,4 @@
+// questions are static but can be stored in the database
 
 module.exports = function(app) {
 	var knex = app.get('knex');

@@ -1,3 +1,4 @@
+// these are used to store user's answers in the database
 
 module.exports = function(app) {
 	var knex = app.get('knex');
@@ -7,6 +8,7 @@ module.exports = function(app) {
 		list : function (req, res, next) {
 			knex.select('*')
 				.from('answers')
+				.limit(req.body.limit || 10)
 				.then(function(rows) {
 					res.status(200).json(rows);
 				})

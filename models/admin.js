@@ -1,4 +1,4 @@
-
+// this can be used to verify that a doctor's account is valid
 
 module.exports = function(app) {
 	var knex = app.get('knex');
