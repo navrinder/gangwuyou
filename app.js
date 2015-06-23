@@ -26,12 +26,14 @@ app.use(bodyParser.json());
 // Use config/generateToken.js to create API token.
 app.use(function (req, res, next) {
 	// token should be provided in Authorization header
-	console.log(req.headers)
-	var decoded = jwt.decode(req.headers.authorization, secret);
+	var decoded;
+	if (req.headers.authorization) {
+		decoded = jwt.decode(req.headers.authorization, secret);
+	}
 	if (decoded && decoded.api) {
-		next();
+		return next();
 	} else {
-		res.status(401).send('Authorization failed');
+		return res.status(401).send('Authorization failed');
 	}
 });
 
@@ -39,21 +41,16 @@ app.use(function (req, res, next) {
 app.set('knex', knex);
 
 // models
-var admin = require('./lib/admin')(app);
-var answers = require('./lib/answers')(app);
-var articles = require('./lib/articles')(app);
-var info = require('./lib/information')(app);
-var login = require('./lib/login')(app);
-var questions = require('./lib/questions')(app);
-var users = require('./lib/users')(app);
+var admin = require('./models/admin')(app);
+var answers = require('./models/answers')(app);
+var articles = require('./models/articles')(app);
+var info = require('./models/information')(app);
+var login = require('./models/login')(app);
+var questions = require('./models/questions')(app);
+var users = require('./models/users')(app);
 
 
 // routes
-// router.use(function(req, res, next) {
-// 	console.log('alert');
-// 	next();
-// });
-
 router.get('/', function(req, res) {
 	res.json({ message: 'hello world' });
 });

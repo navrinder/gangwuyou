@@ -1,4 +1,6 @@
 var bcrypt = require('bcryptjs');
+var jwt = require('jwt-simple');
+var secret = require('../config.json').secret;
 
 module.exports = function(app) {
 	var knex = app.get('knex');
@@ -11,9 +13,16 @@ module.exports = function(app) {
 				.where({ email_address: req.body.email_address })
 				.then(function(rows) {
 					if (bcrypt.compareSync(req.body.password, rows[0].password)) {
-						res.status(200).send('Authenticated');
+						var payload = {
+							iat: Date.now(),
+							scopes: ['user']
+						};
+						var token = jwt.encode(payload, secret);
+						res.status(200).json({
+							token: token
+						});
 					} else {
-						res.status(401).send('Nope');
+						res.status(401).send('Unauthorized');
 					}
 				})
 				.catch(function(error) {

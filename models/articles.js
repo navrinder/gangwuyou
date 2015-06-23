@@ -1,4 +1,3 @@
-var bcrypt = require('bcryptjs');
 
 module.exports = function(app) {
 	var knex = app.get('knex');
@@ -6,16 +5,13 @@ module.exports = function(app) {
 	return {
 
 		create : function (req, res, next) {
-			var salt = bcrypt.genSaltSync(10);
-			var hash = bcrypt.hashSync(req.body.password, salt);
-			knex('users')
+			knex('articles')
 				.insert({
-					user_name: req.body.username,
-					email_address: req.body.email_address,
-					password: hash,
-					created_at: knex.raw('NOW()'),
-					type: req.body.type,
-					verified: 'N'
+					creator: req.body.user_id,
+					title: req.body.title,
+					body: req.body.body,
+					category: req.body.category,
+					created_at: knex.raw('NOW()')
 				})
 				.then(function(id) {
 					res.status(200).send('Inserted id ' + id);
@@ -25,9 +21,10 @@ module.exports = function(app) {
 				});
 		},
 
-		list : function (req, res, next) {
+		show : function (req, res, next) {
 			knex.select('*')
-				.from('users')
+				.from('articles')
+				.where({ id: req.params.article_id })
 				.then(function(rows) {
 					res.status(200).json(rows);
 				})
@@ -36,10 +33,10 @@ module.exports = function(app) {
 				});
 		},
 
-		show : function (req, res, next) {
+		list : function (req, res, next) {
 			knex.select('*')
-				.from('users')
-				.where({ id: req.params.user_id })
+				.from('articles')
+				.limit(req.body.limit || 10)
 				.then(function(rows) {
 					res.status(200).json(rows);
 				})
@@ -49,18 +46,16 @@ module.exports = function(app) {
 		},
 
 		update : function (req, res, next) {
-			var salt = bcrypt.genSaltSync(10);
-			var hash = bcrypt.hashSync(req.body.password, salt);
-
-			knex('users')
-				.where({ id: req.params.user_id })
+			knex('articles')
+				.where({ id: req.params.article_id })
 				.update({
-					user_name: req.body.username,
-					email_address: req.body.email_address,
-					password: hash,
+					creator: req.body.user_id,
+					title: req.body.title,
+					body: req.body.body,
+					category: req.body.category,
 					updated_at: knex.raw('NOW()')
 				})
-				.then(function(rows) {
+				.then(function(id) {
 					res.status(200).send('Success ' + rows);
 				})
 				.catch(function(error) {
@@ -69,8 +64,8 @@ module.exports = function(app) {
 		},
 
 		remove : function (req, res, next) {
-			knex('users')
-				.where({ id: req.params.user_id })
+			knex('articles')
+				.where({ id: req.params.article_id })
 				.del()
 				.then(function(rows) {
 					res.status(200).send('Success ' + rows);
