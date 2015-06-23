@@ -1,4 +1,4 @@
-
+// static information for display
 
 module.exports = function (app) {
 	return {

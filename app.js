@@ -4,6 +4,11 @@ var config = require('./config.json');
 var jwt = require('jwt-simple');
 var secret = config.secret;
 
+// auth middleware is used to verify the caller's permission
+// in addition to the API token. Include the scope string
+// as the argument to test.
+var auth = require('./middleware/auth');
+
 // http://knexjs.org/
 // SQL query builder
 var knex = require('knex')({
@@ -24,6 +29,8 @@ app.use(bodyParser.json());
 
 // JSON web token verification for API usage.
 // Use config/generateToken.js to create API token.
+// this function will be called on every request, so an API
+// user MUST have an API token.
 app.use(function (req, res, next) {
 	// token should be provided in Authorization header
 	var decoded;
@@ -37,7 +44,8 @@ app.use(function (req, res, next) {
 	}
 });
 
-// store knex connection in app object
+// store knex connection in app object so it can be
+// accessed in the models
 app.set('knex', knex);
 
 // models
@@ -50,34 +58,106 @@ var questions = require('./models/questions')(app);
 var users = require('./models/users')(app);
 
 
-// routes
+// test route
 router.get('/', function(req, res) {
 	res.json({ message: 'hello world' });
 });
+
+
+// admin
+router.route('/admin/:user_id')
+	// verify account
+	.post(auth('admin'), admin.verifyAccount);
+
+// answers
+router.route('/answers')
+	// list answers
+	.get(auth(['admin']), answers.list);
+
+// answer
+router.route('/answers/:user_id')
+	// show answer
+	.get(auth(['user', 'admin']), answers.show)
+	// add answer
+	.post(auth(['user', 'admin']), answers.create)
+	// update answer
+	.put(auth(['user', 'admin']), answers.update)
+	// remove answer
+	.delete(auth(['admin']), answers.remove);
+
+// articles
+router.route('/articles')
+	// list articles
+	.get(articles.list)
+	// create article
+	.post(auth(['admin']), articles.create);
+
+// article
+router.route('/articles/:article_id')
+	// show article
+	.get(articles.show)
+	// update article
+	.put(auth(['admin']), articles.update)
+	// remove article
+	.delete(auth(['admin']), articles.remove);
+
+// static info
+router.route('/information')
+	// TODO
+	.get(function(req, res) {
+		res.status(200).send('Infomration placeholder');
+	});
+
+// login
+router.route('/login')
+	.post(login.login);
+
+// questions
+router.route('/questions')
+	// list questions
+	.get(questions.list)
+	// add question
+	.post(auth(['admin']), questions.create);
+
+// question
+router.route('/questions/:question_id')
+	// show question
+	.get(questions.show)
+	// update question
+	.put(auth(['admin']), questions.update)
+	// remove question
+	.delete(auth(['admin']), questions.remove);
 
 // users
 router.route('/users')
 	// create user
 	.post(users.create)
 	// list users
-	.get(users.list);
+	.get(auth(['admin']), users.list);
 
 // user
 router.route('/users/:user_id')
 	// show user
-	.get(users.show)
+	.get(auth(['user', 'admin']), users.show)
 	// update user
-	.put(users.update)
+	.put(auth(['user', 'admin']), users.update)
 	// remove user
-	.delete(users.remove);
-
-// login
-router.route('/login')
-	.post(login.login);
+	.delete(auth(['admin']), users.remove);
 
 
 // register routes
+// all routes must start with "/api"
 app.use('/api', router);
+
+// error handlers
+app.use(function (err, req, res, next) {
+	console.error(err.stack);
+	if (err.message) {
+		res.status(err.status || 400).send(err.message);
+	} else {
+		res.status(400).end();
+	}
+});
 
 
 app.listen(port);

@@ -1,3 +1,4 @@
+// articles uploaded by admin or doctors
 
 module.exports = function(app) {
 	var knex = app.get('knex');

@@ -1,3 +1,7 @@
+// user account information is stored here.
+// passwords are hashed using bcrypt in order to
+// securely store them in the database
+
 var bcrypt = require('bcryptjs');
 
 module.exports = function(app) {
