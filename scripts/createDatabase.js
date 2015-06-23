@@ -25,7 +25,7 @@ knex.schema.hasTable('users').then(function(exists) {
 
 // create articles table
 .then(function() {
-	knex.schema.hasTable('articles').then(function(exists) {
+	return knex.schema.hasTable('articles').then(function(exists) {
 		if (!exists) {
 			return knex.schema.createTable('articles', function (table) {
 				table.increments('id');
@@ -43,7 +43,7 @@ knex.schema.hasTable('users').then(function(exists) {
 
 // create questions table
 .then(function() {
-	knex.schema.hasTable('questions').then(function(exists) {
+	return knex.schema.hasTable('questions').then(function(exists) {
 		if (!exists) {
 			return knex.schema.createTable('questions', function (table) {
 				table.increments('id');
@@ -59,15 +59,15 @@ knex.schema.hasTable('users').then(function(exists) {
 
 // create answers table
 .then(function() {
-	knex.schema.hasTable('answers').then(function(exists) {
+	return knex.schema.hasTable('answers').then(function(exists) {
 		if (!exists) {
 			return knex.schema.createTable('answers', function (table) {
 				table.increments('id');
 				table.string('user_id');
-				table.string('user_answers')
+				table.string('user_answers');
 				table.timestamps(); // adds dateTimes ceated_at and updated_at
 
-				console.log(table('answers added'));
+				console.log('table answers added');
 			});
 		}
 	});
@@ -75,7 +75,7 @@ knex.schema.hasTable('users').then(function(exists) {
 
 // create information table
 .then(function() {
-	knex.schema.hasTable('information').then(function(exists) {
+	return knex.schema.hasTable('information').then(function(exists) {
 		if (!exists) {
 			return knex.schema.createTable('information', function (table) {
 				table.increments('id');
