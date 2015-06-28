@@ -2,6 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var config = require('./config.json');
 var jwt = require('jwt-simple');
+
 var secret = config.secret;
 
 // auth middleware is used to verify the caller's permission
@@ -20,8 +21,13 @@ var knex = require('knex')({
 // Web framework for nodejs
 var app = express();
 var router = express.Router();
+var nodeEnv = process.env.NODE_ENV;
 var port = process.env.PORT || 8080;
 
+// store knex connection in app object so it can be
+// accessed in the models
+app.set('knex', knex);
+app.set('config', nodeEnv === 'production' ? config.production : config.development);
 // body parser module
 // parses url-encoded and json payloads
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -34,19 +40,22 @@ app.use(bodyParser.json());
 app.use(function (req, res, next) {
 	// token should be provided in Authorization header
 	var decoded;
-	if (req.headers.authorization) {
-		decoded = jwt.decode(req.headers.authorization, secret);
-	}
-	if (decoded && decoded.api) {
-		return next();
+	// set environment variable NODE_ENV=development to disable API auth
+	if (nodeEnv !== 'development') {
+		if (req.headers.authorization) {
+			decoded = jwt.decode(req.headers.authorization, secret);
+		}
+		if (decoded && decoded.api) {
+			return next();
+		} else {
+			return res.status(401).send('Authorization failed');
+		}
 	} else {
-		return res.status(401).send('Authorization failed');
+		next();
 	}
 });
 
-// store knex connection in app object so it can be
-// accessed in the models
-app.set('knex', knex);
+
 
 // models
 var admin = require('./models/admin')(app);
@@ -65,7 +74,7 @@ router.get('/', function(req, res) {
 
 
 // admin
-router.route('/admin/:user_id')
+router.route('/verify/:user_id')
 	// verify account
 	.post(auth('admin'), admin.verifyAccount);
 
@@ -161,4 +170,4 @@ app.use(function (err, req, res, next) {
 
 
 app.listen(port);
-console.log('Golden Leaf started on port ' + port);
+console.log('Golden Leaf running in %s mode on port %d', nodeEnv, port);
