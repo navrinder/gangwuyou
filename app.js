@@ -88,11 +88,11 @@ router.route('/answers/:user_id')
 	// show answer
 	.get(auth(['user', 'admin']), answers.show)
 	// add answer
-	.post(auth(['user', 'admin']), answers.create)
+	//.post(auth(['user', 'admin']), answers.create)
 	// update answer
-	.put(auth(['user', 'admin']), answers.update)
+	//.put(auth(['user', 'admin']), answers.update)
 	// remove answer
-	.delete(auth(['admin']), answers.remove);
+	//.delete(auth(['admin']), answers.remove);
 
 // articles
 router.route('/articles')
@@ -126,16 +126,16 @@ router.route('/questions')
 	// list questions
 	.get(questions.list)
 	// add question
-	.post(auth(['admin']), questions.create);
+	//.post(auth(['admin']), questions.create);
 
 // question
 router.route('/questions/:question_id')
 	// show question
 	.get(questions.show)
 	// update question
-	.put(auth(['admin']), questions.update)
+	//.put(auth(['admin']), questions.update)
 	// remove question
-	.delete(auth(['admin']), questions.remove);
+	//.delete(auth(['admin']), questions.remove);
 
 // users
 router.route('/users')

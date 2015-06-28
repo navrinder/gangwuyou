@@ -47,6 +47,8 @@ module.exports = function(app) {
 		},
 
 		update : function (req, res, next) {
+			var payload = req.body;
+			payload.updated_at = knex.raw('NOW()');
 			knex('articles')
 				.where({ id: req.params.article_id })
 				.update({
