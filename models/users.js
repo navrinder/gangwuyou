@@ -54,17 +54,19 @@ module.exports = function(app) {
 		},
 
 		update : function (req, res, next) {
-			var salt = bcrypt.genSaltSync(10);
-			var hash = bcrypt.hashSync(req.body.password, salt);
+			var payload = req.body;
+
+			if (req.body.password) {
+				var salt = bcrypt.genSaltSync(10);
+				var hash = bcrypt.hashSync(req.body.password, salt);
+				payload.password = hash;
+			}
+
+			payload.updated_at = knex.raw('NOW()');
 
 			knex('users')
 				.where({ id: req.params.user_id })
-				.update({
-					user_name: req.body.username,
-					email_address: req.body.email_address,
-					password: hash,
-					updated_at: knex.raw('NOW()')
-				})
+				.update(payload)
 				.then(function(rows) {
 					res.status(200).send('Success ' + rows);
 				})
