@@ -3,7 +3,7 @@ var jwt = require('jwt-simple');
 var nodeEnv = process.env.NODE_ENV;
 
 
-function (req, res, next) {
+module.exports = function (req, res, next) {
 	// token should be provided in Authorization header
 	var decoded;
 	// set environment variable NODE_ENV=development to disable API auth
@@ -19,4 +19,4 @@ function (req, res, next) {
 	} else {
 		next();
 	}
-}
+};
