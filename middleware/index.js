@@ -1,5 +1,7 @@
 
-module.exports = {
-	authUser : require('./authUser'),
-	authApi  : require('./authApi')
+module.exports = function (app) {
+	return {
+		authUser : require('./authUser')(app),
+		authApi  : require('./authApi')(app)
+	}
 };
