@@ -2,7 +2,8 @@
 // may make API calls to the server.
 
 var jwt = require('jwt-simple');
-var secret = require('../config.json').secret;
+var nodeEnv = process.env.NODE_ENV;
+var secret = require('../config.json')[nodeEnv || 'development'].secret;
 
 var payload = {
 	iat: Date.now(),

@@ -4,7 +4,7 @@
 
 var bcrypt = require('bcryptjs');
 
-module.exports = function(app) {
+module.exports = function (app) {
 	var knex = app.get('knex');
 
 	return {
