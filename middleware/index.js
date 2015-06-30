@@ -1,5 +1,5 @@
 
 module.exports = {
-	authUser : require('./authUser')(scopes),
+	authUser : require('./authUser'),
 	authApi  : require('./authApi')
 };
