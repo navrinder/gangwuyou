@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS users
 	password		VARCHAR(255),
 	type			VARCHAR(255),
 	verified		CHAR(1),
+	active          CHAR(1),
 	created_at		DATETIME DEFAULT NOW(),
 	updated_at		DATETIME DEFAULT NOW(),
 	question_1		CHAR(1),
@@ -25,10 +26,11 @@ CREATE TABLE IF NOT EXISTS users
 CREATE TABLE IF NOT EXISTS articles
 (
 	id 				INT,
-	creator 		VARCHAR(255),
+	user_id 		VARCHAR(255),
 	title			VARCHAR(255),
 	body			TEXT,
 	category		VARCHAR(255),
+	active          CHAR(1),
 	created_at		DATETIME DEFAULT NOW(),
 	updated_at		DATETIME DEFAULT NOW()
 );
@@ -53,3 +55,15 @@ CREATE TABLE IF NOT EXISTS information
 	created_at		DATETIME DEFAULT NOW(),
 	updated_at		DATETIME DEFAULT NOW()
 );
+
+CREATE TABLE IF NOT EXISTS comments
+(
+	id			INT,
+	article_id 	INT,
+	user_id 	INT,
+	title 		VARCHAR(128),
+	body 		TEXT,
+	active 		CHAR(1),
+	created_at	DATETIME DEFAULT NOW(),
+	updated_at	DATETIME DEFAULT NOW()
+)

@@ -12,9 +12,10 @@ module.exports = function(app) {
 		create : function (req, res, next) {
 			var salt = bcrypt.genSaltSync(10);
 			var hash = bcrypt.hashSync(req.body.password, salt);
+
 			knex('users')
 				.insert({
-					user_name: req.body.username,
+					user_name: req.body.user_name,
 					email_address: req.body.email_address,
 					password: hash,
 					created_at: knex.raw('NOW()'),
@@ -53,20 +54,19 @@ module.exports = function(app) {
 				});
 		},
 
-		update : function (req, res, next) {
-			var payload = req.body;
-
-			if (req.body.password) {
-				var salt = bcrypt.genSaltSync(10);
-				var hash = bcrypt.hashSync(req.body.password, salt);
-				payload.password = hash;
-			}
-
-			payload.updated_at = knex.raw('NOW()');
+		updateUser : function (req, res, next) {
+			var salt = bcrypt.genSaltSync(10);
+			var hash = bcrypt.hashSync(req.body.password, salt);
 
 			knex('users')
 				.where({ id: req.params.user_id })
-				.update(payload)
+				.update({
+					user_name: req.body.user_name,
+					email_address: req.body.email_address,
+					password: hash,
+					updated_at: knex.raw('NOW()'),
+					type: req.body.type
+				})
 				.then(function(rows) {
 					res.status(200).send('Success ' + rows);
 				})
@@ -78,7 +78,7 @@ module.exports = function(app) {
 		remove : function (req, res, next) {
 			knex('users')
 				.where({ id: req.params.user_id })
-				.del()
+				.update({ active: 'N'	})
 				.then(function(rows) {
 					res.status(200).send('Success ' + rows);
 				})

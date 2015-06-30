@@ -1,4 +1,5 @@
-var config = require('../config.json');
+var nodeEnv = process.env.NODE_ENV;
+var config = require('./config')[nodeEnv || 'development'];
 
 var knex = require('knex')({
 	client: 'mysql',
@@ -16,6 +17,7 @@ knex.schema.hasTable('users').then(function(exists) {
 			table.string('password');
 			table.string('type');
 			table.string('verified', 1);
+			table.string('active', 1);
 			table.timestamps(); // adds dateTimes ceated_at and updated_at
 			table.string('question_1', 1),
 			table.string('question_2', 1),
@@ -41,10 +43,30 @@ knex.schema.hasTable('users').then(function(exists) {
 		if (!exists) {
 			return knex.schema.createTable('articles', function (table) {
 				table.increments('id');
-				table.string('creator');
+				table.string('user_id');
 				table.string('title');
 				table.text('body');
 				table.string('category');
+				table.string('active', 1);
+				table.timestamps(); // adds dateTimes ceated_at and updated_at
+
+				console.log('table articles added');
+			});
+		}
+	});
+})
+
+// create comments table
+.then(function() {
+	return knex.schema.hasTable('comments').then(function(exists) {
+		if (!exists) {
+			return knex.schema.createTable('comments', function (table) {
+				table.increments('id');
+				table.string('article_id');
+				table.string('user_id');
+				table.string('title');
+				table.text('body');
+				table.string('active', 1);
 				table.timestamps(); // adds dateTimes ceated_at and updated_at
 
 				console.log('table articles added');
