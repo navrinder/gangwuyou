@@ -19,6 +19,11 @@ var app = express();
 var router = express.Router();
 var port = process.env.PORT || 8080;
 
+// store knex connection in app object so it can be
+// accessed in the models
+app.set('knex', knex);
+app.set('config', config);
+
 var models = require('./models')(app);
 
 // auth middleware is used to verify the caller's permission
@@ -26,10 +31,7 @@ var models = require('./models')(app);
 // as the argument to check.
 var authUser = middleware.authUser;
 
-// store knex connection in app object so it can be
-// accessed in the models
-app.set('knex', knex);
-app.set('config', config);
+
 
 // body parser module
 // parses url-encoded and json payloads
