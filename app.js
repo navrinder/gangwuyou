@@ -1,6 +1,5 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-var middleware = require('./middleware');
 
 var nodeEnv = process.env.NODE_ENV;
 var config = require('./config')[nodeEnv || 'development'];
@@ -24,6 +23,7 @@ var port = process.env.PORT || 8080;
 app.set('knex', knex);
 app.set('config', config);
 
+var middleware = require('./middleware')(app);
 var models = require('./models')(app);
 
 // auth middleware is used to verify the caller's permission
@@ -45,6 +45,8 @@ app.use(bodyParser.json());
 // will disable this check.
 app.use(middleware.authApi);
 
+// Both API and user tokens should be included in the Authorization
+// header, comma separated with API token first and user token second.
 
 // test route
 router.get('/', function(req, res) {

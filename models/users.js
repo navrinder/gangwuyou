@@ -12,6 +12,7 @@ module.exports = function (app) {
 		create : function (req, res, next) {
 			var salt = bcrypt.genSaltSync(10);
 			var hash = bcrypt.hashSync(req.body.password, salt);
+			var type = req.body.type === 'doctor' ? 'doctor' : 'user';
 
 			knex('users')
 				.insert({
@@ -19,8 +20,8 @@ module.exports = function (app) {
 					email_address: req.body.email_address,
 					password: hash,
 					created_at: knex.raw('NOW()'),
-					type: req.body.type,
-					verified: 'N'
+					type: type,
+					verified: type === 'user' ? 'Y' : 'N'
 				})
 				.then(function(id) {
 					res.status(200).send('Inserted id ' + id);
@@ -64,8 +65,7 @@ module.exports = function (app) {
 					user_name: req.body.user_name,
 					email_address: req.body.email_address,
 					password: hash,
-					updated_at: knex.raw('NOW()'),
-					type: req.body.type
+					updated_at: knex.raw('NOW()')
 				})
 				.then(function(rows) {
 					res.status(200).send('Success ' + rows);

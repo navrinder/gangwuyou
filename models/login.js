@@ -4,25 +4,25 @@
 
 var bcrypt = require('bcryptjs');
 var jwt = require('jwt-simple');
-var secret = require('../config.json').secret;
 
-module.exports = function(app) {
+module.exports = function (app) {
 	var knex = app.get('knex');
+	var secret = app.get('config').secret;
 
 	return {
 
 		login : function (req, res, next) {
-			knex.select('password')
+			knex.select('*')
 				.from('users')
 				.where({ email_address: req.body.email_address })
 				.then(function(rows) {
 					if (bcrypt.compareSync(req.body.password, rows[0].password)) {
-						// TODO: add check to see what type of user is logging in
-						// and add scope accordingly.
 						var payload = {
 							iat: Date.now(),
-							scopes: ['user']
+							scopes: [rows[0].type],
+							verified: rows[0].verified === 'Y' ? true : false
 						};
+
 						var token = jwt.encode(payload, secret);
 						res.status(200).json({
 							token: token
