@@ -1,4 +1,4 @@
-// articles uploaded by admin or doctors
+// comments for articles
 
 module.exports = function(app) {
 	var knex = app.get('knex');
@@ -6,12 +6,12 @@ module.exports = function(app) {
 	return {
 
 		create : function (req, res, next) {
-			knex('articles')
+			knex('comments')
 				.insert({
-					user_id: req.body.user_id,
+					article_id: req.body.article_id,
+					user_id	: req.body.user_id,
 					title: req.body.title,
 					body: req.body.body,
-					category: req.body.category,
 					created_at: knex.raw('NOW()')
 				})
 				.then(function(id) {
@@ -22,10 +22,10 @@ module.exports = function(app) {
 				});
 		},
 
-		show : function (req, res, next) {
+		showComment : function (req, res, next) {
 			knex.select('*')
-				.from('articles')
-				.where({ id: req.params.article_id })
+				.from('comments')
+				.where({ id: req.params.comment_id })
 				.then(function(rows) {
 					res.status(200).json(rows);
 				})
@@ -34,10 +34,22 @@ module.exports = function(app) {
 				});
 		},
 
-		list : function (req, res, next) {
+		showUserComments : function (req, res, next) {
 			knex.select('*')
-				.from('articles')
-				.limit(req.body.limit || 10)
+				.from('comments')
+				.where({ user_id: req.params.user_id })
+				.then(function(rows) {
+					res.status(200).json(rows);
+				})
+				.catch(function(error) {
+					next(error);
+				});
+		},
+
+		showArticleComments : function (req, res, next) {
+			knex.select('*')
+				.from('comments')
+				.where({ article_id: req.params.article_id })
 				.then(function(rows) {
 					res.status(200).json(rows);
 				})
@@ -47,13 +59,13 @@ module.exports = function(app) {
 		},
 
 		update : function (req, res, next) {
-			knex('articles')
+			knex('comments')
 				.where({ id: req.params.article_id })
 				.update({
+					article_id: req.body.article_id,
 					user_id: req.body.user_id,
 					title: req.body.title,
 					body: req.body.body,
-					category: req.body.category,
 					updated_at: knex.raw('NOW()')
 				})
 				.then(function(id) {
