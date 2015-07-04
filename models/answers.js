@@ -7,21 +7,21 @@ module.exports = function(app) {
 
 		show : function (req, res, next) {
 			knex.select(
-					'question_1, ' +
-					'question_2, ' +
-					'question_3, ' +
-					'question_4, ' +
-					'quesiton_5, ' +
-					'question_6, ' +
-					'question_7, ' +
-					'question_8, ' +
-					'question_9, ' +
-					'question_10, ' +
-					'question_11, ' +
+					'question_1',
+					'question_2',
+					'question_3',
+					'question_4',
+					'question_5',
+					'question_6',
+					'question_7',
+					'question_8',
+					'question_9',
+					'question_10',
+					'question_11',
 					'question_12'
 				)
 				.from('users')
-				.where({ user_id: req.params.user_id })
+				.where({ id: req.params.user_id })
 				.then(function(rows) {
 					res.status(200).json(rows);
 				})
