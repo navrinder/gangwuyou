@@ -12,7 +12,8 @@ module.exports = function(app) {
 					title: req.body.title,
 					body: req.body.body,
 					category: req.body.category,
-					created_at: knex.raw('NOW()')
+					created_at: knex.raw('NOW()'),
+					active: 'Y'
 				})
 				.then(function(id) {
 					res.status(200).send('Inserted id ' + id);
@@ -57,7 +58,7 @@ module.exports = function(app) {
 					updated_at: knex.raw('NOW()')
 				})
 				.then(function(id) {
-					res.status(200).send('Success ' + rows);
+					res.status(200).send('Success ' + id);
 				})
 				.catch(function(error) {
 					next(error);

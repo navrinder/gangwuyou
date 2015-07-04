@@ -61,7 +61,7 @@ router.route('/verify/:user_id')
 
 
 // answer
-router.route('/answers/:user_id')
+router.route('/users/:user_id/answers')
 	// show answers
 	.get(authUser(['user', 'admin']), models.answers.show)
 	// add answer to user
@@ -84,13 +84,17 @@ router.route('/articles/:article_id')
 	.delete(authUser(['admin']), models.articles.remove);
 
 // comments
-router.route('/comments/:comment')
-	// show single comment
-	.get(models.comments.showComment);
-
 router.route('/articles/:article_id/comments')
 	// show all comments for article
-	.get(models.comments.showArticleComments);
+	.get(models.comments.showArticleComments)
+	// add comment
+	.post(authUser(['user']), models.comments.create);
+
+router.route('/articles/:article_id/comments/:comment_id')
+	// show comment
+	.get(models.comments.showComment)
+	// update comment
+	.put(authUser(['user', 'admin']), models.comments.update);
 
 router.route('/users/:user_id/comments')
 	// show all comments for user
@@ -100,7 +104,7 @@ router.route('/users/:user_id/comments')
 router.route('/information')
 	// TODO
 	.get(function(req, res) {
-		res.status(200).send('Infomration placeholder');
+		res.status(200).json([]);
 	});
 
 // login

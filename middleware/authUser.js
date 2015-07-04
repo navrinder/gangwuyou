@@ -15,7 +15,7 @@ module.exports = function (app) {
 				decoded = jwt.decode(token, secret);
 			}
 
-			if (decoded && decoded.scopes.length) {
+			if (decoded && decoded.scopes && decoded.scopes.length) {
 				for (var i = 0, l = decoded.scopes.length; i < l; i++) {
 					for (var j = 0, m = scopes.length; j < m; j++) {
 						if (decoded.scopes[i] === scopes[j]) {
