@@ -1,13 +1,13 @@
 {
 	"development" : {
 		"database" : {
-			"host" : "tjb.website",
-			"port" : 3306,
-			"user" : "tjb",
-			"password" : "moonbase",
-			"database" : "golden_leaf"
+			"host" : "",
+			"port" : 0,
+			"user" : "",
+			"password" : "",
+			"database" : ""
 		},
-		"secret" : "super.secret.key"
+		"secret" : ""
 	},
 	"production" : {
 		"database" : {
