@@ -21,7 +21,7 @@ module.exports = function(app) {
 					'question_12'
 				)
 				.from('users')
-				.where({ user_id: user_id })
+				.where({ user_id: req.params.user_id })
 				.then(function(rows) {
 					res.status(200).json(rows);
 				})

@@ -8,11 +8,12 @@ module.exports = function(app) {
 		create : function (req, res, next) {
 			knex('comments')
 				.insert({
-					article_id: req.body.article_id,
+					article_id: req.params.article_id,
 					user_id	: req.body.user_id,
 					title: req.body.title,
 					body: req.body.body,
-					created_at: knex.raw('NOW()')
+					created_at: knex.raw('NOW()'),
+					active: 'Y'
 				})
 				.then(function(id) {
 					res.status(200).send('Inserted id ' + id);
@@ -60,16 +61,16 @@ module.exports = function(app) {
 
 		update : function (req, res, next) {
 			knex('comments')
-				.where({ id: req.params.article_id })
+				.where({ id: req.params.comment_id })
 				.update({
-					article_id: req.body.article_id,
+					article_id: req.params.article_id,
 					user_id: req.body.user_id,
 					title: req.body.title,
 					body: req.body.body,
 					updated_at: knex.raw('NOW()')
 				})
 				.then(function(id) {
-					res.status(200).send('Success ' + rows);
+					res.status(200).send('Success ' + id);
 				})
 				.catch(function(error) {
 					next(error);

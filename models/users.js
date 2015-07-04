@@ -21,7 +21,8 @@ module.exports = function (app) {
 					password: hash,
 					created_at: knex.raw('NOW()'),
 					type: type,
-					verified: type === 'user' ? 'Y' : 'N'
+					verified: type === 'user' ? 'Y' : 'N',
+					active: 'Y'
 				})
 				.then(function(id) {
 					res.status(200).send('Inserted id ' + id);
