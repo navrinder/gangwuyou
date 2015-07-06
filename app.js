@@ -23,14 +23,6 @@ app.set('knex', knex);
 app.set('config', config);
 
 var middleware = require('./middleware')(app);
-var models = require('./models')(app);
-
-// auth middleware is used to verify the caller's permission
-// in addition to the API token. Include the scope string
-// as the argument to check.
-var authUser = middleware.authUser;
-
-
 
 // body parser module
 // parses url-encoded and json payloads
