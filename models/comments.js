@@ -16,7 +16,10 @@ module.exports = function(app) {
 					active: 'Y'
 				})
 				.then(function(id) {
-					res.status(200).send('Inserted id ' + id);
+					res.status(200).json({
+						success: true,
+						data: id
+					});
 				})
 				.catch(function(error) {
 					next(error);
@@ -28,7 +31,10 @@ module.exports = function(app) {
 				.from('comments')
 				.where({ id: req.params.comment_id })
 				.then(function(rows) {
-					res.status(200).json(rows);
+					res.status(200).json({
+						success: true,
+						data: rows
+					});
 				})
 				.catch(function(error) {
 					next(error);
@@ -40,7 +46,10 @@ module.exports = function(app) {
 				.from('comments')
 				.where({ user_id: req.params.user_id })
 				.then(function(rows) {
-					res.status(200).json(rows);
+					res.status(200).json({
+						success: true,
+						data: rows
+					});
 				})
 				.catch(function(error) {
 					next(error);
@@ -52,7 +61,10 @@ module.exports = function(app) {
 				.from('comments')
 				.where({ article_id: req.params.article_id })
 				.then(function(rows) {
-					res.status(200).json(rows);
+					res.status(200).json({
+						success: true,
+						data: rows
+					});
 				})
 				.catch(function(error) {
 					next(error);
@@ -70,7 +82,10 @@ module.exports = function(app) {
 					updated_at: knex.raw('NOW()')
 				})
 				.then(function(id) {
-					res.status(200).send('Success ' + id);
+					res.status(200).json({
+						success: true,
+						data: id
+					});
 				})
 				.catch(function(error) {
 					next(error);
@@ -82,7 +97,10 @@ module.exports = function(app) {
 				.where({ id: req.params.article_id })
 				.update({ active: 'N' })
 				.then(function(rows) {
-					res.status(200).send('Success ' + rows);
+					res.status(200).json({
+						success: true,
+						data: rows
+					});
 				})
 				.catch(function(error) {
 					next(error);

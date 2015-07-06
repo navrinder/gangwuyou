@@ -140,16 +140,17 @@ router.route('/users/:user_id')
 
 // register routes
 // all routes must start with "/api"
-app.use('/api', router);
+app.use('/api/v1', router);
 
-// error handlers
+// error handler
 app.use(function (err, req, res, next) {
 	console.error(err.stack);
-	if (err.message) {
-		res.status(err.status || 400).send(err.message);
-	} else {
-		res.status(400).end();
-	}
+	var response = {
+		success: false,
+		message: err.message || 'Error'
+	};
+
+	res.status(err.status || 400).json(response);
 });
 
 

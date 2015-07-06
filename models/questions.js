@@ -9,7 +9,10 @@ module.exports = function(app) {
 			knex.select('*')
 				.from('questions')
 				.then(function(rows) {
-					res.status(200).json(rows);
+					res.status(200).json({
+						success: true,
+						data: rows
+					});
 				})
 				.catch(function(error) {
 					next(error);
@@ -21,7 +24,10 @@ module.exports = function(app) {
 				.from('questions')
 				.where({ id: question_id })
 				.then(function(rows) {
-					res.status(200).json(rows);
+					res.status(200).json({
+						success: true,
+						data: rows
+					});
 				})
 				.catch(function(error) {
 					next(error);
@@ -35,7 +41,10 @@ module.exports = function(app) {
 					answers: req.body.answers
 				})
 				.then(function(id) {
-					res.status(200).send('Inserted id ' + id);
+					res.status(200).json({
+						success: true,
+						data: id
+					});
 				})
 				.catch(function(error) {
 					next(error);
@@ -50,7 +59,10 @@ module.exports = function(app) {
 					answers: req.body.answers
 				})
 				.then(function(rows) {
-					res.status(200).send('Success ' + rows);
+					res.status(200).json({
+						success: true,
+						data: rows
+					});
 				})
 				.catch(function(error) {
 					next(error);
@@ -62,7 +74,10 @@ module.exports = function(app) {
 				.where({ id: req.params.question_id })
 				.del()
 				.then(function(rows) {
-					res.status(200).send('Success ' + rows);
+					res.status(200).json({
+						success: true,
+						data: rows
+					});
 				})
 				.catch(function(error) {
 					next(error);
