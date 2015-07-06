@@ -25,10 +25,14 @@ module.exports = function (app) {
 
 						var token = jwt.encode(payload, secret);
 						res.status(200).json({
+							success: true,
 							token: token
 						});
 					} else {
-						res.status(401).send('Unauthorized');
+						next({
+							status: 401,
+							message: 'Unauthorized.'
+						});
 					}
 				})
 				.catch(function(error) {
