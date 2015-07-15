@@ -1,5 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+var markdown = require('markdown').markdown;
+var fs = require('fs');
 
 var nodeEnv = process.env.NODE_ENV;
 var config = require('./config')[nodeEnv || 'development'];
@@ -42,6 +44,11 @@ app.use(middleware.authApi);
 // test route
 app.get('/', function(req, res) {
 	res.json({ message: 'hello world' });
+});
+
+// documentation
+app.get('/readme', function (req, res) {
+	res.status(200).send(markdown.toHTML(fs.readFileSync('./README.md', { encoding: 'utf8' })));
 });
 
 
