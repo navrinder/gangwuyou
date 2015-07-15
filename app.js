@@ -36,7 +36,12 @@ app.use(bodyParser.json());
 // This function will be called on every request, so an API
 // user MUST have an API token. Setting the NODE_ENV=development
 // will disable this check.
-app.use(middleware.authApi);
+
+// TODO: this has been temporarily disabled
+// if (nodeEnv !== 'development') {
+// 	app.use(middleware.authApi);
+// }
+
 
 // Both API and user tokens should be included in the Authorization
 // header, comma separated with API token first and user token second.
