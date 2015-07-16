@@ -1,4 +1,4 @@
-var Schema = {
+module.exports = {
 	users: {
 		id: {
 			type: 'increments',
@@ -113,136 +113,136 @@ var Schema = {
 			type: 'string',
 			maxlength: 1,
 			nullable: true
-		},
+		}
+	},
 
-		articles: {
-			id: {
-				type: 'increments',
-				nullable: false,
-				primary: true
-			},
-			user_id: {
-				type: 'integer',
-				nullable: false,
-				unsigned: true,
-				references: 'users.id'
-			},
-			title: {
-				type: 'string',
-				maxlength: 150,
-				nullable: false
-			},
-			body: {
-				type: 'text',
-				nullable: false
-			},
-			category: {
-				type: 'string',
-				nullable: false
-			},
-			active: {
-				type: 'string',
-				maxlength: 1,
-				nullable: false
-			},
-			created_at: {
-				type: 'dateTime',
-				nullable: false
-			},
-			updated_at: {
-				type: 'dateTime',
-				nullable: true
-			}
+	articles: {
+		id: {
+			type: 'increments',
+			nullable: false,
+			primary: true
 		},
-
-		comments: {
-			id: {
-				type: 'increments',
-				nullable: false,
-				primary: true
-			},
-			article_id: {
-				type: 'integer',
-				nullable: false,
-				unsigned: true,
-				references: 'articles.id'
-			},
-			user_id: {
-				type: 'integer',
-				nullable: false,
-				unsigned: true,
-				references: 'users.id'
-			},
-			title: {
-				type: 'string',
-				maxlength: 150,
-				nullable: false
-			},
-			body: {
-				type: 'text',
-				nullable: false
-			},
-			active: {
-				type: 'string',
-				maxlength: 1,
-				nullable: false
-			},
-			created_at: {
-				type: 'dateTime',
-				nullable: false
-			},
-			updated_at: {
-				type: 'dateTime',
-				nullable: true
-			}
+		user_id: {
+			type: 'integer',
+			nullable: false,
+			unsigned: true,
+			references: 'users.id'
 		},
-
-		questions: {
-			id: {
-				type: 'increments',
-				nullable: false,
-				primary: true
-			},
-			question: {
-				type: 'string',
-				maxlength: 255,
-				nullable: false
-			},
-			answer_a: {
-				type: 'string',
-				maxlength: 255,
-				nullable: false
-			},
-			answer_b: {
-				type: 'string',
-				maxlength: 255,
-				nullable: false
-			},
-			answer_c: {
-				type: 'string',
-				maxlength: 255,
-				nullable: false
-			},
-			answer_d: {
-				type: 'string',
-				maxlength: 255,
-				nullable: false
-			}
+		title: {
+			type: 'string',
+			maxlength: 150,
+			nullable: false
 		},
+		body: {
+			type: 'text',
+			nullable: false
+		},
+		category: {
+			type: 'string',
+			nullable: false
+		},
+		active: {
+			type: 'string',
+			maxlength: 1,
+			nullable: false
+		},
+		created_at: {
+			type: 'dateTime',
+			nullable: false
+		},
+		updated_at: {
+			type: 'dateTime',
+			nullable: true
+		}
+	},
 
-		information: {
-			id: {
-				type: 'increments',
-				nullable: false,
-				primary: true
-			},
-			title: {
-				type: 'string',
-				maxlength: 255
-			},
-			body: {
-				type: 'text'
-			}
+	comments: {
+		id: {
+			type: 'increments',
+			nullable: false,
+			primary: true
+		},
+		article_id: {
+			type: 'integer',
+			nullable: false,
+			unsigned: true,
+			references: 'articles.id'
+		},
+		user_id: {
+			type: 'integer',
+			nullable: false,
+			unsigned: true,
+			references: 'users.id'
+		},
+		title: {
+			type: 'string',
+			maxlength: 150,
+			nullable: false
+		},
+		body: {
+			type: 'text',
+			nullable: false
+		},
+		active: {
+			type: 'string',
+			maxlength: 1,
+			nullable: false
+		},
+		created_at: {
+			type: 'dateTime',
+			nullable: false
+		},
+		updated_at: {
+			type: 'dateTime',
+			nullable: true
+		}
+	},
+
+	questions: {
+		id: {
+			type: 'increments',
+			nullable: false,
+			primary: true
+		},
+		question: {
+			type: 'string',
+			maxlength: 255,
+			nullable: false
+		},
+		answer_a: {
+			type: 'string',
+			maxlength: 255,
+			nullable: false
+		},
+		answer_b: {
+			type: 'string',
+			maxlength: 255,
+			nullable: false
+		},
+		answer_c: {
+			type: 'string',
+			maxlength: 255,
+			nullable: false
+		},
+		answer_d: {
+			type: 'string',
+			maxlength: 255,
+			nullable: false
+		}
+	},
+
+	information: {
+		id: {
+			type: 'increments',
+			nullable: false,
+			primary: true
+		},
+		title: {
+			type: 'string',
+			maxlength: 255
+		},
+		body: {
+			type: 'text'
 		}
 	}
 };
