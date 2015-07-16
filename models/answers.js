@@ -23,7 +23,10 @@ module.exports = function(app) {
 				.from('users')
 				.where({ id: req.params.user_id })
 				.then(function(rows) {
-					res.status(200).json(rows);
+					res.status(200).json({
+						success: true,
+						data: rows
+					});
 				})
 				.catch(function(error) {
 					next(error);
@@ -74,7 +77,10 @@ module.exports = function(app) {
 				.where({ id: req.params.user_id })
 				.update(payload)
 				.then(function(rows) {
-					res.status(200).send('Success ' + rows);
+					res.status(200).json({
+						success: true,
+						data: rows
+					});
 				})
 				.catch(function(error) {
 					next(error);

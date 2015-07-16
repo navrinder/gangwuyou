@@ -12,7 +12,11 @@ module.exports = function(app) {
 					verified: 'Y'
 				})
 				.then(function(rows) {
-					res.status(200).send('Account verified ' + rows);
+					res.status(200).json({
+						success: true,
+						message: 'Account verified',
+						data:rows
+					});
 				})
 				.catch(function(error) {
 					next(error);
