@@ -65,11 +65,12 @@ app.use('/api/v1', middleware.routes.v1);
 
 // error handler
 app.use(function (err, req, res, next) {
+
 	console.error(err.stack);
 	var response = {
 		success: false,
 		code: err.code,
-		//message: err.message || 'Error' // is this secure?
+		message: err.message || 'Error' // is this secure?
 	};
 
 	res.status(err.status || 400).json(response);
