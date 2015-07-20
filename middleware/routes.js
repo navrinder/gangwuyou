@@ -19,7 +19,7 @@ function v1 (router, models, authUser) {
 	// admin
 	router.route('/verify/:user_id')
 		// verify account
-		.post(authUser('admin'), models.admin.verifyAccount);
+		.post(authUser(['admin']), models.admin.verifyAccount);
 
 
 	// answer
@@ -50,7 +50,7 @@ function v1 (router, models, authUser) {
 		// show all comments for article
 		.get(models.comments.showArticleComments)
 		// add comment
-		.post(authUser(['user']), models.comments.create);
+		.post(authUser(['user', 'admin']), models.comments.create);
 
 	router.route('/articles/:article_id/comments/:comment_id')
 		// show comment

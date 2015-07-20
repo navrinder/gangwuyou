@@ -25,7 +25,10 @@ module.exports = function (app) {
 				}
 			}
 
-			return res.status(401).send('Unauthorized user token.');
+			return next({
+				status: 401,
+				message: 'Unauthorized user token.'
+			});
 		};
 	};
 };
