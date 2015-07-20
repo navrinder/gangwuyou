@@ -135,11 +135,11 @@ module.exports = function (app) {
 				require: true
 			})
 			.then(function(user) {
-				if (bcrypt.compareSync(req.body.password, rows[0].password)) {
+				if (bcrypt.compareSync(req.body.password, user.attributes.password)) {
 					var payload = {
 						iat: Date.now(),
-						scopes: [rows[0].type],
-						verified: rows[0].verified === 'Y' ? true : false
+						scopes: [user.attributes.type],
+						verified: user.attributes.verified === 'Y' ? true : false
 					};
 
 					var token = jwt.encode(payload, secret);

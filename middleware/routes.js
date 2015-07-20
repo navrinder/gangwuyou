@@ -71,7 +71,7 @@ function v1 (router, models, authUser) {
 
 	// login
 	router.route('/login')
-		.post(models.login.login);
+		.post(models.users.login);
 
 	// questions
 	router.route('/questions')
