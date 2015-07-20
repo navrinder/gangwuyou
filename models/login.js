@@ -38,10 +38,6 @@ module.exports = function (app) {
 				.catch(function(error) {
 					next(error);
 				});
-		},
-
-		logout : function (req, res, next) {
-			// TODO: nullify token
 		}
 	};
 };

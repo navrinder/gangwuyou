@@ -1,95 +1,117 @@
 // articles uploaded by admin or doctors
 
 module.exports = function(app) {
-	var knex = app.get('knex');
+	var Bookshelf = app.get('Bookshelf');
+
+	// model
+	var Article = Bookshelf.Model.extend({
+		tableName: 'articles',
+		hasTimestamps: true
+	});
+
+	// collection
+	var Articles = Bookshelf.Collection.extend({
+		model: Article
+	});
+
+	// TODO relations
+
 
 	return {
 
 		create : function (req, res, next) {
-			knex('articles')
-				.insert({
-					user_id: req.body.user_id,
-					title: req.body.title,
-					body: req.body.body,
-					category: req.body.category,
-					created_at: knex.raw('NOW()'),
-					active: 'Y'
-				})
-				.then(function(id) {
-					res.status(200).json({
-						success: true,
-						data: id
-					});
-				})
-				.catch(function(error) {
-					next(error);
+			new Article({
+				user_id: req.body.user_id,
+				title: req.body.title,
+				body: req.body.body,
+				category: req.body.category,
+				active: 'Y'
+			})
+			.save()
+			.then(function(article) {
+				res.status(200).json({
+					success: true,
+					data: article
 				});
+			})
+			.catch(function(error) {
+				next(error);
+			});
 		},
 
 		show : function (req, res, next) {
-			knex.select('*')
-				.from('articles')
-				.where({ id: req.params.article_id })
-				.then(function(rows) {
-					res.status(200).json({
-						success: true,
-						data: rows
-					});
-				})
-				.catch(function(error) {
-					next(error);
+			new Article({
+				id: req.params.article_id
+			})
+			.fetch({
+				require: true
+			})
+			.then(function(article) {
+				res.status(200).json({
+					success: true,
+					data: article
 				});
+			})
+			.catch(function(error) {
+				next(error);
+			});
 		},
 
 		list : function (req, res, next) {
-			knex.select('*')
-				.from('articles')
-				.limit(req.body.limit || 10)
-				.then(function(rows) {
-					res.status(200).json({
-						success: true,
-						data: rows
-					});
-				})
-				.catch(function(error) {
-					next(error);
+			new Articles()
+			.fetch()
+			.then(function(articles) {
+				res.status(200).json({
+					success: true,
+					data: articles
 				});
+			})
+			.catch(function(error) {
+				next(error);
+			});
 		},
 
 		update : function (req, res, next) {
-			knex('articles')
-				.where({ id: req.params.article_id })
-				.update({
-					user_id: req.body.user_id,
-					title: req.body.title,
-					body: req.body.body,
-					category: req.body.category,
-					updated_at: knex.raw('NOW()')
-				})
-				.then(function(id) {
-					res.status(200).json({
-						success: true,
-						data: id
-					});
-				})
-				.catch(function(error) {
-					next(error);
+			new Article({
+				id: req.params.article_id
+			})
+			.save({
+				user_id: req.body.user_id,
+				title: req.body.title,
+				body: req.body.body,
+				category: req.body.category
+			}, {
+				patch: true
+			})
+			.then(function(article) {
+				res.status(200).json({
+					success: true,
+					data: article
 				});
+			})
+			.catch(function(error) {
+				next(error);
+			});
 		},
 
 		remove : function (req, res, next) {
-			knex('articles')
-				.where({ id: req.params.article_id })
-				.update({ active: 'N' })
-				.then(function(rows) {
-					res.status(200).json({
-						success: true,
-						data: rows
-					});
-				})
-				.catch(function(error) {
-					next(error);
+			new Article({
+				id: req.params.article_id
+			})
+			.save({
+				active: 'N'
+			}, {
+				patch: true
+			})
+			.then(function(article) {
+				res.status(200).json({
+					success: true,
+					data: article
 				});
+			})
+			.catch(function(error) {
+				next(error);
+			});
 		}
 	};
 };

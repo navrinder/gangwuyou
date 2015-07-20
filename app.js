@@ -23,7 +23,7 @@ var port = process.env.PORT || 8080;
 
 // store knex connection in app object so it can be
 // accessed in the models
-app.set('bookshelf', bookshelf);
+app.set('Bookshelf', bookshelf);
 app.set('config', config);
 
 var middleware = require('./middleware')(app);
