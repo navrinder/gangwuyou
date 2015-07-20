@@ -68,7 +68,8 @@ app.use(function (err, req, res, next) {
 	console.error(err.stack);
 	var response = {
 		success: false,
-		message: err.message || 'Error'
+		code: err.code,
+		//message: err.message || 'Error' // is this secure?
 	};
 
 	res.status(err.status || 400).json(response);
