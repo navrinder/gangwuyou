@@ -1,11 +1,27 @@
 // user account information is stored here.
 // passwords are hashed using bcrypt in order to
 // securely store them in the database
-
+var Promise = require('bluebird');
+//var bcrypt = Promise.promisfyAll(require('bcryptjs'));
 var bcrypt = require('bcryptjs');
+var jwt = require('jwt-simple');
+
 
 module.exports = function (app) {
-	var knex = app.get('knex');
+	var Bookshelf = app.get('Bookshelf');
+	var secret = app.get('config').secret;
+
+
+	// model
+	var User = Bookshelf.Model.extend({
+		tableName: 'users',
+		hasTimestamps: true
+	});
+
+	// collection
+	var Users = Bookshelf.Collection.extend({
+		model: User
+	});
 
 	return {
 
@@ -14,93 +30,133 @@ module.exports = function (app) {
 			var hash = bcrypt.hashSync(req.body.password, salt);
 			var type = req.body.type === 'doctor' ? 'doctor' : 'user';
 
-			knex('users')
-				.insert({
-					user_name: req.body.user_name,
-					email_address: req.body.email_address,
-					password: hash,
-					created_at: knex.raw('NOW()'),
-					type: type,
-					verified: type === 'user' ? 'Y' : 'N',
-					active: 'Y'
-				})
-				.then(function(id) {
-					res.status(200).json({
-						success: true,
-						data: id
-					});
-				})
-				.catch(function(error) {
-					next(error);
+			new User({
+				user_name: req.body.user_name,
+				email_address: req.body.email_address,
+				password: hash,
+				type: type,
+				verified: type === 'user' ? 'Y' : 'N',
+				active: 'Y'
+			})
+			.save()
+			.then(function(user) {
+				res.status(200).json({
+					success: true,
+					data: user
 				});
+			})
+			.catch(function(error) {
+				next(error);
+			});
 		},
 
 		list : function (req, res, next) {
-			knex.select('*')
-				.from('users')
-				.limit(req.body.limit || 10)
-				.then(function(rows) {
-					res.status(200).json({
-						success: true,
-						data: rows
-					});
-				})
-				.catch(function(error) {
-					next(error);
+			new Users()
+			.fetch()
+			.then(function(users) {
+				res.status(200).json({
+					success: true,
+					data: users
 				});
+			})
+			.catch(function(error) {
+				next(error);
+			});
 		},
 
 		show : function (req, res, next) {
-			knex.select('*')
-				.from('users')
-				.where({ id: req.params.user_id })
-				.then(function(rows) {
-					res.status(200).json({
-						success: true,
-						data: rows
-					});
-				})
-				.catch(function(error) {
-					next(error);
+			new User({
+				id: req.params.user_id
+			})
+			.fetch({
+				require: true
+			})
+			.then(function(user) {
+				res.status(200).json({
+					success: true,
+					data: user
 				});
+			})
+			.catch(function(error) {
+				next(error);
+			});
 		},
 
 		updateUser : function (req, res, next) {
 			var salt = bcrypt.genSaltSync(10);
 			var hash = bcrypt.hashSync(req.body.password, salt);
 
-			knex('users')
-				.where({ id: req.params.user_id })
-				.update({
-					user_name: req.body.user_name,
-					email_address: req.body.email_address,
-					password: hash,
-					updated_at: knex.raw('NOW()')
-				})
-				.then(function(rows) {
-					res.status(200).json({
-						success: true,
-						data: rows
-					});
-				})
-				.catch(function(error) {
-					next(error);
+			new User({
+				id: req.params.user_id
+			})
+			.save({
+				user_name: req.body.user_name,
+				email_address: req.body.email_address,
+				password: hash
+			}, {
+				patch: true
+			})
+			.then(function(user) {
+				res.status(200).json({
+					success: true,
+					data: user
 				});
+			})
+			.catch(function(error) {
+				next(error);
+			});
 		},
 
 		remove : function (req, res, next) {
-			knex('users')
-				.where({ id: req.params.user_id })
-				.update({ active: 'N'	})
-				.then(function(rows) {
+			new User({
+				id: req.params.article_id
+			})
+			.save({
+				active: 'N'
+			}, {
+				patch: true
+			})
+			.then(function(user) {
+				res.status(200).json({
+					success: true,
+					data: user
+				});
+			})
+			.catch(function(error) {
+				next(error);
+			});
+		},
+
+		login : function (req, res, next) {
+			new User({
+				email_address: req.body.email_address
+			})
+			.fetch({
+				require: true
+			})
+			.then(function(user) {
+				if (bcrypt.compareSync(req.body.password, rows[0].password)) {
+					var payload = {
+						iat: Date.now(),
+						scopes: [rows[0].type],
+						verified: rows[0].verified === 'Y' ? true : false
+					};
+
+					var token = jwt.encode(payload, secret);
 					res.status(200).json({
 						success: true,
-						data: rows
+						token: token
 					});
-				})
-				.catch(function(error) {
-					next(error);
-				});
+				} else {
+					next({
+						status: 401,
+						message: 'Unauthorized.'
+					});
+				}
+			})
+			.catch(function(error) {
+				next(error);
+			});
 		}
 	};
 };
