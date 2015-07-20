@@ -113,6 +113,19 @@ module.exports = {
 			type: 'string',
 			maxlength: 1,
 			nullable: true
+		},
+		question_12: {
+			type: 'string',
+			maxlength: 1,
+			nullable: true
+		},
+		created_at: {
+			type: 'dateTime',
+			nullable: false
+		},
+		updated_at: {
+			type: 'dateTime',
+			nullable: true
 		}
 	},
 
