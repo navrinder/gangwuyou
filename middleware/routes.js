@@ -25,42 +25,42 @@ function v1 (router, models, authUser) {
 	// answer
 	router.route('/users/:user_id/answers')
 		// show answers
-		.get(authUser(['user', 'admin']), models.answers.show)
+		.get(authUser(['currentUser', 'doctor', 'admin']), models.answers.show)
 		// add answer to user
-		.post(authUser(['user', 'admin']), models.answers.updateAnswers);
+		.post(authUser(['currentUser', 'admin']), models.answers.updateAnswers);
 
 	// articles
 	router.route('/articles')
 		// list articles
-		.get(models.articles.list)
+		.get(authUser(['user', 'doctor', 'admin']), models.articles.list)
 		// create article
-		.post(authUser(['admin']), models.articles.create);
+		.post(authUser(['doctor', 'admin']), models.articles.create);
 
 	// article
 	router.route('/articles/:article_id')
 		// show article
-		.get(models.articles.show)
+		.get(authUser(['user', 'doctor', 'admin']), models.articles.show)
 		// update article
-		.put(authUser(['admin']), models.articles.update)
+		.put(authUser(['doctor', 'admin']), models.articles.update)
 		// remove article
-		.delete(authUser(['admin']), models.articles.remove);
+		.delete(authUser(['doctor', 'admin']), models.articles.remove);
 
 	// comments
 	router.route('/articles/:article_id/comments')
 		// show all comments for article
-		.get(models.comments.showArticleComments)
+		.get(authUser(['user', 'doctor', 'admin']), models.comments.showArticleComments)
 		// add comment
-		.post(authUser(['user', 'admin']), models.comments.create);
+		.post(authUser(['user', 'doctor', 'admin']), models.comments.create);
 
 	router.route('/articles/:article_id/comments/:comment_id')
 		// show comment
-		.get(models.comments.showComment)
+		.get(authUser(['user', 'doctor', 'admin']), models.comments.showComment)
 		// update comment
-		.put(authUser(['user', 'admin']), models.comments.update);
+		.put(authUser(['currentUser', 'admin']), models.comments.update);
 
 	router.route('/users/:user_id/comments')
 		// show all comments for user
-		.get(authUser(['user', 'admin']), models.comments.showUserComments);
+		.get(authUser(['currentUser', 'admin']), models.comments.showUserComments);
 
 	// static info
 	router.route('/information')
@@ -76,12 +76,12 @@ function v1 (router, models, authUser) {
 	// questions
 	router.route('/questions')
 		// list questions
-		.get(models.questions.list)
+		.get(authUser(['user', 'doctor', 'admin']), models.questions.list)
 
 	// question
 	router.route('/questions/:question_id')
 		// show question
-		.get(models.questions.show)
+		.get(authUser(['user', 'doctor', 'admin']), models.questions.show)
 
 	// users
 	router.route('/users')
@@ -93,9 +93,9 @@ function v1 (router, models, authUser) {
 	// user
 	router.route('/users/:user_id')
 		// show user
-		.get(authUser(['user', 'admin']), models.users.show)
+		.get(authUser(['currentUser', 'admin']), models.users.show)
 		// update user info
-		.put(authUser(['user', 'admin']), models.users.updateUser)
+		.put(authUser(['currentUser', 'admin']), models.users.updateUser)
 		// remove user
 		.delete(authUser(['admin']), models.users.remove);
 

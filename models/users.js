@@ -138,6 +138,7 @@ module.exports = function (app) {
 				if (bcrypt.compareSync(req.body.password, user.attributes.password)) {
 					var payload = {
 						iat: Date.now(),
+						id: user.attributes.id,
 						scopes: [user.attributes.type],
 						verified: user.attributes.verified === 'Y' ? true : false
 					};
