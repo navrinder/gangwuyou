@@ -10,18 +10,8 @@ var jwt = require('jwt-simple');
 module.exports = function (app) {
 	var Bookshelf = app.get('Bookshelf');
 	var secret = app.get('config').secret;
-
-
-	// model
-	var User = Bookshelf.Model.extend({
-		tableName: 'users',
-		hasTimestamps: true
-	});
-
-	// collection
-	var Users = Bookshelf.Collection.extend({
-		model: User
-	});
+	var User = require('../lib/models')(app).User;
+	var Users = require('../lib/collections')(app).Users;
 
 	return {
 
