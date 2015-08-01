@@ -2,20 +2,8 @@
 
 module.exports = function(app) {
 	var Bookshelf = app.get('Bookshelf');
-
-	// model
-	var Clinic = Bookshelf.Model.extend({
-		tableName: 'clinics',
-		hasTimestamps: true
-	});
-
-	// collection
-	var Clinics = Bookshelf.Collection.extend({
-		model: Clinic
-	});
-
-	// TODO relations
-
+	var Clinic = require('../lib/models')(app).Clinic;
+	var Clinics = require('../lib/collections')(app).Clinics;
 
 	return {
 

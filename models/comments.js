@@ -2,17 +2,8 @@
 
 module.exports = function(app) {
 	var Bookshelf = app.get('Bookshelf');
-
-	// model
-	var Comment = Bookshelf.Model.extend({
-		tableName: 'comments',
-		hasTimestamps: true
-	});
-
-	// collection
-	var Comments = Bookshelf.Collection.extend({
-		model: Comment
-	});
+	var Comment = require('../lib/models')(app).Comment;
+	var Comments = require('../lib/collections')(app).Comments;
 
 	return {
 

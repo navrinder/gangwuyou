@@ -14,7 +14,12 @@ module.exports = function (app) {
 			var userId = req.params.user_id || req.body.user_id || req.query.user_id;
 
 			if (token) {
-				decoded = jwt.decode(token, secret);
+				try {
+					decoded = jwt.decode(token, secret);
+				} catch (e) {
+					e.status = 401;
+					return next(e);
+				}
 			}
 
 			if (decoded && decoded.scopes && decoded.scopes.length) {

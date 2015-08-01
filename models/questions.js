@@ -2,17 +2,8 @@
 
 module.exports = function(app) {
 	var Bookshelf = app.get('Bookshelf');
-
-	// model
-	var Question = Bookshelf.Model.extend({
-		tableName: 'questions',
-		hasTimestamps: true
-	});
-
-	// collection
-	var Questions = Bookshelf.Collection.extend({
-		model: Questions
-	});
+	var Question = require('../lib/models')(app).Question;
+	var Questions = require('../lib/collections')(app).Questions;
 
 	return {
 

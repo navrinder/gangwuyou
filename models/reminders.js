@@ -2,20 +2,8 @@
 
 module.exports = function(app) {
 	var Bookshelf = app.get('Bookshelf');
-
-	// model
-	var Reminder = Bookshelf.Model.extend({
-		tableName: 'reminders',
-		hasTimestamps: true
-	});
-
-	// collection
-	var Reminders = Bookshelf.Collection.extend({
-		model: Reminder
-	});
-
-	// TODO relations
-
+	var Reminder = require('../lib/models')(app).Reminder;
+	var Reminders = require('../lib/collections')(app).Reminders;
 
 	return {
 
