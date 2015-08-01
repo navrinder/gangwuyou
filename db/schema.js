@@ -257,5 +257,191 @@ module.exports = {
 		body: {
 			type: 'text'
 		}
+	},
+
+	announcements: {
+		id: {
+			type: 'increments',
+			nullable: false,
+			primary: true
+		},
+		user_id: {
+			type: 'integer',
+			nullable: false,
+			unsigned: true,
+			references: 'users.id'
+		},
+		title: {
+			type: 'string',
+			maxlength: 255,
+			nullable: false
+		},
+		body: {
+			type: 'text',
+			maxlength: 2000,
+			nullable: false
+		},
+		active: {
+			type: 'string',
+			maxlength: 1,
+			nullable: false
+		},
+		created_at: {
+			type: 'dateTime',
+			nullable: false
+		},
+		updated_at: {
+			type: 'dateTime',
+			nullable: true
+		}
+	},
+
+	clinics: {
+		id: {
+			type: 'increments',
+			nullable: false,
+			primary: true
+		},
+		name: {
+			type: 'string',
+			maxlength: 255,
+			nullable: false
+		},
+		location: {
+			type: 'string',
+			maxlength: 255,
+			nullable: false
+		},
+		hours: {
+			type: 'string',
+			maxlength: 255,
+			nullable: false
+		},
+		active: {
+			type: 'string',
+			maxlength: 1,
+			nullable: false
+		},
+		created_at: {
+			type: 'dateTime',
+			nullable: false
+		},
+		updated_at: {
+			type: 'dateTime',
+			nullable: true
+		}
+	},
+
+	reminders: {
+		id: {
+			type: 'increments',
+			nullable: false,
+			primary: true
+		},
+		user_id: {
+			type: 'integer',
+			nullable: false,
+			unsigned: true,
+			references: 'users.id'
+		},
+		time: {
+			type: 'datetime',
+			nullable: false
+		},
+		active: {
+			type: 'string',
+			maxlength: 1,
+			nullable: false
+		},
+		created_at: {
+			type: 'dateTime',
+			nullable: false
+		},
+		updated_at: {
+			type: 'dateTime',
+			nullable: true
+		}
+	},
+
+	topics: {
+		id: {
+			type: 'increments',
+			nullable: false,
+			primary: true
+		},
+		user_id: {
+			type: 'integer',
+			nullable: false,
+			unsigned: true,
+			references: 'users.id'
+		},
+		title: {
+			type: 'string',
+			maxlength: 150,
+			nullable: false
+		},
+		body: {
+			type: 'text',
+			nullable: false
+		},
+		category: {
+			type: 'string',
+			nullable: false
+		},
+		active: {
+			type: 'string',
+			maxlength: 1,
+			nullable: false
+		},
+		created_at: {
+			type: 'dateTime',
+			nullable: false
+		},
+		updated_at: {
+			type: 'dateTime',
+			nullable: true
+		}
+	},
+
+	replies: {
+		id: {
+			type: 'increments',
+			nullable: false,
+			primary: true
+		},
+		topic_id: {
+			type: 'integer',
+			nullable: false,
+			unsigned: true,
+			references: 'topics.id'
+		},
+		user_id: {
+			type: 'integer',
+			nullable: false,
+			unsigned: true,
+			references: 'users.id'
+		},
+		title: {
+			type: 'string',
+			maxlength: 150,
+			nullable: false
+		},
+		body: {
+			type: 'text',
+			nullable: false
+		},
+		active: {
+			type: 'string',
+			maxlength: 1,
+			nullable: false
+		},
+		created_at: {
+			type: 'dateTime',
+			nullable: false
+		},
+		updated_at: {
+			type: 'dateTime',
+			nullable: true
+		}
 	}
 };

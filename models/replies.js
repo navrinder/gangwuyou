@@ -1,34 +1,34 @@
-// comments for articles
+// replies to user topics
 
 module.exports = function(app) {
 	var Bookshelf = app.get('Bookshelf');
 
 	// model
-	var Comment = Bookshelf.Model.extend({
-		tableName: 'comments',
+	var Reply = Bookshelf.Model.extend({
+		tableName: 'replies',
 		hasTimestamps: true
 	});
 
 	// collection
-	var Comments = Bookshelf.Collection.extend({
-		model: Comment
+	var Replies = Bookshelf.Collection.extend({
+		model: Reply
 	});
 
 	return {
 
 		create : function (req, res, next) {
-			new Comment({
-				article_id: req.params.article_id,
+			new Reply({
+				topic_id: req.params.topic_id,
 				user_id	: req.body.user_id,
 				title: req.body.title,
 				body: req.body.body,
 				active: 'Y'
 			})
 			.save()
-			.then(function(comment) {
+			.then(function(reply) {
 				res.status(200).json({
 					success: true,
-					data: comment
+					data: reply
 				});
 			})
 			.catch(function(error) {
@@ -36,17 +36,17 @@ module.exports = function(app) {
 			});
 		},
 
-		showComment : function (req, res, next) {
-			new Comment({
-				id: req.params.comment_id
+		showReply : function (req, res, next) {
+			new Reply({
+				id: req.params.reply_id
 			})
 			.fetch({
 				require: true
 			})
-			.then(function(comment) {
+			.then(function(reply) {
 				res.status(200).json({
 					success: true,
-					data: comment
+					data: reply
 				});
 			})
 			.catch(function(error) {
@@ -54,17 +54,17 @@ module.exports = function(app) {
 			});
 		},
 
-		showUserComments : function (req, res, next) {
-			new Comments({
+		showUserReplies : function (req, res, next) {
+			new Replies({
 				user_id: req.params.user_id
 			})
 			.fetch({
 				require: true
 			})
-			.then(function(comments) {
+			.then(function(replies) {
 				res.status(200).json({
 					success: true,
-					data: comments
+					data: replies
 				});
 			})
 			.catch(function(error) {
@@ -72,17 +72,17 @@ module.exports = function(app) {
 			});
 		},
 
-		showArticleComments : function (req, res, next) {
-			new Comments({
-				article_id: req.params.article_id
+		showTopicReplies : function (req, res, next) {
+			new Replies({
+				topic_id: req.params.topic_id
 			})
 			.fetch({
 				require: true
 			})
-			.then(function(comments) {
+			.then(function(replies) {
 				res.status(200).json({
 					success: true,
-					data: comments
+					data: replies
 				});
 			})
 			.catch(function(error) {
@@ -91,21 +91,21 @@ module.exports = function(app) {
 		},
 
 		update : function (req, res, next) {
-			new Comment({
-				id: req.params.comment_id
+			new Reply({
+				id: req.params.reply_id
 			})
 			.save({
-				article_id: req.params.article_id,
+				topic_id: req.params.topic_id,
 				user_id: req.body.user_id,
 				title: req.body.title,
 				body: req.body.body,
 			}, {
 				patch: true
 			})
-			.then(function(comment) {
+			.then(function(reply) {
 				res.status(200).json({
 					success: true,
-					data: comment
+					data: reply
 				});
 			})
 			.catch(function(error) {
@@ -114,18 +114,18 @@ module.exports = function(app) {
 		},
 
 		remove : function (req, res, next) {
-			new Comment({
-				id: req.params.comment_id
+			new Reply({
+				id: req.params.reply_id
 			})
 			.save({
 				active: 'N'
 			}, {
 				patch: true
 			})
-			.then(function(comment) {
+			.then(function(reply) {
 				res.status(200).json({
 					success: true,
-					data: comment
+					data: reply
 				});
 			})
 			.catch(function(error) {

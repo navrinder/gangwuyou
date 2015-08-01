@@ -5,7 +5,7 @@ module.exports = function(app) {
 
 	// model
 	var Question = Bookshelf.Model.extend({
-		tableName: 'users',
+		tableName: 'questions',
 		hasTimestamps: true
 	});
 
