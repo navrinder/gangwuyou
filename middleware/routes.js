@@ -1,9 +1,6 @@
 var express = require('express');
 
 module.exports = function (app) {
-	// auth middleware is used to verify the caller's permission
-	// in addition to the API token. Include the scope string
-	// as the argument to check.
 	var authUser = require('./authUser')(app);
 	var models = require('../models')(app);
 	var router = express.Router();
@@ -22,12 +19,29 @@ function v1 (router, models, authUser) {
 		.post(authUser(['admin']), models.admin.verifyAccount);
 
 
-	// answer
+	// announcements
+	router.route('/announcements')
+		// list announcements
+		.get(authUser(['user', 'doctor', 'admin']), models.announcements.list)
+		// create announcement
+		.post(authUser(['doctor', 'admin']), models.announcements.create);
+
+	router.route('/announcements/:announcement_id')
+		// show announcement
+		.get(authUser(['user', 'doctor', 'admin']), models.announcements.show)
+		// update announcement
+		.put(authUser(['currentUser', 'admin']), models.announcements.update)
+		// remove announcement
+		.delete(authUser(['doctor', 'admin']), models.announcements.remove);
+
+
+	// answers
 	router.route('/users/:user_id/answers')
 		// show answers
 		.get(authUser(['currentUser', 'doctor', 'admin']), models.answers.show)
 		// add answer to user
 		.post(authUser(['currentUser', 'admin']), models.answers.updateAnswers);
+
 
 	// articles
 	router.route('/articles')
@@ -36,14 +50,30 @@ function v1 (router, models, authUser) {
 		// create article
 		.post(authUser(['doctor', 'admin']), models.articles.create);
 
-	// article
 	router.route('/articles/:article_id')
 		// show article
 		.get(authUser(['user', 'doctor', 'admin']), models.articles.show)
 		// update article
-		.put(authUser(['doctor', 'admin']), models.articles.update)
+		.put(authUser(['currentUser', 'admin']), models.articles.update)
 		// remove article
-		.delete(authUser(['doctor', 'admin']), models.articles.remove);
+		.delete(authUser(['currentUser', 'admin']), models.articles.remove);
+
+
+	// clinics
+	router.route('/clinics')
+		// list clinics
+		.get(authUser(['user', 'doctor', 'admin']), models.clinics.list)
+		// create clinic
+		.post(authUser(['admin']), models.clinics.create);
+
+	router.route('/clinics/:clinic_id')
+		// show clinic
+		.get(authUser(['user', 'doctor', 'admin']), models.clinics.show)
+		// update clinic
+		.put(authUser(['admin']), models.clinics.update)
+		// remove clinic
+		.delete(authUser(['admin']), models.clinics.remove);
+
 
 	// comments
 	router.route('/articles/:article_id/comments')
@@ -62,6 +92,7 @@ function v1 (router, models, authUser) {
 		// show all comments for user
 		.get(authUser(['currentUser', 'admin']), models.comments.showUserComments);
 
+
 	// static info
 	router.route('/information')
 		// TODO
@@ -69,19 +100,75 @@ function v1 (router, models, authUser) {
 			res.status(200).json([]);
 		});
 
+
 	// login
 	router.route('/login')
 		.post(models.users.login);
 
+
 	// questions
 	router.route('/questions')
 		// list questions
-		.get(authUser(['user', 'doctor', 'admin']), models.questions.list)
+		.get(authUser(['user', 'doctor', 'admin']), models.questions.list);
 
-	// question
 	router.route('/questions/:question_id')
 		// show question
-		.get(authUser(['user', 'doctor', 'admin']), models.questions.show)
+		.get(authUser(['user', 'doctor', 'admin']), models.questions.show);
+
+
+	// reminders
+	router.route('/users/:user_id/reminders')
+		// list reminders
+		.get(authUser(['currentUser', 'admin']), models.reminders.list)
+		// create reminder
+		.post(authUser(['user', 'doctor', 'admin']), models.reminders.create);
+
+	router.route('/users/:user_id/reminders/:reminder_id')
+		// show reminder
+		.get(authUser(['currentUser', 'admin']), models.reminders.show)
+		// update reminder
+		.put(authUser(['currentUser', 'admin']), models.reminders.update)
+		// remove reminder
+		.delete(authUser(['currentUser', 'admin']), models.reminders.remove);
+
+
+	// replies
+	router.route('/topics/:topic_id/replies')
+		// show all replies for article
+		.get(authUser(['user', 'doctor', 'admin']), models.replies.showTopicReplies)
+		// add reply
+		.post(authUser(['user', 'doctor', 'admin']), models.replies.create);
+
+	router.route('/topics/:topic_id/replies/:reply_id')
+		// show reply
+		.get(authUser(['user', 'doctor', 'admin']), models.replies.showReply)
+		// update reply
+		.put(authUser(['currentUser', 'admin']), models.replies.update);
+
+	router.route('/users/:user_id/replies')
+		// show all replies for user
+		.get(authUser(['currentUser', 'admin']), models.replies.showUserReplies);
+
+
+	// topics
+	router.route('/topics')
+		// list topics
+		.get(authUser(['user', 'doctor', 'admin']), models.topics.list)
+		// create topic
+		.post(authUser(['user', 'doctor', 'admin']), models.topics.create);
+
+	router.route('/topics/:topic_id')
+		// show topic
+		.get(authUser(['user', 'doctor', 'admin']), models.topics.show)
+		// update topic
+		.put(authUser(['currentUser', 'admin']), models.topics.update)
+		// remove topic
+		.delete(authUser(['currentUser', 'admin']), models.topics.remove);
+
+	router.route('/users/:user_id/topics')
+		// show all topics for user
+		.get(authUser(['currentUser', 'admin']), models.topics.showUserTopics);
+
 
 	// users
 	router.route('/users')
@@ -90,7 +177,6 @@ function v1 (router, models, authUser) {
 		// list users
 		.get(authUser(['admin']), models.users.list);
 
-	// user
 	router.route('/users/:user_id')
 		// show user
 		.get(authUser(['currentUser', 'admin']), models.users.show)

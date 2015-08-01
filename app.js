@@ -13,6 +13,11 @@ process.env.NODE_ENV = app.get('env');
 var config = require('./config')[app.get('env')];
 app.set('config', config);
 
+
+// KnexJS and BookshelfJS are used to access
+// the MySQL database. These modules use promises
+// instead of callbacks.
+
 // http://knexjs.org/
 // SQL query builder
 var knex = require('knex')({
