@@ -11,7 +11,7 @@ module.exports = function (app) {
 			var token = authorization.trim();
 			var decoded;
 			var authorized = false;
-			var userId = req.params.user_id || req.body.user_id || req.query.user_id;
+			var userId = req.params.user_id || req.body.user_id; // || req.query.user_id;
 
 			if (token) {
 				try {
@@ -23,12 +23,14 @@ module.exports = function (app) {
 			}
 
 			if (decoded && decoded.scopes && decoded.scopes.length) {
+				//res.locals.authToken = decoded;
 
 				for (var i = 0, l = decoded.scopes.length; i < l; i++) {
 					for (var j = 0, m = scopes.length; j < m; j++) {
 						// if scope is currentUser, check for user_id in the
-						// route, body, or query string and compare
+						// route or body and compare
 						if (!authorized && scopes[j] === 'currentUser') {
+							//res.locals.currentUser = true;
 							if (decoded.id && userId && decoded.id == userId) {
 								authorized = true;
 							}

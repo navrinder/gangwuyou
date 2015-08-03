@@ -8,9 +8,10 @@ You can connect to the API on the Aliyun server by visiting:
 
 	120.26.113.30:8080
 
-The server is currently running in `development` mode. To log in as an admin, use these crendtials:
+The server is currently running in `development` mode. To log in as an `admin`, use these crendtials:
 
-
+	email_address: test@test.com
+	password: test
 
 
 ###Running locally

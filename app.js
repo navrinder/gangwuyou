@@ -39,6 +39,11 @@ var middleware = require('./middleware')(app);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+// basic logging
+app.use(function (req, res, next) {
+	console.log(req.method, req.url, req.body);
+	next();
+});
 
 // test route
 app.get('/', function(req, res) {
@@ -65,7 +70,6 @@ app.use(function (err, req, res, next) {
 
 	if (app.get('env') === 'development') {
 		response.message = err.message;
-		console.log(req.method, req.url, req.body);
 	}
 
 	console.error(err.stack);

@@ -32,7 +32,7 @@ function v1 (router, models, authUser) {
 		// update announcement
 		.put(authUser(['currentUser', 'admin']), models.announcements.update)
 		// remove announcement
-		.delete(authUser(['doctor', 'admin']), models.announcements.remove);
+		.delete(authUser(['currentUser', 'admin']), models.announcements.remove);
 
 
 	// answers
@@ -86,7 +86,7 @@ function v1 (router, models, authUser) {
 		// show comment
 		.get(authUser(['user', 'doctor', 'admin']), models.comments.showComment)
 		// update comment
-		.put(authUser(['currentUser', 'admin']), models.comments.update);
+		.put(authUser(['currentUser', 'admin']), models.comments.update)
 		// remove comment
 		.delete(authUser(['currentUser', 'admin']), models.comments.remove);
 
@@ -97,7 +97,7 @@ function v1 (router, models, authUser) {
 
 	router.route('/users/:user_id/comments/:comment_id')
 		// update comment
-		.put(authUser(['currentUser', 'admin']), models.comments.update);
+		.put(authUser(['currentUser', 'admin']), models.comments.update)
 		// remove comment
 		.delete(authUser(['currentUser', 'admin']), models.comments.remove);
 
@@ -158,7 +158,7 @@ function v1 (router, models, authUser) {
 		// show reply
 		.get(authUser(['user', 'doctor', 'admin']), models.replies.showReply)
 		// update reply
-		.put(authUser(['currentUser', 'admin']), models.replies.update);
+		.put(authUser(['currentUser', 'admin']), models.replies.update)
 		// remove reply
 		.delete(authUser(['currentUser', 'admin']), models.replies.remove);
 
@@ -168,7 +168,7 @@ function v1 (router, models, authUser) {
 
 	router.route('/users/:user_id/replies/:reply_id')
 		// update reply
-		.put(authUser(['currentUser', 'admin']), models.replies.update);
+		.put(authUser(['currentUser', 'admin']), models.replies.update)
 		// remove reply
 		.delete(authUser(['currentUser', 'admin']), models.replies.remove);
 
