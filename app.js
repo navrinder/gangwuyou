@@ -72,7 +72,7 @@ app.use(function (err, req, res, next) {
 		response.message = err.message;
 	}
 
-	console.error(err.stack);
+	console.error(err.message, err.stack);
 
 	res.status(err.status || 400).json(response);
 });
