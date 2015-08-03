@@ -3,7 +3,7 @@
 module.exports = function(app) {
 	var Bookshelf = app.get('Bookshelf');
 	var Article = require('../lib/models')(app).Article;
-	var Article = require('../lib/collections')(app).Articles;
+	var Articles = require('../lib/collections')(app).Articles;
 
 	return {
 
