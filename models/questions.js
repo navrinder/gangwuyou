@@ -42,7 +42,10 @@ module.exports = function(app) {
 		create : function (req, res, next) {
 			new Question({
 				question: req.body.question,
-				answers: req.body.answers
+				answer_a: req.body.answer_a,
+				answer_b: req.body.answer_b,
+				answer_c: req.body.answer_c,
+				answer_d: req.body.answer_d
 			})
 			.save()
 			.then(function(question) {
@@ -62,7 +65,10 @@ module.exports = function(app) {
 			})
 			.save({
 				question: req.body.question,
-				answers: req.body.answers
+				answer_a: req.body.answer_a,
+				answer_b: req.body.answer_b,
+				answer_c: req.body.answer_c,
+				answer_d: req.body.answer_d
 			}, {
 				patch: true
 			})

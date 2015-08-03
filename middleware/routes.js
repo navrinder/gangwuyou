@@ -87,17 +87,26 @@ function v1 (router, models, authUser) {
 		.get(authUser(['user', 'doctor', 'admin']), models.comments.showComment)
 		// update comment
 		.put(authUser(['currentUser', 'admin']), models.comments.update);
+		// remove comment
+		.delete(authUser(['currentUser', 'admin']), models.comments.remove);
+
 
 	router.route('/users/:user_id/comments')
 		// show all comments for user
 		.get(authUser(['currentUser', 'admin']), models.comments.showUserComments);
+
+	router.route('/users/:user_id/comments/:comment_id')
+		// update comment
+		.put(authUser(['currentUser', 'admin']), models.comments.update);
+		// remove comment
+		.delete(authUser(['currentUser', 'admin']), models.comments.remove);
 
 
 	// static info
 	router.route('/information')
 		// TODO
 		.get(function(req, res) {
-			res.status(200).json([]);
+			res.status(500).end();
 		});
 
 
@@ -109,11 +118,17 @@ function v1 (router, models, authUser) {
 	// questions
 	router.route('/questions')
 		// list questions
-		.get(authUser(['user', 'doctor', 'admin']), models.questions.list);
+		.get(authUser(['user', 'doctor', 'admin']), models.questions.list)
+		// create question
+		.post(authUser(['admin']), models.questions.create);
 
 	router.route('/questions/:question_id')
 		// show question
-		.get(authUser(['user', 'doctor', 'admin']), models.questions.show);
+		.get(authUser(['user', 'doctor', 'admin']), models.questions.show)
+		// update question
+		.put(authUser(['admin']), models.questions.update)
+		// remove question
+		.delete(authUser(['admin']), models.questions.remove);
 
 
 	// reminders
@@ -144,10 +159,18 @@ function v1 (router, models, authUser) {
 		.get(authUser(['user', 'doctor', 'admin']), models.replies.showReply)
 		// update reply
 		.put(authUser(['currentUser', 'admin']), models.replies.update);
+		// remove reply
+		.delete(authUser(['currentUser', 'admin']), models.replies.remove);
 
 	router.route('/users/:user_id/replies')
 		// show all replies for user
 		.get(authUser(['currentUser', 'admin']), models.replies.showUserReplies);
+
+	router.route('/users/:user_id/replies/:reply_id')
+		// update reply
+		.put(authUser(['currentUser', 'admin']), models.replies.update);
+		// remove reply
+		.delete(authUser(['currentUser', 'admin']), models.replies.remove);
 
 
 	// topics
