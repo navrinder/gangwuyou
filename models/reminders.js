@@ -9,7 +9,7 @@ module.exports = function(app) {
 
 		create : function (req, res, next) {
 			new Reminder({
-				user_id: req.body.user_id,
+				user_id: req.params.user_id,
 				time: req.body.time,
 				active: 'Y'
 			})
