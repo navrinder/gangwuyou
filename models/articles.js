@@ -60,26 +60,39 @@ module.exports = function(app) {
 		},
 
 		update : function (req, res, next) {
-			new Article({
-				id: req.params.article_id
-			})
-			.save({
-				user_id: req.body.user_id,
-				title: req.body.title,
-				body: req.body.body,
-				category: req.body.category
-			}, {
-				patch: true
-			})
-			.then(function(article) {
-				res.status(200).json({
-					success: true,
-					data: article
+			Article.authenticate(
+				req.params.article_id,
+				res.locals.currentUser.token,
+				res.locals.currentUser.needsAuth)
+			.then(function(authed) {
+
+				new Article({
+					id: req.params.article_id
+				})
+				.save({
+					user_id: req.body.user_id,
+					title: req.body.title,
+					body: req.body.body,
+					category: req.body.category
+				}, {
+					patch: true
+				})
+				.then(function(article) {
+					res.status(200).json({
+						success: true,
+						data: article
+					});
+				})
+				.catch(function(error) {
+					next(error);
 				});
+
 			})
 			.catch(function(error) {
 				next(error);
 			});
+
+
 		},
 
 		remove : function (req, res, next) {

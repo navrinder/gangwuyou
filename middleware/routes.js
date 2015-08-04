@@ -13,12 +13,6 @@ module.exports = function (app) {
 
 function v1 (router, models, authUser) {
 
-	// admin
-	router.route('/verify/:user_id')
-		// verify account
-		.post(authUser(['admin']), models.admin.verifyAccount);
-
-
 	// announcements
 	router.route('/announcements')
 		// list announcements
