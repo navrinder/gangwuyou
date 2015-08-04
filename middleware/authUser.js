@@ -5,14 +5,20 @@ var jwt = require('jwt-simple');
 module.exports = function (app) {
 	var secret = app.get('config').secret;
 
-	return function (scopes) {
+	return function (routeScopes) {
 		return function (req, res, next) {
 			var authorization = req.headers.authorization || '';
 			var token = authorization.trim();
 			var decoded;
 			var authorized = false;
-			var userId = req.params.user_id || req.body.user_id; // || req.query.user_id;
 
+			// this stores the user's info in the res object to be verified later
+			res.locals.currentUser = {
+				token: null,
+				needsAuth: false
+			};
+
+			// decode JSON web token
 			if (token) {
 				try {
 					decoded = jwt.decode(token, secret);
@@ -22,26 +28,28 @@ module.exports = function (app) {
 				}
 			}
 
+			// compare scopes in token with scopes in middleware to find match
 			if (decoded && decoded.scopes && decoded.scopes.length) {
-				//res.locals.authToken = decoded;
+				res.locals.currentUser.token = decoded;
 
 				for (var i = 0, l = decoded.scopes.length; i < l; i++) {
-					for (var j = 0, m = scopes.length; j < m; j++) {
-						// if scope is currentUser, check for user_id in the
-						// route or body and compare
-						if (!authorized && scopes[j] === 'currentUser') {
-							//res.locals.currentUser = true;
-							if (decoded.id && userId && decoded.id == userId) {
-								authorized = true;
-							}
-						} else if (!authorized && decoded.scopes[i] === scopes[j]) {
+					for (var j = 0, m = routeScopes.length; j < m; j++) {
+						if (routeScopes[j] === 'currentUser') {
+							res.locals.currentUser.needsAuth = true;
+						} else if (!authorized && decoded.scopes[i] === routeScopes[j]) {
 							authorized = true;
 						}
 					}
 				}
 			}
 
+
 			if (authorized) {
+				// if user is authorized, per user authentication is not needed
+				res.locals.currentUser.needsAuth = false;
+				return next();
+			} else if (!authorized && res.locals.currentUser.needsAuth) {
+				// check user authentication in model
 				return next();
 			} else {
 				return next({
