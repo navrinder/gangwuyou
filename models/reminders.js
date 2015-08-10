@@ -63,14 +63,15 @@ module.exports = function(app) {
 		},
 
 		list : function (req, res, next) {
+			var query = { where: { user_id: req.params.user_id } };
 			var Reminders = new ReminderCollection({
-				user_id: req.params.user_id
-			});
+			}).query(query);
 
 			Reminders.authenticate(req, res)
 			.then(function(authed) {
 
-				Reminders.fetch()
+				Reminders.query(query)
+				.fetch()
 				.then(function(reminders) {
 					res.status(200).json({
 						success: true,
