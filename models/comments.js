@@ -2,13 +2,13 @@
 
 module.exports = function(app) {
 	var Bookshelf = app.get('Bookshelf');
-	var Comment = require('../lib/models')(app).Comment;
-	var Comments = require('../lib/collections')(app).Comments;
+	var CommentModel = require('../lib/models')(app).CommentModel;
+	var CommentCollection = require('../lib/collections')(app).CommentCollection;
 
 	return {
 
 		create : function (req, res, next) {
-			new Comment({
+			new CommentModel({
 				article_id: req.params.article_id,
 				user_id	: req.body.user_id,
 				title: req.body.title,
@@ -28,7 +28,7 @@ module.exports = function(app) {
 		},
 
 		showComment : function (req, res, next) {
-			new Comment({
+			new CommentModel({
 				id: req.params.comment_id
 			})
 			.fetch({
@@ -46,7 +46,7 @@ module.exports = function(app) {
 		},
 
 		showUserComments : function (req, res, next) {
-			new Comments({
+			new CommentCollection({
 				user_id: req.params.user_id
 			})
 			.fetch({
@@ -64,7 +64,7 @@ module.exports = function(app) {
 		},
 
 		showArticleComments : function (req, res, next) {
-			new Comments({
+			new CommentModel({
 				article_id: req.params.article_id
 			})
 			.fetch({
@@ -82,44 +82,65 @@ module.exports = function(app) {
 		},
 
 		update : function (req, res, next) {
-			new Comment({
+			var Comment = new CommentModel({
 				id: req.params.comment_id
-			})
-			.save({
-				article_id: req.params.article_id,
-				user_id: req.body.user_id,
-				title: req.body.title,
-				body: req.body.body,
-			}, {
-				patch: true
-			})
-			.then(function(comment) {
-				res.status(200).json({
-					success: true,
-					data: comment
+			});
+
+			Comment.authenticate(req, res)
+			.then(function(authed) {
+
+				Comment.save({
+					article_id: req.params.article_id,
+					user_id: req.body.user_id,
+					title: req.body.title,
+					body: req.body.body,
+				}, {
+					patch: true
+				})
+				.then(function(comment) {
+					res.status(200).json({
+						success: true,
+						data: comment
+					});
+				})
+				.catch(function(error) {
+					next(error);
 				});
+
 			})
 			.catch(function(error) {
+				// authentication errors are caught here
 				next(error);
 			});
+
 		},
 
 		remove : function (req, res, next) {
-			new Comment({
+			var Comment = new CommentModel({
 				id: req.params.comment_id
-			})
-			.save({
-				active: 'N'
-			}, {
-				patch: true
-			})
-			.then(function(comment) {
-				res.status(200).json({
-					success: true,
-					data: comment
+			});
+
+			Comment.authenticate(req, res)
+			.then(function(authed) {
+
+				Comment.save({
+					active: 'N'
+				}, {
+					patch: true
+				})
+				.then(function(comment) {
+					res.status(200).json({
+						success: true,
+						data: comment
+					});
+				})
+				.catch(function(error) {
+					next(error);
 				});
+
 			})
 			.catch(function(error) {
+				// authentication errors are caught here
 				next(error);
 			});
 		}

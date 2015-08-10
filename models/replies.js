@@ -2,13 +2,13 @@
 
 module.exports = function(app) {
 	var Bookshelf = app.get('Bookshelf');
-	var Reply = require('../lib/models')(app).Reply;
-	var Replies = require('../lib/collections')(app).Replies;
+	var ReplyModel = require('../lib/models')(app).ReplyModel;
+	var ReplyCollection = require('../lib/collections')(app).ReplyCollection;
 
 	return {
 
 		create : function (req, res, next) {
-			new Reply({
+			new ReplyModel({
 				topic_id: req.params.topic_id,
 				user_id	: req.body.user_id,
 				title: req.body.title,
@@ -28,7 +28,7 @@ module.exports = function(app) {
 		},
 
 		showReply : function (req, res, next) {
-			new Reply({
+			new ReplyModel({
 				id: req.params.reply_id
 			})
 			.fetch({
@@ -46,7 +46,7 @@ module.exports = function(app) {
 		},
 
 		showUserReplies : function (req, res, next) {
-			new Replies({
+			new ReplyCollection({
 				user_id: req.params.user_id
 			})
 			.fetch({
@@ -64,7 +64,7 @@ module.exports = function(app) {
 		},
 
 		showTopicReplies : function (req, res, next) {
-			new Replies({
+			new ReplyCollection({
 				topic_id: req.params.topic_id
 			})
 			.fetch({
@@ -82,22 +82,31 @@ module.exports = function(app) {
 		},
 
 		update : function (req, res, next) {
-			new Reply({
+			var Reply = new ReplyModel({
 				id: req.params.reply_id
-			})
-			.save({
-				topic_id: req.params.topic_id,
-				user_id: req.body.user_id,
-				title: req.body.title,
-				body: req.body.body,
-			}, {
-				patch: true
-			})
-			.then(function(reply) {
-				res.status(200).json({
-					success: true,
-					data: reply
+			});
+
+			Reply.authenticate(req, res)
+			.then(function(authed) {
+
+				Reply.save({
+					topic_id: req.params.topic_id,
+					user_id: req.body.user_id,
+					title: req.body.title,
+					body: req.body.body,
+				}, {
+					patch: true
+				})
+				.then(function(reply) {
+					res.status(200).json({
+						success: true,
+						data: reply
+					});
+				})
+				.catch(function(error) {
+					next(error);
 				});
+
 			})
 			.catch(function(error) {
 				next(error);
@@ -105,19 +114,28 @@ module.exports = function(app) {
 		},
 
 		remove : function (req, res, next) {
-			new Reply({
+			var Reply = new ReplyModel({
 				id: req.params.reply_id
-			})
-			.save({
-				active: 'N'
-			}, {
-				patch: true
-			})
-			.then(function(reply) {
-				res.status(200).json({
-					success: true,
-					data: reply
+			});
+
+			Reply.authenticate(req, res)
+			.then(function(authed) {
+
+				Reply.save({
+					active: 'N'
+				}, {
+					patch: true
+				})
+				.then(function(reply) {
+					res.status(200).json({
+						success: true,
+						data: reply
+					});
+				})
+				.catch(function(error) {
+					next(error);
 				});
+
 			})
 			.catch(function(error) {
 				next(error);

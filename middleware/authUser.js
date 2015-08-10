@@ -11,11 +11,10 @@ module.exports = function (app) {
 			var token = authorization.trim();
 			var decoded;
 			var authorized = false;
-
-			// this stores the user's info in the res object to be verified later
-			res.locals.currentUser = {
-				token: null,
-				needsAuth: false
+			var needsUserAuth = false;
+			var error = {
+				status: 401,
+				message: 'Unauthorized user token'
 			};
 
 			// decode JSON web token
@@ -28,35 +27,35 @@ module.exports = function (app) {
 				}
 			}
 
-			// compare scopes in token with scopes in middleware to find match
+			// add decoded token and scopes to res object to be checked later.
+			// full authentication occurrs in authenticator function in /lib/models
 			if (decoded && decoded.scopes && decoded.scopes.length) {
-				res.locals.currentUser.token = decoded;
 
+				// compare scopes in token with scopes in middleware to find match
 				for (var i = 0, l = decoded.scopes.length; i < l; i++) {
 					for (var j = 0, m = routeScopes.length; j < m; j++) {
 						if (routeScopes[j] === 'currentUser') {
-							res.locals.currentUser.needsAuth = true;
+							needsUserAuth = true;
 						} else if (!authorized && decoded.scopes[i] === routeScopes[j]) {
 							authorized = true;
 						}
 					}
 				}
-			}
 
-
-			if (authorized) {
-				// if user is authorized, per user authentication is not needed
-				res.locals.currentUser.needsAuth = false;
-				return next();
-			} else if (!authorized && res.locals.currentUser.needsAuth) {
-				// check user authentication in model
-				return next();
+				if (!authorized && !needsUserAuth) {
+					return next(error);
+				} else {
+					res.locals.auth = {
+						decoded: decoded,
+						authorized: authorized,
+						needsUserAuth: needsUserAuth
+					};
+					return next();
+				}
 			} else {
-				return next({
-					status: 401,
-					message: 'Unauthorized user token.'
-				});
+				return next(error);
 			}
+
 		};
 	};
 };

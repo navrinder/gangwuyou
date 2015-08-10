@@ -2,13 +2,13 @@
 
 module.exports = function(app) {
 	var Bookshelf = app.get('Bookshelf');
-	var Question = require('../lib/models')(app).Question;
-	var Questions = require('../lib/collections')(app).Questions;
+	var QuestionModel = require('../lib/models')(app).QuestionModel;
+	var QuestionCollection = require('../lib/collections')(app).QuestionCollection;
 
 	return {
 
 		list : function (req, res, next) {
-			new Questions()
+			new QuestionCollection()
 			.fetch()
 			.then(function(questions) {
 				res.status(200).json({
@@ -22,7 +22,7 @@ module.exports = function(app) {
 		},
 
 		show : function (req, res, next) {
-			new Question({
+			new QuestionModel({
 				id: req.params.question_id
 			})
 			.fetch({
@@ -40,7 +40,7 @@ module.exports = function(app) {
 		},
 
 		create : function (req, res, next) {
-			new Question({
+			new QuestionModel({
 				question: req.body.question,
 				answer_a: req.body.answer_a,
 				answer_b: req.body.answer_b,
@@ -60,7 +60,7 @@ module.exports = function(app) {
 		},
 
 		update : function (req, res, next) {
-			new Question({
+			new QuestionModel({
 				id: req.params.question_id
 			})
 			.save({
@@ -84,7 +84,7 @@ module.exports = function(app) {
 		},
 
 		remove : function (req, res, next) {
-			new Question({
+			new QuestionModel({
 				id: req.params.question_id
 			})
 			.fetch({

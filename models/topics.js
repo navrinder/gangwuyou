@@ -2,13 +2,13 @@
 
 module.exports = function(app) {
 	var Bookshelf = app.get('Bookshelf');
-	var Topic = require('../lib/models')(app).Topic;
-	var Topics = require('../lib/collections')(app).Topics;
+	var TopicModel = require('../lib/models')(app).TopicModel;
+	var TopicCollection = require('../lib/collections')(app).TopicCollection;
 
 	return {
 
 		create : function (req, res, next) {
-			new Topic({
+			new TopicModel({
 				user_id: req.body.user_id,
 				title: req.body.title,
 				body: req.body.body,
@@ -28,7 +28,7 @@ module.exports = function(app) {
 		},
 
 		show : function (req, res, next) {
-			new Topic({
+			new TopicModel({
 				id: req.params.topic_id
 			})
 			.fetch({
@@ -46,7 +46,7 @@ module.exports = function(app) {
 		},
 
 		list : function (req, res, next) {
-			new Topics()
+			new TopicCollection()
 			.fetch()
 			.then(function(topics) {
 				res.status(200).json({
@@ -60,7 +60,7 @@ module.exports = function(app) {
 		},
 
 		showUserTopics : function (req, res, next) {
-			new Topics({
+			new TopicCollection({
 				user_id: req.params.user_id
 			})
 			.fetch({
@@ -78,22 +78,31 @@ module.exports = function(app) {
 		},
 
 		update : function (req, res, next) {
-			new Topic({
+			var Topic = new TopicModel({
 				id: req.params.topic_id
-			})
-			.save({
-				user_id: req.body.user_id,
-				title: req.body.title,
-				body: req.body.body,
-				category: req.body.category
-			}, {
-				patch: true
-			})
-			.then(function(topic) {
-				res.status(200).json({
-					success: true,
-					data: topic
+			});
+
+			Topic.authenticate(req, res)
+			.then(function(authed) {
+
+				Topic.save({
+					user_id: req.body.user_id,
+					title: req.body.title,
+					body: req.body.body,
+					category: req.body.category
+				}, {
+					patch: true
+				})
+				.then(function(topic) {
+					res.status(200).json({
+						success: true,
+						data: topic
+					});
+				})
+				.catch(function(error) {
+					next(error);
 				});
+
 			})
 			.catch(function(error) {
 				next(error);
@@ -101,19 +110,29 @@ module.exports = function(app) {
 		},
 
 		remove : function (req, res, next) {
-			new Topic({
+			var Topic = new TopicModel({
 				id: req.params.topic_id
-			})
-			.save({
-				active: 'N'
-			}, {
-				patch: true
-			})
-			.then(function(topic) {
-				res.status(200).json({
-					success: true,
-					data: topic
+			});
+
+
+			Topic.authenticate(req, res)
+			.then(function(authed) {
+
+				Topic.save({
+					active: 'N'
+				}, {
+					patch: true
+				})
+				.then(function(topic) {
+					res.status(200).json({
+						success: true,
+						data: topic
+					});
+				})
+				.catch(function(error) {
+					next(error);
 				});
+
 			})
 			.catch(function(error) {
 				next(error);
