@@ -2,23 +2,32 @@
 
 module.exports = function(app) {
 	var Bookshelf = app.get('Bookshelf');
-	var Reminder = require('../lib/models')(app).Reminder;
-	var Reminders = require('../lib/collections')(app).Reminders;
+	var ReminderModel = require('../lib/models')(app).ReminderModel;
+	var ReminderCollection = require('../lib/collections')(app).ReminderCollection;
 
 	return {
 
 		create : function (req, res, next) {
-			new Reminder({
+			var Reminder = new ReminderModel({
 				user_id: req.params.user_id,
 				time: req.body.time,
 				active: 'Y'
-			})
-			.save()
-			.then(function(reminder) {
-				res.status(200).json({
-					success: true,
-					data: reminder
+			});
+
+			Reminder.authenticate(req, res)
+			.then(function(authed) {
+
+				Reminder.save()
+				.then(function(reminder) {
+					res.status(200).json({
+						success: true,
+						data: reminder
+					});
+				})
+				.catch(function(error) {
+					next(error);
 				});
+
 			})
 			.catch(function(error) {
 				next(error);
@@ -26,33 +35,51 @@ module.exports = function(app) {
 		},
 
 		show : function (req, res, next) {
-			new Reminder({
+			var Reminder = new ReminderModel({
 				id: req.params.reminder_id,
 				user_id: req.params.user_id
-			})
-			.fetch({
-				require: true
-			})
-			.then(function(reminder) {
-				res.status(200).json({
-					success: true,
-					data: reminder
+			});
+
+			Reminder.authenticate(req, res)
+			.then(function(authed) {
+
+				Reminder.fetch({
+					require: true
+				})
+				.then(function(reminder) {
+					res.status(200).json({
+						success: true,
+						data: reminder
+					});
+				})
+				.catch(function(error) {
+					next(error);
 				});
 			})
+
 			.catch(function(error) {
 				next(error);
 			});
 		},
 
 		list : function (req, res, next) {
-			new Reminders({
-				user_id: req.params.user_id
-			})
-			.fetch()
-			.then(function(reminders) {
-				res.status(200).json({
-					success: true,
-					data: reminders
+			var query = { where: { user_id: req.params.user_id } };
+			var Reminders = new ReminderCollection({
+			}).query(query);
+
+			Reminders.authenticate(req, res)
+			.then(function(authed) {
+
+				Reminders.query(query)
+				.fetch()
+				.then(function(reminders) {
+					res.status(200).json({
+						success: true,
+						data: reminders
+					});
+				})
+				.catch(function(error) {
+					next(error);
 				});
 			})
 			.catch(function(error) {
@@ -61,20 +88,29 @@ module.exports = function(app) {
 		},
 
 		update : function (req, res, next) {
-			new Reminder({
+			var Reminder = new ReminderModel({
 				id: req.params.reminder_id
-			})
-			.save({
-				user_id: req.body.user_id,
-				time: req.body.time
-			}, {
-				patch: true
-			})
-			.then(function(reminder) {
-				res.status(200).json({
-					success: true,
-					data: reminder
+			});
+
+			Reminders.authenticate(req, res)
+			.then(function(authed) {
+
+				Reminders.save({
+					user_id: req.body.user_id,
+					time: req.body.time
+				}, {
+					patch: true
+				})
+				.then(function(reminder) {
+					res.status(200).json({
+						success: true,
+						data: reminder
+					});
+				})
+				.catch(function(error) {
+					next(error);
 				});
+
 			})
 			.catch(function(error) {
 				next(error);
@@ -82,18 +118,26 @@ module.exports = function(app) {
 		},
 
 		remove : function (req, res, next) {
-			new Reminder({
+			var Reminder = new ReminderModel({
 				id: req.params.reminder_id
-			})
-			.save({
-				active: 'N'
-			}, {
-				patch: true
-			})
-			.then(function(reminder) {
-				res.status(200).json({
-					success: true,
-					data: reminder
+			});
+
+			Reminders.authenticate(req, res)
+			.then(function(authed) {
+
+				Reminders.save({
+					active: 'N'
+				}, {
+					patch: true
+				})
+				.then(function(reminder) {
+					res.status(200).json({
+						success: true,
+						data: reminder
+					});
+				})
+				.catch(function(error) {
+					next(error);
 				});
 			})
 			.catch(function(error) {

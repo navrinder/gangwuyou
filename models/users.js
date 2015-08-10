@@ -10,8 +10,8 @@ var jwt = require('jwt-simple');
 module.exports = function (app) {
 	var Bookshelf = app.get('Bookshelf');
 	var secret = app.get('config').secret;
-	var User = require('../lib/models')(app).User;
-	var Users = require('../lib/collections')(app).Users;
+	var UserModel = require('../lib/models')(app).UserModel;
+	var UserCollection = require('../lib/collections')(app).UserCollection;
 
 	return {
 
@@ -20,7 +20,7 @@ module.exports = function (app) {
 			var hash = bcrypt.hashSync(req.body.password, salt);
 			var type = req.body.type === 'doctor' ? 'doctor' : 'user';
 
-			new User({
+			new UserModel({
 				user_name: req.body.user_name,
 				email_address: req.body.email_address,
 				password: hash,
@@ -41,7 +41,7 @@ module.exports = function (app) {
 		},
 
 		list : function (req, res, next) {
-			new Users()
+			new UserCollection()
 			.fetch()
 			.then(function(users) {
 				res.status(200).json({
@@ -55,17 +55,26 @@ module.exports = function (app) {
 		},
 
 		show : function (req, res, next) {
-			new User({
+			var User = new UserModel({
 				id: req.params.user_id
-			})
-			.fetch({
-				require: true
-			})
-			.then(function(user) {
-				res.status(200).json({
-					success: true,
-					data: user
+			});
+
+			User.authenticate(req, res)
+			.then(function(authed) {
+
+				User.fetch({
+					require: true
+				})
+				.then(function(user) {
+					res.status(200).json({
+						success: true,
+						data: user
+					});
+				})
+				.catch(function(error) {
+					next(error);
 				});
+
 			})
 			.catch(function(error) {
 				next(error);
@@ -76,21 +85,30 @@ module.exports = function (app) {
 			var salt = bcrypt.genSaltSync(10);
 			var hash = bcrypt.hashSync(req.body.password, salt);
 
-			new User({
+			var User = new UserModel({
 				id: req.params.user_id
-			})
-			.save({
-				user_name: req.body.user_name,
-				email_address: req.body.email_address,
-				password: hash
-			}, {
-				patch: true
-			})
-			.then(function(user) {
-				res.status(200).json({
-					success: true,
-					data: user
+			});
+
+			User.authenticate(req, res)
+			.then(function(authed) {
+
+				User.save({
+					user_name: req.body.user_name,
+					email_address: req.body.email_address,
+					password: hash
+				}, {
+					patch: true
+				})
+				.then(function(user) {
+					res.status(200).json({
+						success: true,
+						data: user
+					});
+				})
+				.catch(function(error) {
+					next(error);
 				});
+
 			})
 			.catch(function(error) {
 				next(error);
@@ -98,7 +116,7 @@ module.exports = function (app) {
 		},
 
 		remove : function (req, res, next) {
-			new User({
+			new UserModel({
 				id: req.params.article_id
 			})
 			.save({
@@ -118,7 +136,7 @@ module.exports = function (app) {
 		},
 
 		login : function (req, res, next) {
-			new User({
+			new UserModel({
 				email_address: req.body.email_address
 			})
 			.fetch({

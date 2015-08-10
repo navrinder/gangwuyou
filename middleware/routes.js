@@ -13,12 +13,6 @@ module.exports = function (app) {
 
 function v1 (router, models, authUser) {
 
-	// admin
-	router.route('/verify/:user_id')
-		// verify account
-		.post(authUser(['admin']), models.admin.verifyAccount);
-
-
 	// announcements
 	router.route('/announcements')
 		// list announcements
@@ -58,6 +52,10 @@ function v1 (router, models, authUser) {
 		// remove article
 		.delete(authUser(['currentUser', 'admin']), models.articles.remove);
 
+	router.route('/users/:user_id/articles')
+		// show all user articles
+		.get(authUser(['user', 'doctor', 'admin']), models.articles.showUserArticles);
+
 
 	// clinics
 	router.route('/clinics')
@@ -93,13 +91,13 @@ function v1 (router, models, authUser) {
 
 	router.route('/users/:user_id/comments')
 		// show all comments for user
-		.get(authUser(['currentUser', 'admin']), models.comments.showUserComments);
+		.get(authUser(['user', 'doctor', 'admin']), models.comments.showUserComments);
 
-	router.route('/users/:user_id/comments/:comment_id')
-		// update comment
-		.put(authUser(['currentUser', 'admin']), models.comments.update)
-		// remove comment
-		.delete(authUser(['currentUser', 'admin']), models.comments.remove);
+	// router.route('/users/:user_id/comments/:comment_id')
+	// 	// update comment
+	// 	.put(authUser(['currentUser', 'admin']), models.comments.update)
+	// 	// remove comment
+	// 	.delete(authUser(['currentUser', 'admin']), models.comments.remove);
 
 
 	// static info
@@ -136,7 +134,7 @@ function v1 (router, models, authUser) {
 		// list reminders
 		.get(authUser(['currentUser', 'admin']), models.reminders.list)
 		// create reminder
-		.post(authUser(['user', 'doctor', 'admin']), models.reminders.create);
+		.post(authUser(['currentUser', 'admin']), models.reminders.create);
 
 	router.route('/users/:user_id/reminders/:reminder_id')
 		// show reminder
@@ -166,11 +164,11 @@ function v1 (router, models, authUser) {
 		// show all replies for user
 		.get(authUser(['currentUser', 'admin']), models.replies.showUserReplies);
 
-	router.route('/users/:user_id/replies/:reply_id')
-		// update reply
-		.put(authUser(['currentUser', 'admin']), models.replies.update)
-		// remove reply
-		.delete(authUser(['currentUser', 'admin']), models.replies.remove);
+	// router.route('/users/:user_id/replies/:reply_id')
+	// 	// update reply
+	// 	.put(authUser(['currentUser', 'admin']), models.replies.update)
+	// 	// remove reply
+	// 	.delete(authUser(['currentUser', 'admin']), models.replies.remove);
 
 
 	// topics
@@ -190,7 +188,7 @@ function v1 (router, models, authUser) {
 
 	router.route('/users/:user_id/topics')
 		// show all topics for user
-		.get(authUser(['currentUser', 'admin']), models.topics.showUserTopics);
+		.get(authUser(['user', 'doctor', 'admin']), models.topics.showUserTopics);
 
 
 	// users
