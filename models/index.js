@@ -1,7 +1,6 @@
 
 module.exports = function (app) {
 	return {
-		admin         : require('./admin')(app),
 		announcements : require('./announcements')(app),
 		answers       : require('./answers')(app),
 		articles      : require('./articles')(app),

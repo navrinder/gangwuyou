@@ -41,7 +41,10 @@ app.use(bodyParser.json());
 
 // basic logging
 app.use(function (req, res, next) {
-	console.log(req.method, req.url, req.body);
+	console.log(req.method, req.url);
+	if (app.get('env') === 'development') {
+		console.log(req.body);
+	}
 	next();
 });
 
@@ -68,11 +71,12 @@ app.use(function (err, req, res, next) {
 		message: 'Error'
 	};
 
+	console.error(err.message);
+	console.error(err.stack);
+
 	if (app.get('env') === 'development') {
 		response.message = err.message;
 	}
-
-	console.error(err.message, err.stack);
 
 	res.status(err.status || 400).json(response);
 });
