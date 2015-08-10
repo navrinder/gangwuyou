@@ -2,13 +2,13 @@
 //
 module.exports = function(app) {
 	var Bookshelf = app.get('Bookshelf');
-	var Info = require('../lib/models')(app).Info;
-	var Infos = require('../lib/collections')(app).Infos;
+	var InfoModel = require('../lib/models')(app).InfoModel;
+	var InfoCollection = require('../lib/collections')(app).InfoCollection;
 
 	return {
 
 		create : function (req, res, next) {
-			new Info({
+			new InfoModel({
 				id: req.body.id,
 				title: req.body.title,
 				body: req.body.body
@@ -26,7 +26,7 @@ module.exports = function(app) {
 		},
 
 		show : function (req, res, next) {
-			new Info({
+			new InfoModel({
 				id: req.params.info_id
 			})
 			.fetch({
@@ -44,7 +44,7 @@ module.exports = function(app) {
 		},
 
 		list : function (req, res, next) {
-			new Infos()
+			new InfoCollection()
 			.fetch()
 			.then(function(info) {
 				res.status(200).json({
@@ -58,7 +58,7 @@ module.exports = function(app) {
 		},
 
 		update : function (req, res, next) {
-			new Info({
+			new InfoModel({
 				id: req.params.article_id
 			})
 			.save({
@@ -80,7 +80,7 @@ module.exports = function(app) {
 		},
 
 		remove : function (req, res, next) {
-			new Info({
+			new InfoModel({
 				id: req.params.info_id
 			})
 			.fetch({

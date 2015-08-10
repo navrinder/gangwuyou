@@ -2,50 +2,70 @@
 
 module.exports = function(app) {
 	var Bookshelf = app.get('Bookshelf');
-	var Announcement = require('../lib/models')(app).Announcement;
-	var Announcements = require('../lib/collections')(app).Announcements;
+	var AnnouncementModel = require('../lib/models')(app).AnnouncementModel;
+	var AnnouncementCollection = require('../lib/collections')(app).AnnouncementCollection;
 
 	return {
 
 		create : function (req, res, next) {
-			new Announcement({
+			var Announcement = new AnnouncementModel({
 				user_id: req.body.user_id,
 				title: req.body.title,
 				body: req.body.body,
 				active: 'Y'
-			})
-			.save()
-			.then(function(announcement) {
-				res.status(200).json({
-					success: true,
-					data: announcement
+			});
+
+			Announcement.authenticate(req, res)
+			.then(function(authed) {
+
+				Announcement.save()
+				.then(function(announcement) {
+					res.status(200).json({
+						success: true,
+						data: announcement
+					});
+				})
+				.catch(function(error) {
+					next(error);
 				});
+
 			})
 			.catch(function(error) {
+				// authentication errors are caught here
 				next(error);
 			});
 		},
 
 		show : function (req, res, next) {
-			new Announcement({
+			var Announcement = new AnnouncementModel({
 				id: req.params.announcement_id
-			})
-			.fetch({
-				require: true
-			})
-			.then(function(announcement) {
-				res.status(200).json({
-					success: true,
-					data: announcement
+			});
+
+			Announcement.authenticate(req, res)
+			.then(function(authed) {
+
+				Announcement.fetch({
+					require: true
+				})
+				.then(function(announcement) {
+					res.status(200).json({
+						success: true,
+						data: announcement
+					});
+				})
+				.catch(function(error) {
+					next(error);
 				});
+
 			})
 			.catch(function(error) {
+				// authentication errors are caught here
 				next(error);
 			});
 		},
 
 		list : function (req, res, next) {
-			new Announcements()
+			new AnnouncementCollection()
 			.fetch()
 			.then(function(announcements) {
 				res.status(200).json({
@@ -59,43 +79,63 @@ module.exports = function(app) {
 		},
 
 		update : function (req, res, next) {
-			new Announcement({
+			var Announcement = new AnnouncementModel({
 				id: req.params.announcement_id
-			})
-			.save({
-				user_id: req.body.user_id,
-				title: req.body.title,
-				body: req.body.body
-			}, {
-				patch: true
-			})
-			.then(function(announcement) {
-				res.status(200).json({
-					success: true,
-					data: announcement
+			});
+
+			Announcement.authenticate(req, res)
+			.then(function(authed) {
+
+				Announcement.save({
+					user_id: req.body.user_id,
+					title: req.body.title,
+					body: req.body.body
+				}, {
+					patch: true
+				})
+				.then(function(announcement) {
+					res.status(200).json({
+						success: true,
+						data: announcement
+					});
+				})
+				.catch(function(error) {
+					next(error);
 				});
+
 			})
 			.catch(function(error) {
+				// authentication errors are caught here
 				next(error);
 			});
 		},
 
 		remove : function (req, res, next) {
-			new Announcement({
+			var Announcement = new AnnouncementModel({
 				id: req.params.announcement_id
-			})
-			.save({
-				active: 'N'
-			}, {
-				patch: true
-			})
-			.then(function(announcement) {
-				res.status(200).json({
-					success: true,
-					data: announcement
+			});
+
+			Announcement.authenticate(req, res)
+			.then(function(authed) {
+
+				Announcement.save({
+					active: 'N'
+				}, {
+					patch: true
+				})
+				.then(function(announcement) {
+					res.status(200).json({
+						success: true,
+						data: announcement
+					});
+				})
+				.catch(function(error) {
+					next(error);
 				});
+
 			})
 			.catch(function(error) {
+				// authentication errors are caught here
 				next(error);
 			});
 		}

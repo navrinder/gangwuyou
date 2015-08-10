@@ -13,6 +13,8 @@ The server is currently running in `development` mode. To log in as an `admin`, 
 	email_address: test@test.com
 	password: test
 
+The admin account has full access to the API and create all items.
+
 
 ###Running locally
 
@@ -47,7 +49,7 @@ All requests require an authentication token (except login and create user). The
 
 The user types are `user`, `doctor`, and `admin`. An admin token can access any API call, but they can only be created manually in the database. To create an admin, you must log in to the MySQL database and set the user's `type` to `admin`.
 
-They type of token required is specified below. In some cases, the API call can only be made if the `user_id` of the current user's token matches the `user_id` included in the request body or URL parameters. This is referred to as `currentUser` in the documentation below.
+They type of token required is specified below. In some cases, the API call can only be made if the `user_id` of the current user's token matches the `user_id` in the URL or the item being edited. This is referred to as `currentUser` in the documentation below.
 
 The token should be included in the Authorization header:
 
@@ -102,8 +104,8 @@ Authorized: `user`, `doctor`, `admin`
 Body:
 
 	user_id
-	title _(optional)_
-	body _(optional)_
+	title (optional)
+	body (optional)
 
 ####Remove annoucement
 	DELETE /api/v1/announcements/:announcement_id
@@ -121,18 +123,18 @@ The User's answers to quiz questions. Answer values should be `A`, `B`, `C`, or 
 
 Body:
 
-	question_1 _(optional)_
-	question_2 _(optional)_
-	question_3 _(optional)_
-	question_4 _(optional)_
-	question_5 _(optional)_
-	question_6 _(optional)_
-	question_7 _(optional)_
-	question_8 _(optional)_
-	question_9 _(optional)_
-	question_10 _(optional)_
-	question_11 _(optional)_
-	question_12 _(optional)_
+	question_1 (optional)
+	question_2 (optional)
+	question_3 (optional)
+	question_4 (optional)
+	question_5 (optional)
+	question_6 (optional)
+	question_7 (optional)
+	question_8 (optional)
+	question_9 (optional)
+	question_10 (optional)
+	question_11 (optional)
+	question_12 (optional)
 
 Authorized: `currentUser`, `admin`
 
@@ -175,9 +177,9 @@ Authorized: `user`, `doctor`, `admin`
 Body:
 
 	user_id
-	title _(optional)_
-	body _(optional)_
-	category _(optional)_
+	title (optional)
+	body (optional)
+	category (optional)
 
 Authorized: `currentUser`, `admin`
 
@@ -185,6 +187,11 @@ Authorized: `currentUser`, `admin`
 	DELETE /api/v1/articles/:article_id
 
 Authorized: `currentUser`, `admin`
+
+###Show user articles
+	GET /api/v1/users/:user_id/articles
+
+Authorized: `user`, `doctor`, `admin`
 
 
 
@@ -218,9 +225,9 @@ Authorized: `user`, `doctor`, `admin`
 
 Body:
 
-	name _(optional)_
-	location _(optional)_
-	hours _(optional)_
+	name (optional)
+	location (optional)
+	hours (optional)
 
 Authorized: `admin`
 
@@ -264,7 +271,7 @@ Body:
 
 	article_id
 	user_id
-	title _(optional)_
+	title (optional)
 	body _(optinal)_
 
 Authorized: `currentUser`, `admin`
@@ -276,23 +283,6 @@ Authorized: `currentUser`, `admin`
 
 ###List all comments belonging to a user
 	GET /api/v1/users/:user_id/comments
-
-Authorized: `currentUser`, `admin`
-
-###Update comment via user
-	PUT /api/v1/user/:user_id/comments/:comment_id
-
-Body:
-
-	article_id
-	user_id
-	title _(optional)_
-	body _(optinal)_
-
-Authorized: `currentUser`, `admin`
-
-###Remove comment via user
-	DELETE /api/v1/user/:user_id/comments/:comment_id
 
 Authorized: `currentUser`, `admin`
 
@@ -346,11 +336,11 @@ Authorized: `user`, `doctor`, `admin`
 
 Body:
 
-	question _(optional)_
-	answer_a _(optional)_
-	answer_b _(optional)_
-	answer_c _(optional)_
-	answer_d _(optional)_
+	question (optional)
+	answer_a (optional)
+	answer_b (optional)
+	answer_c (optional)
+	answer_d (optional)
 
 Authorized: `admin`
 
@@ -435,8 +425,8 @@ Body:
 
 	topic_id
 	user_id
-	title _(optional)_
-	body _(optinal)_
+	title (optional)
+	body (optional)
 
 Authorized: `currentUser`, `admin`
 
@@ -448,24 +438,7 @@ Authorized: `currentUser`, `admin`
 ###List all replies belonging to a user
 	GET /api/v1/users/:user_id/replies
 
-Authorized: `currentUser`, `admin`
-
-###Update reply via user
-	PUT /api/v1/user/:user_id/replies/:reply_id
-
-Body:
-
-	topic_id
-	user_id
-	title _(optional)_
-	body _(optinal)_
-
-Authorized: `currentUser`, `admin`
-
-###Remove reply via user
-	DELETE /api/v1/user/:user_id/replies/:reply_id
-
-Authorized: `currentUser`, `admin`
+Authorized: `user`, `doctor`, `admin`
 
 
 
@@ -501,9 +474,9 @@ Authorized: `user`, `doctor`, `admin`
 Body:
 
 	user_id
-	title _(optional)_
-	body _(optional)_
-	category _(optional)_
+	title (optional)
+	body (optional)
+	category (optional)
 
 Authorized: `currentUser`, `admin`
 
@@ -545,10 +518,10 @@ Authorized: `currentUser`, `admin`
 
 Body:
 
-	user_name _(optional)_
-	email_address _(optional)_
-	password _(optional)_
-	type ('user' or 'doctor') _(optional)_
+	user_name (optional)
+	email_address (optional)
+	password (optional)
+	type ('user' or 'doctor') (optional)
 
 Authorized: `currentUser`, `admin`
 
