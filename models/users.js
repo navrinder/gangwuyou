@@ -154,7 +154,8 @@ module.exports = function (app) {
 					var token = jwt.encode(payload, secret);
 					res.status(200).json({
 						success: true,
-						token: token
+						token: token,
+						data: user
 					});
 				} else {
 					next({
