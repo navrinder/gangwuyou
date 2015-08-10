@@ -60,9 +60,8 @@ module.exports = function(app) {
 		},
 
 		showUserTopics : function (req, res, next) {
-			new TopicCollection({
-				user_id: req.params.user_id
-			})
+			new TopicCollection()
+			.query({ where: {	user_id: req.params.user_id	} })
 			.fetch({
 				require: true
 			})

@@ -46,9 +46,8 @@ module.exports = function(app) {
 		},
 
 		showUserComments : function (req, res, next) {
-			new CommentCollection({
-				user_id: req.params.user_id
-			})
+			new CommentCollection()
+			.query({ where: { user_id: req.params.user_id	} })
 			.fetch({
 				require: true
 			})
@@ -64,9 +63,8 @@ module.exports = function(app) {
 		},
 
 		showArticleComments : function (req, res, next) {
-			new CommentModel({
-				article_id: req.params.article_id
-			})
+			new CommentCollection()
+			.query({ where: { article_id: req.params.article_id	} })
 			.fetch({
 				require: true
 			})

@@ -81,9 +81,8 @@ module.exports = function(app) {
 		},
 
 		showUserArticles : function (req, res, next) {
-			new ArticleCollection({
-				user_id: req.params.user_id
-			})
+			new ArticleCollection()
+			.query({ where: { user_id: req.params.user_id	} })
 			.fetch()
 			.then(function(articles) {
 				res.status(200).json({

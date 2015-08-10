@@ -46,9 +46,8 @@ module.exports = function(app) {
 		},
 
 		showUserReplies : function (req, res, next) {
-			new ReplyCollection({
-				user_id: req.params.user_id
-			})
+			new ReplyCollection()
+			.query({ where: { user_id: req.params.user_id	} })
 			.fetch({
 				require: true
 			})
@@ -64,9 +63,8 @@ module.exports = function(app) {
 		},
 
 		showTopicReplies : function (req, res, next) {
-			new ReplyCollection({
-				topic_id: req.params.topic_id
-			})
+			new ReplyCollection()
+			.query({ where: {	topic_id: req.params.topic_id	} })
 			.fetch({
 				require: true
 			})
