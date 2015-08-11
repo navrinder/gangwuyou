@@ -6,6 +6,7 @@ module.exports = function (app) {
 		articles      : require('./articles')(app),
 		clinics       : require('./clinics')(app),
 		comments      : require('./comments')(app),
+		doctors       : require('./doctors')(app),
 		info          : require('./information')(app),
 		questions     : require('./questions')(app),
 		reminders     : require('./reminders')(app),

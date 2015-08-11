@@ -158,6 +158,7 @@ Body:
 	title
 	body
 	category
+	picture
 
 Authorized: `doctor`, `admin`
 
@@ -180,6 +181,7 @@ Body:
 	title (optional)
 	body (optional)
 	category (optional)
+	picture (optional)
 
 Authorized: `currentUser`, `admin`
 
@@ -205,8 +207,14 @@ Clinic and hospital information
 Body:
 
 	name
-	location
-	hours
+	address_1
+	address_2
+	address_3
+	city
+	province
+	postal_code
+	description
+	picture
 
 Authorized: `admin`
 
@@ -226,8 +234,14 @@ Authorized: `user`, `doctor`, `admin`
 Body:
 
 	name (optional)
-	location (optional)
-	hours (optional)
+	address_1 (optional)
+	address_2 (optional)
+	address_3 (optional)
+	city (optional)
+	province (optional)
+	postal_code (optional)
+	description (optional)
+	picture (optional)
 
 Authorized: `admin`
 
@@ -361,7 +375,8 @@ Reminders set by the user for appointments, medication, etc.
 Body:
 
 	user_id
-	time (YYYY-MM-DD HH:MM:SS)
+	day
+	time
 
 Authorized: `user`, `doctor`, `admin`
 
@@ -381,7 +396,8 @@ Authorized: `currentUser`, `admin`
 Body:
 
 	user_id
-	time (YYYY-MM-DD HH:MM:SS)
+	day
+	time
 
 Authorized: `admin`
 
@@ -489,7 +505,7 @@ Authorized: `currentUser`, `admin`
 
 ##Users
 
-User accounts
+User accounts for users and doctors. Some optional fields are only for doctors.
 
 ####Create user
 	POST /api/v1/users
@@ -500,6 +516,16 @@ Body:
 	email_address
 	password
 	type ('user' or 'doctor')
+	sex
+	birth_day
+	birth_month
+	birth_year
+	phone_number
+	picture (optional)
+	occupation (optional)
+	hospital (optional)
+	department (optional)
+	city (optional)
 
 Authorized: no authorization
 
@@ -522,6 +548,16 @@ Body:
 	email_address (optional)
 	password (optional)
 	type ('user' or 'doctor') (optional)
+	sex (optional)
+	birth_day (optional)
+	birth_month (optional)
+	birth_year (optional)
+	phone_number (optional)
+	picture (optional)
+	occupation (optional)
+	hospital (optional)
+	department (optional)
+	city (optional)
 
 Authorized: `currentUser`, `admin`
 
