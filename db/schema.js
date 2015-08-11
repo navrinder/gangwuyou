@@ -27,6 +27,42 @@ module.exports = {
 			maxlength: 50,
 			nullable: false
 		},
+		sex: {
+			type: 'string',
+			maxlength: 1
+		},
+		birth_day: {
+			type: 'integer'
+		},
+		birth_month: {
+			type: 'integer'
+		},
+		birth_year: {
+			type: 'integer'
+		},
+		phone_number: {
+			type: 'string',
+			maxlength: 20
+		},
+		picture: {
+			type: 'text'
+		},
+		occupation: {
+			type: 'string',
+			maxlength: 255
+		},
+		hospital: {
+			type: 'string',
+			maxlength: 255
+		},
+		department: {
+			type: 'string',
+			maxlength: 255
+		},
+		city: {
+			type: 'string',
+			maxlength: 255
+		},
 		verified: {
 			type: 'string',
 			maxlength: 1,
@@ -153,6 +189,9 @@ module.exports = {
 		category: {
 			type: 'string',
 			nullable: false
+		},
+		picture: {
+			type: 'text'
 		},
 		active: {
 			type: 'string',
@@ -307,15 +346,35 @@ module.exports = {
 			maxlength: 255,
 			nullable: false
 		},
-		location: {
+		address_1: {
 			type: 'string',
-			maxlength: 255,
-			nullable: false
+			maxlength: 255
 		},
-		hours: {
+		address_2: {
 			type: 'string',
-			maxlength: 255,
-			nullable: false
+			maxlength: 255
+		},
+		address_3: {
+			type: 'string',
+			maxlength: 255
+		},
+		city: {
+			type: 'string',
+			maxlength: 255
+		},
+		province: {
+			type: 'string',
+			maxlength: 255
+		},
+		postal_code: {
+			type: 'string',
+			maxlength: 255
+		},
+		description: {
+			type: 'text'
+		},
+		picture: {
+			type: 'text'
 		},
 		active: {
 			type: 'string',
@@ -332,6 +391,36 @@ module.exports = {
 		}
 	},
 
+	doctors: {
+		id: {
+			type: 'increments',
+			nullable: false,
+			primary: true
+		},
+		clinic_id: {
+			type: 'integer',
+			nullable: false,
+			unsigned: true,
+			references: 'clinics.id'
+		},
+		name: {
+			type: 'string',
+			maxlength: 255,
+			nullable: false
+		},
+		position: {
+			type: 'string',
+			maxlength: 255
+		},
+		picture: {
+			type: 'text'
+		},
+		hours: {
+			type: 'string',
+			maxlength: 255
+		}
+	},
+
 	reminders: {
 		id: {
 			type: 'increments',
@@ -344,9 +433,13 @@ module.exports = {
 			unsigned: true,
 			references: 'users.id'
 		},
+		day: {
+			type: 'string',
+			maxlength: 40
+		},
 		time: {
-			type: 'datetime',
-			nullable: false
+			type: 'string',
+			maxlength: 10
 		},
 		active: {
 			type: 'string',

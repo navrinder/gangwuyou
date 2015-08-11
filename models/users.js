@@ -26,7 +26,17 @@ module.exports = function (app) {
 				password: hash,
 				type: type,
 				verified: type === 'user' ? 'Y' : 'N',
-				active: 'Y'
+				active: 'Y',
+				sex: req.body.sex,
+				birth_day: req.body.birth_day,
+				birth_month: req.body.birth_month,
+				birth_year: req.body.birth_year,
+				phone_number: req.body.phone_number,
+				picture: req.body.picture,
+				occupation: req.body.occupation,
+				hospital: req.body.hospital,
+				department: req.body.department,
+				city: req.body.city
 			})
 			.save()
 			.then(function(user) {
@@ -95,6 +105,16 @@ module.exports = function (app) {
 				User.save({
 					user_name: req.body.user_name,
 					email_address: req.body.email_address,
+					sex: req.body.sex,
+					birth_day: req.body.birth_day,
+					birth_month: req.body.birth_month,
+					birth_year: req.body.birth_year,
+					phone_number: req.body.phone_number,
+					picture: req.body.picture,
+					occupation: req.body.occupation,
+					hospital: req.body.hospital,
+					department: req.body.department,
+					city: req.body.city,
 					password: hash
 				}, {
 					patch: true
