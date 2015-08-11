@@ -10,8 +10,8 @@ module.exports = function(app) {
 		create : function (req, res, next) {
 			var Reminder = new ReminderModel({
 				user_id: req.params.user_id,
-				time: req.body.time,
-				active: 'Y'
+				day: req.body.day,
+				time: req.body.time
 			});
 
 			Reminder.authenticate(req, res)
@@ -97,6 +97,7 @@ module.exports = function(app) {
 
 				Reminders.save({
 					user_id: req.body.user_id,
+					day: req.body.day,
 					time: req.body.time
 				}, {
 					patch: true
@@ -125,15 +126,17 @@ module.exports = function(app) {
 			Reminders.authenticate(req, res)
 			.then(function(authed) {
 
-				Reminders.save({
-					active: 'N'
-				}, {
-					patch: true
-				})
+				Reminders.fetch()
 				.then(function(reminder) {
-					res.status(200).json({
-						success: true,
-						data: reminder
+					reminder.destroy()
+					.then(function() {
+						res.status(200).json({
+							success: true,
+							data: reminder
+						});
+					})
+					.catch(function(error) {
+						next(error);
 					});
 				})
 				.catch(function(error) {

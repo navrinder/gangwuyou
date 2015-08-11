@@ -10,8 +10,14 @@ module.exports = function(app) {
 		create : function (req, res, next) {
 			var Clinic = new ClinicModel({
 				name: req.body.name,
-				location: req.body.location,
-				hours: req.body.hours,
+				address_1: req.body.address_1,
+				address_2: req.body.address_2,
+				address_3: req.body.address_3,
+				city: req.body.city,
+				province: req.body.province,
+				postal_code: req.body.postal_code,
+				description: req.body.description,
+				picture: req.body.picture,
 				active: 'Y'
 			});
 
@@ -87,8 +93,14 @@ module.exports = function(app) {
 
 				Clinic.save({
 					name: req.body.name,
-					location: req.body.location,
-					hours: req.body.hours
+					address_1: req.body.address_1,
+					address_2: req.body.address_2,
+					address_3: req.body.address_3,
+					city: req.body.city,
+					province: req.body.province,
+					postal_code: req.body.postal_code,
+					description: req.body.description,
+					picture: req.body.picture
 				}, {
 					patch: true
 				})
