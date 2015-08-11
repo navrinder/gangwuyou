@@ -100,12 +100,28 @@ function v1 (router, models, authUser) {
 	// 	.delete(authUser(['currentUser', 'admin']), models.comments.remove);
 
 
-	// static info
-	router.route('/information')
-		// TODO
-		.get(function(req, res) {
-			res.status(500).end();
-		});
+	// doctors -- only relates to hospitals, not users
+	router.route('/clinics/:clinic_id/doctors')
+		// show all doctors for clinic
+		.get(authUser(['user', 'doctor', 'admin']), models.doctors.list)
+		// add doctor
+		.post(authUser(['admin']), models.doctors.create);
+
+	router.route('/clinics/:clinic_id/doctors/:doctor_id')
+		// show doctor
+		.get(authUser(['user', 'doctor', 'admin']), models.doctors.show)
+		// update doctor
+		.put(authUser(['admin']), models.doctors.update)
+		// remove doctor
+		.delete(authUser(['admin']), models.doctors.remove);
+
+
+	// info
+	// router.route('/information')
+	// 	// TODO
+	// 	.get(function(req, res) {
+	// 		res.status(500).end();
+	// 	});
 
 
 	// login

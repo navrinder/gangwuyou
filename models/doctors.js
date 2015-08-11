@@ -1,59 +1,57 @@
-// articles uploaded by admin or doctors
+// information for doctors and hospitals
 
 module.exports = function(app) {
 	var Bookshelf = app.get('Bookshelf');
-	var ArticleModel = require('../lib/models')(app).ArticleModel;
-	var ArticleCollection = require('../lib/collections')(app).ArticleCollection;
+	var DoctorModel = require('../lib/models')(app).DoctorModel;
+	var DoctorCollection = require('../lib/collections')(app).DoctorCollection;
 
 	return {
 
 		create : function (req, res, next) {
-			var Article = new ArticleModel({
-				user_id: req.body.user_id,
-				title: req.body.title,
-				body: req.body.body,
-				category: req.body.category,
-				active: 'Y',
-				picture: req.body.picture
+			var Doctor = new DoctorModel({
+				name: req.body.name,
+				clinic_id: req.params.clinic_id,
+				position: req.params.position,
+				picture: req.params.picture,
+				hours: req.params.hours,
+				active: 'Y'
 			});
 
-			Article.authenticate(req, res)
+			Doctor.authenticate(req, res)
 			.then(function(authed) {
 
-				Article.save()
-				.then(function(article) {
+				Doctor.save()
+				.then(function(doctor) {
 					res.status(200).json({
 						success: true,
-						data: article
+						data: doctor
 					});
 				})
 				.catch(function(error) {
 					next(error);
 				});
-
 			})
 			.catch(function(error) {
 				// authentication errors are caught here
 				next(error);
 			});
-
 		},
 
 		show : function (req, res, next) {
-			var Article = new ArticleModel({
-				id: req.params.article_id
+			var Doctor = new DoctorModel({
+				id: req.params.Doctor_id
 			});
 
-			Article.authenticate(req, res)
+			Doctor.authenticate(req, res)
 			.then(function(authed) {
 
-				Article.fetch({
+				Doctor.fetch({
 					require: true
 				})
-				.then(function(article) {
+				.then(function(doctor) {
 					res.status(200).json({
 						success: true,
-						data: article
+						data: doctor
 					});
 				})
 				.catch(function(error) {
@@ -68,27 +66,12 @@ module.exports = function(app) {
 		},
 
 		list : function (req, res, next) {
-			new ArticleCollection()
+			new DoctorCollection()
 			.fetch()
-			.then(function(articles) {
+			.then(function(doctors) {
 				res.status(200).json({
 					success: true,
-					data: articles
-				});
-			})
-			.catch(function(error) {
-				next(error);
-			});
-		},
-
-		showUserArticles : function (req, res, next) {
-			new ArticleCollection()
-			.query({ where: { user_id: req.params.user_id	} })
-			.fetch()
-			.then(function(articles) {
-				res.status(200).json({
-					success: true,
-					data: articles
+					data: doctors
 				});
 			})
 			.catch(function(error) {
@@ -97,26 +80,26 @@ module.exports = function(app) {
 		},
 
 		update : function (req, res, next) {
-			var Article = new ArticleModel({
-				id: req.params.article_id
+			var Doctor = new DoctorModel({
+				id: req.params.Doctor_id
 			});
 
-			Article.authenticate(req, res)
+			Doctor.authenticate(req, res)
 			.then(function(authed) {
 
-				Article.save({
-					user_id: req.body.user_id,
-					title: req.body.title,
-					body: req.body.body,
-					category: req.body.category,
-					picture: req.body.picture
+				Doctor.save({
+					name: req.body.name,
+					clinic_id: req.params.clinic_id,
+					position: req.params.position,
+					picture: req.params.picture,
+					hours: req.params.hours
 				}, {
 					patch: true
 				})
-				.then(function(article) {
+				.then(function(doctor) {
 					res.status(200).json({
 						success: true,
-						data: article
+						data: doctor
 					});
 				})
 				.catch(function(error) {
@@ -128,27 +111,25 @@ module.exports = function(app) {
 				// authentication errors are caught here
 				next(error);
 			});
-
-
 		},
 
 		remove : function (req, res, next) {
-			var Article = new ArticleModel({
-				id: req.params.article_id
+			var Doctor = new DoctorModel({
+				id: req.params.Doctor_id
 			});
 
-			Article.authenticate(req, res)
+			Doctor.authenticate(req, res)
 			.then(function(authed) {
 
-				Article.save({
+				Doctor.save({
 					active: 'N'
 				}, {
 					patch: true
 				})
-				.then(function(article) {
+				.then(function(doctor) {
 					res.status(200).json({
 						success: true,
-						data: article
+						data: doctor
 					});
 				})
 				.catch(function(error) {
