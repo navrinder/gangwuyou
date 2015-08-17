@@ -48,6 +48,7 @@ module.exports = function(app) {
 			.then(function(authed) {
 
 				Article.fetch({
+					withRelated: ['comments'],
 					require: true
 				})
 				.then(function(article) {
