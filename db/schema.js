@@ -45,23 +45,28 @@ module.exports = {
 			maxlength: 20
 		},
 		picture: {
-			type: 'text'
+			type: 'text',
+			nullable: true
 		},
 		occupation: {
 			type: 'string',
-			maxlength: 255
+			maxlength: 255,
+			nullable: false
 		},
 		hospital: {
 			type: 'string',
-			maxlength: 255
+			maxlength: 255,
+			nullable: false
 		},
 		department: {
 			type: 'string',
-			maxlength: 255
+			maxlength: 255,
+			nullable: false
 		},
 		city: {
 			type: 'string',
-			maxlength: 255
+			maxlength: 255,
+			nullable: false
 		},
 		verified: {
 			type: 'string',
@@ -191,7 +196,8 @@ module.exports = {
 			nullable: false
 		},
 		picture: {
-			type: 'text'
+			type: 'text',
+			nullable: true
 		},
 		active: {
 			type: 'string',
