@@ -51,22 +51,22 @@ module.exports = {
 		occupation: {
 			type: 'string',
 			maxlength: 255,
-			nullable: false
+			nullable: true
 		},
 		hospital: {
 			type: 'string',
 			maxlength: 255,
-			nullable: false
+			nullable: true
 		},
 		department: {
 			type: 'string',
 			maxlength: 255,
-			nullable: false
+			nullable: true
 		},
 		city: {
 			type: 'string',
 			maxlength: 255,
-			nullable: false
+			nullable: true
 		},
 		verified: {
 			type: 'string',
@@ -193,7 +193,7 @@ module.exports = {
 		},
 		category: {
 			type: 'string',
-			nullable: false
+			nullable: true
 		},
 		picture: {
 			type: 'text',
@@ -354,33 +354,41 @@ module.exports = {
 		},
 		address_1: {
 			type: 'string',
-			maxlength: 255
+			maxlength: 255,
+			nullable: true
 		},
 		address_2: {
 			type: 'string',
-			maxlength: 255
+			maxlength: 255,
+			nullable: true
 		},
 		address_3: {
 			type: 'string',
-			maxlength: 255
+			maxlength: 255,
+			nullable: true
 		},
 		city: {
 			type: 'string',
-			maxlength: 255
+			maxlength: 255,
+			nullable: true
 		},
 		province: {
 			type: 'string',
-			maxlength: 255
+			maxlength: 255,
+			nullable: true
 		},
 		postal_code: {
 			type: 'string',
-			maxlength: 255
+			maxlength: 255,
+			nullable: true
 		},
 		description: {
-			type: 'text'
+			type: 'text',
+			nullable: true
 		},
 		picture: {
-			type: 'text'
+			type: 'text',
+			nullable: true
 		},
 		active: {
 			type: 'string',
@@ -416,14 +424,17 @@ module.exports = {
 		},
 		position: {
 			type: 'string',
-			maxlength: 255
+			maxlength: 255,
+			nullable: true
 		},
 		picture: {
-			type: 'text'
+			type: 'text',
+			nullable: true
 		},
 		hours: {
 			type: 'string',
-			maxlength: 255
+			maxlength: 255,
+			nullable: true
 		}
 	},
 
@@ -441,11 +452,13 @@ module.exports = {
 		},
 		day: {
 			type: 'string',
-			maxlength: 40
+			maxlength: 40,
+			nullable: true
 		},
 		time: {
 			type: 'string',
-			maxlength: 10
+			maxlength: 10,
+			nullable: true
 		},
 		active: {
 			type: 'string',
