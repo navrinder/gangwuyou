@@ -208,13 +208,13 @@ Body:
 
 	name
 	address_1
-	address_2
-	address_3
+	address_2 (optional)
+	address_3 (optional)
 	city
 	province
 	postal_code
-	description
-	picture
+	description (optional)
+	picture (optional)
 
 Authorized: `admin`
 
