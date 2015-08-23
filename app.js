@@ -38,6 +38,7 @@ var middleware = require('./middleware')(app);
 // parses url-encoded and json payloads
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(express.static('public'));
 
 // basic logging
 app.use(function (req, res, next) {

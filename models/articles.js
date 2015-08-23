@@ -1,4 +1,5 @@
 // articles uploaded by admin or doctors
+var form = require('../lib/form');
 
 module.exports = function(app) {
 	var Bookshelf = app.get('Bookshelf');
@@ -8,33 +9,42 @@ module.exports = function(app) {
 	return {
 
 		create : function (req, res, next) {
-			var Article = new ArticleModel({
-				user_id: req.body.user_id,
-				title: req.body.title,
-				body: req.body.body,
-				category: req.body.category,
-				active: 'Y',
-				picture: req.body.picture
-			});
+			var inForm = form();
 
-			Article.authenticate(req, res)
-			.then(function(authed) {
+			inForm.parse(req, function (err, fields, files) {
+				if (err) {
+					return next(err);
+				}
 
-				Article.save()
-				.then(function(article) {
-					res.status(200).json({
-						success: true,
-						data: article
-					});
-				})
-				.catch(function(error) {
-					next(error);
+				var picturePath = files.picture && files.picture.path.split('public')[1];
+				var Article = new ArticleModel({
+					user_id: fields.user_id,
+					title: fields.title,
+					body: fields.body,
+					category: fields.category,
+					active: 'Y',
+					picture: picturePath
 				});
 
-			})
-			.catch(function(error) {
-				// authentication errors are caught here
-				next(error);
+				Article.authenticate(req, res)
+				.then(function(authed) {
+
+					Article.save()
+					.then(function(article) {
+						res.status(200).json({
+							success: true,
+							data: article
+						});
+					})
+					.catch(function(error) {
+						next(error);
+					});
+
+				})
+				.catch(function(error) {
+					// authentication errors are caught here
+					next(error);
+				});
 			});
 
 		},
