@@ -12,6 +12,8 @@ module.exports = function(app) {
 				user_id: req.body.user_id,
 				title: req.body.title,
 				body: req.body.body,
+				hospital: req.body.hospital,
+				location: req.body.location,
 				active: 'Y'
 			});
 
@@ -89,7 +91,9 @@ module.exports = function(app) {
 				Announcement.save({
 					user_id: req.body.user_id,
 					title: req.body.title,
-					body: req.body.body
+					body: req.body.body,
+					hospital: req.body.hospital,
+					location: req.body.location
 				}, {
 					patch: true
 				})
