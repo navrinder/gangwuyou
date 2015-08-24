@@ -11,7 +11,7 @@ var _ = require('lodash');
 function createTable(tableName) {
   return knex.schema.hasTable(tableName).then(function(exists) {
     if (!exists) {
-      console.log('Creating ' + tableName);
+      console.log('Creating: ' + tableName);
       return knex.schema.createTable(tableName, function (table) {
         var column;
         var columnKeys = _.keys(Schema[tableName]);
@@ -49,7 +49,7 @@ function createTable(tableName) {
         });
       });
     } else {
-      console.log(tableName + ' exists');
+      console.log('Exists: ' + tableName);
     }
   });
 };
