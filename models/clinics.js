@@ -76,6 +76,7 @@ module.exports = function(app) {
 			.then(function(authed) {
 
 				Clinic.fetch({
+					withRelated: ['doctors'],
 					require: true
 				})
 				.then(function(clinic) {

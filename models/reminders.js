@@ -11,7 +11,12 @@ module.exports = function(app) {
 			var Reminder = new ReminderModel({
 				user_id: req.params.user_id,
 				day: req.body.day,
-				time: req.body.time
+				time: req.body.time,
+				medicine: req.body.medicine,
+				pad: req.body.pad,
+				medicine_name: req.body.medicine_name,
+				daily: req.body.daily,
+				weekly: req.body.weekly
 			});
 
 			Reminder.authenticate(req, res)
@@ -98,7 +103,12 @@ module.exports = function(app) {
 				Reminders.save({
 					user_id: req.body.user_id,
 					day: req.body.day,
-					time: req.body.time
+					time: req.body.time,
+					medicine: req.body.medicine,
+					pad: req.body.pad,
+					medicine_name: req.body.medicine_name,
+					daily: req.body.daily,
+					weekly: req.body.weekly
 				}, {
 					patch: true
 				})
