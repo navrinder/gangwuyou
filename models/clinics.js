@@ -8,36 +8,60 @@ module.exports = function(app) {
 	return {
 
 		create : function (req, res, next) {
-			var Clinic = new ClinicModel({
-				name: req.body.name,
-				address_1: req.body.address_1,
-				address_2: req.body.address_2,
-				address_3: req.body.address_3,
-				city: req.body.city,
-				province: req.body.province,
-				postal_code: req.body.postal_code,
-				description: req.body.description,
-				picture: req.body.picture,
-				active: 'Y'
-			});
+			var inForm = form.buildForm();
 
-			Clinic.authenticate(req, res)
-			.then(function(authed) {
+			inForm.parse(req, function (err, fields, files) {
+				if (err) {
+					return next(err);
+				}
 
-				Clinic.save()
-				.then(function(clinic) {
-					res.status(200).json({
-						success: true,
-						data: clinic
+				var picture = files.picture;
+				var picturePath;
+
+				if (picture) {
+					form.checkPicture(picture, function (error) {
+						if (error) {
+							return next(error);
+						} else {
+							picturePath = picture.path.split('public')[1];
+						}
 					});
-				})
-				.catch(function(error) {
-					next(error);
-				});
-			})
-			.catch(function(error) {
-				// authentication errors are caught here
-				next(error);
+				}
+
+				if (picturePath || !picture) {
+
+					var Clinic = new ClinicModel({
+						name: fields.name,
+						address_1: fields.address_1,
+						address_2: fields.address_2,
+						address_3: fields.address_3,
+						city: fields.city,
+						province: fields.province,
+						postal_code: fields.postal_code,
+						description: fields.description,
+						picture: picturePath,
+						active: 'Y'
+					});
+
+					Clinic.authenticate(req, res)
+					.then(function(authed) {
+
+						Clinic.save()
+						.then(function(clinic) {
+							res.status(200).json({
+								success: true,
+								data: clinic
+							});
+						})
+						.catch(function(error) {
+							next(error);
+						});
+					})
+					.catch(function(error) {
+						// authentication errors are caught here
+						next(error);
+					});
+				}
 			});
 		},
 
@@ -84,40 +108,64 @@ module.exports = function(app) {
 		},
 
 		update : function (req, res, next) {
-			var Clinic = new ClinicModel({
-				id: req.params.clinic_id
-			});
+			var inForm = form.buildForm();
 
-			Clinic.authenticate(req, res)
-			.then(function(authed) {
+			inForm.parse(req, function (err, fields, files) {
+				if (err) {
+					return next(err);
+				}
 
-				Clinic.save({
-					name: req.body.name,
-					address_1: req.body.address_1,
-					address_2: req.body.address_2,
-					address_3: req.body.address_3,
-					city: req.body.city,
-					province: req.body.province,
-					postal_code: req.body.postal_code,
-					description: req.body.description,
-					picture: req.body.picture
-				}, {
-					patch: true
-				})
-				.then(function(clinic) {
-					res.status(200).json({
-						success: true,
-						data: clinic
+				var picture = files.picture;
+				var picturePath;
+
+				if (picture) {
+					form.checkPicture(picture, function (error) {
+						if (error) {
+							return next(error);
+						} else {
+							picturePath = picture.path.split('public')[1];
+						}
 					});
-				})
-				.catch(function(error) {
-					next(error);
-				});
+				}
 
-			})
-			.catch(function(error) {
-				// authentication errors are caught here
-				next(error);
+				if (picturePath || !picture) {
+
+					var Clinic = new ClinicModel({
+						id: req.params.clinic_id
+					});
+
+					Clinic.authenticate(req, res)
+					.then(function(authed) {
+
+						Clinic.save({
+							name: fields.name,
+							address_1: fields.address_1,
+							address_2: fields.address_2,
+							address_3: fields.address_3,
+							city: fields.city,
+							province: fields.province,
+							postal_code: fields.postal_code,
+							description: fields.description,
+							picture: picturePath
+						}, {
+							patch: true
+						})
+						.then(function(clinic) {
+							res.status(200).json({
+								success: true,
+								data: clinic
+							});
+						})
+						.catch(function(error) {
+							next(error);
+						});
+
+					})
+					.catch(function(error) {
+						// authentication errors are caught here
+						next(error);
+					});
+				}
 			});
 		},
 
