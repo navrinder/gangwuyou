@@ -390,6 +390,14 @@ module.exports = {
 			type: 'text',
 			nullable: true
 		},
+		latitude: {
+			type: 'string',
+			nullable: true
+		},
+		longitude: {
+			type: 'string',
+			nullable: true
+		},
 		active: {
 			type: 'string',
 			maxlength: 1,
