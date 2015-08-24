@@ -326,6 +326,16 @@ module.exports = {
 			maxlength: 2000,
 			nullable: false
 		},
+		hospital: {
+			type: 'string',
+			maxlength: 255,
+			nullable: true
+		},
+		location: {
+			type: 'string',
+			maxlength: 255,
+			nullable: true
+		},
 		active: {
 			type: 'string',
 			maxlength: 1,
@@ -388,6 +398,14 @@ module.exports = {
 		},
 		picture: {
 			type: 'text',
+			nullable: true
+		},
+		latitude: {
+			type: 'string',
+			nullable: true
+		},
+		longitude: {
+			type: 'string',
 			nullable: true
 		},
 		active: {
@@ -458,6 +476,31 @@ module.exports = {
 		time: {
 			type: 'string',
 			maxlength: 10,
+			nullable: true
+		},
+		medicine: {
+			type: 'string',
+			maxlength: 1,
+			nullable: true
+		},
+		pad: {
+			type: 'string',
+			maxlength: 1,
+			nullable: true
+		},
+		medicine_name: {
+			type: 'string',
+			maxlength: 255,
+			nullable: true
+		},
+		daily: {
+			type: 'string',
+			maxlength: 1,
+			nullable: true
+		},
+		weekly: {
+			type: 'string',
+			maxlength: 1,
 			nullable: true
 		},
 		active: {
