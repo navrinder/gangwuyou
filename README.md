@@ -215,6 +215,8 @@ Body:
 	postal_code
 	description (optional)
 	picture (optional)
+	latitude (optional)
+	longitude (optional)
 
 Authorized: `admin`
 
@@ -242,6 +244,8 @@ Body:
 	postal_code (optional)
 	description (optional)
 	picture (optional)
+	latitude (optional)
+	longitude (optional)
 
 Authorized: `admin`
 

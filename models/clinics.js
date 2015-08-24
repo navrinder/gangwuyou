@@ -40,6 +40,8 @@ module.exports = function(app) {
 						postal_code: fields.postal_code,
 						description: fields.description,
 						picture: picturePath,
+						latitude: fields.latitude,
+						longitude: fields.longitude,
 						active: 'Y'
 					});
 
@@ -146,7 +148,9 @@ module.exports = function(app) {
 							province: fields.province,
 							postal_code: fields.postal_code,
 							description: fields.description,
-							picture: picturePath
+							picture: picturePath,
+							latitude: fields.latitude,
+							longitude: fields.longitude
 						}, {
 							patch: true
 						})
