@@ -85,6 +85,8 @@ Body:
 	user_id
 	title
 	body
+	hospital (optional)
+	location (optional)
 
 Authorized: `doctor`
 
@@ -106,6 +108,8 @@ Body:
 	user_id
 	title (optional)
 	body (optional)
+	hospital (optional)
+	location (optional)
 
 ####Remove annoucement
 	DELETE /api/v1/announcements/:announcement_id
@@ -215,6 +219,8 @@ Body:
 	postal_code
 	description (optional)
 	picture (optional)
+	latitude (optional)
+	longitude (optional)
 
 Authorized: `admin`
 
@@ -242,6 +248,8 @@ Body:
 	postal_code (optional)
 	description (optional)
 	picture (optional)
+	latitude (optional)
+	longitude (optional)
 
 Authorized: `admin`
 
@@ -375,8 +383,13 @@ Reminders set by the user for appointments, medication, etc.
 Body:
 
 	user_id
-	day
-	time
+	day (optional)
+	time (optional)
+	medicine (y/n)
+	pad (y/n)
+	medicine_name (optional)
+	daily (y/n)
+	weekly (y/n)
 
 Authorized: `user`, `doctor`, `admin`
 
@@ -396,8 +409,13 @@ Authorized: `currentUser`, `admin`
 Body:
 
 	user_id
-	day
-	time
+	day (optional)
+	time (optional)
+	medicine (y/n)
+	pad (y/n)
+	medicine_name (optional)
+	daily (y/n)
+	weekly (y/n)
 
 Authorized: `admin`
 

@@ -32,6 +32,7 @@ module.exports = function(app) {
 				id: req.params.topic_id
 			})
 			.fetch({
+				withRelated: ['replies'],
 				require: true
 			})
 			.then(function(topic) {
