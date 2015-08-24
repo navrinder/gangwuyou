@@ -6,6 +6,7 @@ var Promise = require('bluebird');
 var bcrypt = require('bcryptjs');
 var jwt = require('jwt-simple');
 var form = require('../lib/form');
+var fs = require('fs');
 
 
 module.exports = function (app) {
@@ -17,7 +18,7 @@ module.exports = function (app) {
 	return {
 
 		create : function (req, res, next) {
-			var inForm = form();
+			var inForm = form.buildForm();
 
 			inForm.parse(req, function (err, fields, files) {
 				if (err) {
@@ -27,40 +28,52 @@ module.exports = function (app) {
 				var salt = bcrypt.genSaltSync(10);
 				var hash = bcrypt.hashSync(fields.password, salt);
 				var type = fields.type === 'doctor' ? 'doctor' : 'user';
-				var picturePath = files.picture && files.picture.path.split('public')[1];
+				var picture = files.picture;
+				var picturePath;
 
-				new UserModel({
-					user_name: fields.user_name,
-					email_address: fields.email_address,
-					password: hash,
-					type: type,
-					verified: type === 'user' ? 'Y' : 'N',
-					active: 'Y',
-					sex: fields.sex,
-					birth_day: fields.birth_day,
-					birth_month: fields.birth_month,
-					birth_year: fields.birth_year,
-					phone_number: fields.phone_number,
-					picture: picturePath,
-					occupation: fields.occupation,
-					hospital: fields.hospital,
-					department: fields.department,
-					city: fields.city
-				})
-				.save()
-				.then(function(user) {
-					res.status(200).json({
-						success: true,
-						data: user
+				if (picture) {
+					form.checkPicture(picture, function (error) {
+						if (error) {
+							return next(error);
+						} else {
+							picturePath = picture.path.split('public')[1];
+						}
 					});
-				})
-				.catch(function(error) {
-					next(error);
-				});
+				}
 
-			})
+				if (picturePath || !picture) {
 
+					new UserModel({
+						user_name: fields.user_name,
+						email_address: fields.email_address,
+						password: hash,
+						type: type,
+						verified: type === 'user' ? 'Y' : 'N',
+						active: 'Y',
+						sex: fields.sex,
+						birth_day: fields.birth_day,
+						birth_month: fields.birth_month,
+						birth_year: fields.birth_year,
+						phone_number: fields.phone_number,
+						picture: picturePath,
+						occupation: fields.occupation,
+						hospital: fields.hospital,
+						department: fields.department,
+						city: fields.city
+					})
+					.save()
+					.then(function(user) {
+						res.status(200).json({
+							success: true,
+							data: user
+						});
+					})
+					.catch(function(error) {
+						next(error);
+					});
 
+				}
+			});
 		},
 
 		list : function (req, res, next) {
@@ -105,46 +118,70 @@ module.exports = function (app) {
 		},
 
 		updateUser : function (req, res, next) {
-			var salt = bcrypt.genSaltSync(10);
-			var hash = bcrypt.hashSync(req.body.password, salt);
+			var inForm = form.buildForm();
 
-			var User = new UserModel({
-				id: req.params.user_id
-			});
+			inForm.parse(req, function (err, fields, files) {
+				if (err) {
+					return next(err);
+				}
 
-			User.authenticate(req, res)
-			.then(function(authed) {
+				var salt = bcrypt.genSaltSync(10);
+				var hash = fields.password && bcrypt.hashSync(fields.password, salt);
 
-				User.save({
-					user_name: req.body.user_name,
-					email_address: req.body.email_address,
-					sex: req.body.sex,
-					birth_day: req.body.birth_day,
-					birth_month: req.body.birth_month,
-					birth_year: req.body.birth_year,
-					phone_number: req.body.phone_number,
-					picture: req.body.picture,
-					occupation: req.body.occupation,
-					hospital: req.body.hospital,
-					department: req.body.department,
-					city: req.body.city,
-					password: hash
-				}, {
-					patch: true
-				})
-				.then(function(user) {
-					res.status(200).json({
-						success: true,
-						data: user
+				var picture = files.picture;
+				var picturePath;
+
+				if (picture) {
+					form.checkPicture(picture, function (error) {
+						if (error) {
+							return next(error);
+						} else {
+							picturePath = picture.path.split('public')[1];
+						}
 					});
-				})
-				.catch(function(error) {
-					next(error);
-				});
+				}
 
-			})
-			.catch(function(error) {
-				next(error);
+				if (picturePath || !picture) {
+
+					var User = new UserModel({
+						id: req.params.user_id
+					});
+
+					User.authenticate(req, res)
+					.then(function(authed) {
+
+						User.save({
+							user_name: fields.user_name,
+							email_address: fields.email_address,
+							sex: fields.sex,
+							birth_day: fields.birth_day,
+							birth_month: fields.birth_month,
+							birth_year: fields.birth_year,
+							phone_number: fields.phone_number,
+							picture: picturePath,
+							occupation: fields.occupation,
+							hospital: fields.hospital,
+							department: fields.department,
+							city: fields.city,
+							password: hash
+						}, {
+							patch: true
+						})
+						.then(function(user) {
+							res.status(200).json({
+								success: true,
+								data: user
+							});
+						})
+						.catch(function(error) {
+							next(error);
+						});
+
+					})
+					.catch(function(error) {
+						next(error);
+					});
+				}
 			});
 		},
 
