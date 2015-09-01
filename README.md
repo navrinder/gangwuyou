@@ -11,7 +11,7 @@ You can connect to the API on the Aliyun server by visiting:
 The server is currently running in `development` mode. To log in as an `admin`, use these crendtials:
 
 	email_address: test@test.com
-	password: test
+	password: foobar
 
 The admin account has full access to the API and create all items.
 
