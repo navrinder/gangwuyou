@@ -68,6 +68,30 @@ Some API calls return items with the key `active: Y`. This should be checked for
 
 
 
+###Responses
+
+####Success
+
+Status: `200`
+```
+{
+	success: true,
+	data: {}
+}
+```
+
+####Failure
+
+Status: >= `400`
+```
+{
+	success: false,
+	code: ''
+}
+```
+The response will contain `message` during development, but will not be shown in production. Do not use it in your code.
+
+
 
 # API calls
 
