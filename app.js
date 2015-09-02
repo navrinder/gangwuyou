@@ -1,5 +1,4 @@
 var express = require('express');
-var bodyParser = require('body-parser');
 var markdown = require('markdown').markdown;
 var fs = require('fs');
 
@@ -34,10 +33,6 @@ app.set('Bookshelf', bookshelf);
 // functions called in routes
 var middleware = require('./middleware')(app);
 
-// body parser module
-// parses url-encoded and json payloads
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
 app.use(express.static('public'));
 
 // basic logging
@@ -51,7 +46,27 @@ app.use(function (req, res, next) {
 
 // test route
 app.get('/', function(req, res) {
-	res.json({ message: 'hello world' });
+	// res.json({ message: 'hello world' });
+	res.writeHead(200, {'content-type': 'text/html'});
+  res.end(
+    '<form action="/api/v1/users" enctype="multipart/form-data" method="post">'+
+    '<input type="text" name="user_name"><br>' +
+		'<input type="text" name="email_address"><br>' +
+		'<input type="text" name="password"><br>' +
+		'<input type="text" name="type"><br>' +
+		'<input type="text" name="sex"><br>' +
+		'<input type="text" name="birth_day"><br>' +
+		'<input type="text" name="birth_month"><br>' +
+		'<input type="text" name="birth_year"><br>' +
+		'<input type="text" name="phone_number"><br>' +
+		'<input type="text" name="occupation"><br>' +
+		'<input type="text" name="hospital"><br>' +
+		'<input type="text" name="department"><br>' +
+		'<input type="text" name="city"><br>' +
+    '<input type="file" name="picture" multiple="multiple"><br>'+
+    '<input type="submit" value="Upload">'+
+    '</form>'
+  );
 });
 
 // documentation
