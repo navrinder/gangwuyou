@@ -1,4 +1,5 @@
 // information for clinics and hospitals
+var form = require('../lib/form');
 
 module.exports = function(app) {
 	var Bookshelf = app.get('Bookshelf');
@@ -16,54 +17,42 @@ module.exports = function(app) {
 				}
 
 				var picture = files.picture;
-				var picturePath;
 
-				if (picture) {
-					form.checkPicture(picture, function (error) {
-						if (error) {
-							return next(error);
-						} else {
-							picturePath = picture.path.split('public')[1];
-						}
-					});
-				}
-
-				if (picturePath || !picture) {
-
-					var Clinic = new ClinicModel({
-						name: fields.name,
-						address_1: fields.address_1,
-						address_2: fields.address_2,
-						address_3: fields.address_3,
-						city: fields.city,
-						province: fields.province,
-						postal_code: fields.postal_code,
-						description: fields.description,
-						picture: picturePath,
-						latitude: fields.latitude,
-						longitude: fields.longitude,
-						active: 'Y'
-					});
-
-					Clinic.authenticate(req, res)
-					.then(function(authed) {
-
-						Clinic.save()
-						.then(function(clinic) {
-							res.status(200).json({
-								success: true,
-								data: clinic
-							});
-						})
-						.catch(function(error) {
-							next(error);
+				form.checkPicture(picture, function (error) {
+					if (error) {
+						return next(error);
+					} else {
+						var cleanup = form.cleanup(picture, next);
+						var Clinic = new ClinicModel({
+							name: fields.name,
+							address_1: fields.address_1,
+							address_2: fields.address_2,
+							address_3: fields.address_3,
+							city: fields.city,
+							province: fields.province,
+							postal_code: fields.postal_code,
+							description: fields.description,
+							picture: picturePath,
+							latitude: fields.latitude,
+							longitude: fields.longitude,
+							active: 'Y'
 						});
-					})
-					.catch(function(error) {
-						// authentication errors are caught here
-						next(error);
-					});
-				}
+
+						Clinic.authenticate(req, res)
+						.then(function(authed) {
+
+							Clinic.save()
+							.then(function(clinic) {
+								res.status(200).json({
+									success: true,
+									data: clinic
+								});
+							})
+							.catch(cleanup);
+						})
+						.catch(cleanup);
+					}
+				});
 			});
 		},
 
@@ -119,58 +108,44 @@ module.exports = function(app) {
 				}
 
 				var picture = files.picture;
-				var picturePath;
-
-				if (picture) {
-					form.checkPicture(picture, function (error) {
-						if (error) {
-							return next(error);
-						} else {
-							picturePath = picture.path.split('public')[1];
-						}
-					});
-				}
-
-				if (picturePath || !picture) {
-
-					var Clinic = new ClinicModel({
-						id: req.params.clinic_id
-					});
-
-					Clinic.authenticate(req, res)
-					.then(function(authed) {
-
-						Clinic.save({
-							name: fields.name,
-							address_1: fields.address_1,
-							address_2: fields.address_2,
-							address_3: fields.address_3,
-							city: fields.city,
-							province: fields.province,
-							postal_code: fields.postal_code,
-							description: fields.description,
-							picture: picturePath,
-							latitude: fields.latitude,
-							longitude: fields.longitude
-						}, {
-							patch: true
-						})
-						.then(function(clinic) {
-							res.status(200).json({
-								success: true,
-								data: clinic
-							});
-						})
-						.catch(function(error) {
-							next(error);
+				form.checkPicture(picture, function (error) {
+					if (error) {
+						return next(error);
+					} else {
+						var cleanup = form.cleanup(picture, next);
+						var Clinic = new ClinicModel({
+							id: req.params.clinic_id
 						});
 
-					})
-					.catch(function(error) {
-						// authentication errors are caught here
-						next(error);
-					});
-				}
+						Clinic.authenticate(req, res)
+						.then(function(authed) {
+
+							Clinic.save({
+								name: fields.name,
+								address_1: fields.address_1,
+								address_2: fields.address_2,
+								address_3: fields.address_3,
+								city: fields.city,
+								province: fields.province,
+								postal_code: fields.postal_code,
+								description: fields.description,
+								picture: picturePath,
+								latitude: fields.latitude,
+								longitude: fields.longitude
+							}, {
+								patch: true
+							})
+							.then(function(clinic) {
+								res.status(200).json({
+									success: true,
+									data: clinic
+								});
+							})
+							.catch(cleanup);
+						})
+						.catch(cleanup);
+					}
+				});
 			});
 		},
 

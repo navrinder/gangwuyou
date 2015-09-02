@@ -1,4 +1,5 @@
 // information for doctors and hospitals
+var form = require('../lib/form');
 
 module.exports = function(app) {
 	var Bookshelf = app.get('Bookshelf');
@@ -8,32 +9,43 @@ module.exports = function(app) {
 	return {
 
 		create : function (req, res, next) {
-			var Doctor = new DoctorModel({
-				name: req.body.name,
-				clinic_id: req.params.clinic_id,
-				position: req.params.position,
-				picture: req.params.picture,
-				hours: req.params.hours,
-				active: 'Y'
-			});
+			var inForm = form.buildForm();
 
-			Doctor.authenticate(req, res)
-			.then(function(authed) {
+			inForm.parse(req, function (err, fields, files) {
+				if (err) {
+					return next(err);
+				}
 
-				Doctor.save()
-				.then(function(doctor) {
-					res.status(200).json({
-						success: true,
-						data: doctor
-					});
-				})
-				.catch(function(error) {
-					next(error);
+				var picture = files.picture;
+				form.checkPicture(picture, function (error, picturePath) {
+					if (error) {
+						return next(error);
+					} else {
+						var cleanup = form.cleanup(picture, next);
+						var Doctor = new DoctorModel({
+							name: fields.name,
+							clinic_id: req.params.clinic_id,
+							position: fields.position,
+							picture: picturePath,
+							hours: fields.hours,
+							active: 'Y'
+						});
+
+						Doctor.authenticate(req, res)
+						.then(function(authed) {
+
+							Doctor.save()
+							.then(function(doctor) {
+								res.status(200).json({
+									success: true,
+									data: doctor
+								});
+							})
+							.catch(cleanup);
+						})
+						.catch(cleanup);
+					}
 				});
-			})
-			.catch(function(error) {
-				// authentication errors are caught here
-				next(error);
 			});
 		},
 
@@ -80,36 +92,46 @@ module.exports = function(app) {
 		},
 
 		update : function (req, res, next) {
-			var Doctor = new DoctorModel({
-				id: req.params.Doctor_id
-			});
+			var inForm = form.buildForm();
 
-			Doctor.authenticate(req, res)
-			.then(function(authed) {
+			inForm.parse(req, function (err, fields, files) {
+				if (err) {
+					return next(err);
+				}
 
-				Doctor.save({
-					name: req.body.name,
-					clinic_id: req.params.clinic_id,
-					position: req.params.position,
-					picture: req.params.picture,
-					hours: req.params.hours
-				}, {
-					patch: true
-				})
-				.then(function(doctor) {
-					res.status(200).json({
-						success: true,
-						data: doctor
-					});
-				})
-				.catch(function(error) {
-					next(error);
+				var picture = files.picture;
+				form.checkPicture(picture, function (error, picturePath) {
+					if (error) {
+						return next(error);
+					} else {
+						var cleanup = form.cleanup(picture, next);
+						var Doctor = new DoctorModel({
+							id: req.params.Doctor_id
+						});
+
+						Doctor.authenticate(req, res)
+						.then(function(authed) {
+
+							Doctor.save({
+								name: fields.name,
+								clinic_id: req.params.clinic_id,
+								position: fields.position,
+								picture: picturePath,
+								hours: fields.hours
+							}, {
+								patch: true
+							})
+							.then(function(doctor) {
+								res.status(200).json({
+									success: true,
+									data: doctor
+								});
+							})
+							.catch(cleanup);
+						})
+						.catch(cleanup);
+					}
 				});
-
-			})
-			.catch(function(error) {
-				// authentication errors are caught here
-				next(error);
 			});
 		},
 

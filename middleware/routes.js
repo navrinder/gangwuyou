@@ -1,4 +1,5 @@
 var express = require('express');
+var bodyParser = require('body-parser').urlencoded({ extended: true });
 
 module.exports = function (app) {
 	var authUser = require('./authUser')(app);
@@ -18,13 +19,13 @@ function v1 (router, models, authUser) {
 		// list announcements
 		.get(authUser(['user', 'doctor', 'admin']), models.announcements.list)
 		// create announcement
-		.post(authUser(['doctor', 'admin']), models.announcements.create);
+		.post(bodyParser, authUser(['doctor', 'admin']), models.announcements.create);
 
 	router.route('/announcements/:announcement_id')
 		// show announcement
 		.get(authUser(['user', 'doctor', 'admin']), models.announcements.show)
 		// update announcement
-		.put(authUser(['currentUser', 'admin']), models.announcements.update)
+		.put(bodyParser, authUser(['currentUser', 'admin']), models.announcements.update)
 		// remove announcement
 		.delete(authUser(['currentUser', 'admin']), models.announcements.remove);
 
@@ -34,7 +35,7 @@ function v1 (router, models, authUser) {
 		// show answers
 		.get(authUser(['currentUser', 'doctor', 'admin']), models.answers.show)
 		// add answer to user
-		.post(authUser(['currentUser', 'admin']), models.answers.updateAnswers);
+		.post(bodyParser, authUser(['currentUser', 'admin']), models.answers.updateAnswers);
 
 
 	// articles
@@ -78,13 +79,13 @@ function v1 (router, models, authUser) {
 		// show all comments for article
 		.get(authUser(['user', 'doctor', 'admin']), models.comments.showArticleComments)
 		// add comment
-		.post(authUser(['user', 'doctor', 'admin']), models.comments.create);
+		.post(bodyParser, authUser(['user', 'doctor', 'admin']), models.comments.create);
 
 	router.route('/articles/:article_id/comments/:comment_id')
 		// show comment
 		.get(authUser(['user', 'doctor', 'admin']), models.comments.showComment)
 		// update comment
-		.put(authUser(['currentUser', 'admin']), models.comments.update)
+		.put(bodyParser, authUser(['currentUser', 'admin']), models.comments.update)
 		// remove comment
 		.delete(authUser(['currentUser', 'admin']), models.comments.remove);
 
@@ -134,13 +135,13 @@ function v1 (router, models, authUser) {
 		// list questions
 		.get(authUser(['user', 'doctor', 'admin']), models.questions.list)
 		// create question
-		.post(authUser(['admin']), models.questions.create);
+		.post(bodyParser, authUser(['admin']), models.questions.create);
 
 	router.route('/questions/:question_id')
 		// show question
 		.get(authUser(['user', 'doctor', 'admin']), models.questions.show)
 		// update question
-		.put(authUser(['admin']), models.questions.update)
+		.put(bodyParser, authUser(['admin']), models.questions.update)
 		// remove question
 		.delete(authUser(['admin']), models.questions.remove);
 
@@ -150,13 +151,13 @@ function v1 (router, models, authUser) {
 		// list reminders
 		.get(authUser(['currentUser', 'admin']), models.reminders.list)
 		// create reminder
-		.post(authUser(['currentUser', 'admin']), models.reminders.create);
+		.post(bodyParser, authUser(['currentUser', 'admin']), models.reminders.create);
 
 	router.route('/users/:user_id/reminders/:reminder_id')
 		// show reminder
 		.get(authUser(['currentUser', 'admin']), models.reminders.show)
 		// update reminder
-		.put(authUser(['currentUser', 'admin']), models.reminders.update)
+		.put(bodyParser, authUser(['currentUser', 'admin']), models.reminders.update)
 		// remove reminder
 		.delete(authUser(['currentUser', 'admin']), models.reminders.remove);
 
@@ -166,13 +167,13 @@ function v1 (router, models, authUser) {
 		// show all replies for article
 		.get(authUser(['user', 'doctor', 'admin']), models.replies.showTopicReplies)
 		// add reply
-		.post(authUser(['user', 'doctor', 'admin']), models.replies.create);
+		.post(bodyParser, authUser(['user', 'doctor', 'admin']), models.replies.create);
 
 	router.route('/topics/:topic_id/replies/:reply_id')
 		// show reply
 		.get(authUser(['user', 'doctor', 'admin']), models.replies.showReply)
 		// update reply
-		.put(authUser(['currentUser', 'admin']), models.replies.update)
+		.put(bodyParser, authUser(['currentUser', 'admin']), models.replies.update)
 		// remove reply
 		.delete(authUser(['currentUser', 'admin']), models.replies.remove);
 
@@ -192,13 +193,13 @@ function v1 (router, models, authUser) {
 		// list topics
 		.get(authUser(['user', 'doctor', 'admin']), models.topics.list)
 		// create topic
-		.post(authUser(['user', 'doctor', 'admin']), models.topics.create);
+		.post(bodyParser, authUser(['user', 'doctor', 'admin']), models.topics.create);
 
 	router.route('/topics/:topic_id')
 		// show topic
 		.get(authUser(['user', 'doctor', 'admin']), models.topics.show)
 		// update topic
-		.put(authUser(['currentUser', 'admin']), models.topics.update)
+		.put(bodyParser, authUser(['currentUser', 'admin']), models.topics.update)
 		// remove topic
 		.delete(authUser(['currentUser', 'admin']), models.topics.remove);
 

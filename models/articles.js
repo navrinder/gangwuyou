@@ -17,49 +17,35 @@ module.exports = function(app) {
 				}
 
 				var picture = files.picture;
-				var picturePath;
-
-				if (picture) {
-					form.checkPicture(picture, function (error) {
-						if (error) {
-							return next(error);
-						} else {
-							picturePath = picture.path.split('public')[1];
-						}
-					});
-				}
-
-				if (picturePath || !picture) {
-
-					var Article = new ArticleModel({
-						user_id: fields.user_id,
-						title: fields.title,
-						body: fields.body,
-						category: fields.category,
-						active: 'Y',
-						picture: picturePath
-					});
-
-					Article.authenticate(req, res)
-					.then(function(authed) {
-
-						Article.save()
-						.then(function(article) {
-							res.status(200).json({
-								success: true,
-								data: article
-							});
-						})
-						.catch(function(error) {
-							next(error);
+				form.checkPicture(picture, function (error, picturePath) {
+					if (error) {
+						return next(error);
+					} else {
+						var cleanup = form.cleanup(picture, next);
+						var Article = new ArticleModel({
+							user_id: fields.user_id,
+							title: fields.title,
+							body: fields.body,
+							category: fields.category,
+							active: 'Y',
+							picture: picturePath
 						});
 
-					})
-					.catch(function(error) {
-						// authentication errors are caught here
-						next(error);
-					});
-				}
+						Article.authenticate(req, res)
+						.then(function(authed) {
+
+							Article.save()
+							.then(function(article) {
+								res.status(200).json({
+									success: true,
+									data: article
+								});
+							})
+							.catch(cleanup);
+						})
+						.catch(cleanup);
+					}
+				});
 			});
 
 		},
@@ -131,52 +117,38 @@ module.exports = function(app) {
 				}
 
 				var picture = files.picture;
-				var picturePath;
-
-				if (picture) {
-					form.checkPicture(picture, function (error) {
-						if (error) {
-							return next(error);
-						} else {
-							picturePath = picture.path.split('public')[1];
-						}
-					});
-				}
-
-				if (picturePath || !picture) {
-
-					var Article = new ArticleModel({
-						id: req.params.article_id
-					});
-
-					Article.authenticate(req, res)
-					.then(function(authed) {
-
-						Article.save({
-							user_id: fields.user_id,
-							title: fields.title,
-							body: fields.body,
-							category: fields.category,
-							picture: picturePath
-						}, {
-							patch: true
-						})
-						.then(function(article) {
-							res.status(200).json({
-								success: true,
-								data: article
-							});
-						})
-						.catch(function(error) {
-							next(error);
+				form.checkPicture(picture, function (error) {
+					if (error) {
+						return next(error);
+					} else {
+						var cleanup = form.cleanup(picture, next);
+						var Article = new ArticleModel({
+							id: req.params.article_id
 						});
 
-					})
-					.catch(function(error) {
-						// authentication errors are caught here
-						next(error);
-					});
-				}
+						Article.authenticate(req, res)
+						.then(function(authed) {
+
+							Article.save({
+								user_id: fields.user_id,
+								title: fields.title,
+								body: fields.body,
+								category: fields.category,
+								picture: picturePath
+							}, {
+								patch: true
+							})
+							.then(function(article) {
+								res.status(200).json({
+									success: true,
+									data: article
+								});
+							})
+							.catch(cleanup);
+						})
+						.catch(cleanup);
+					}
+				});
 			});
 		},
 
