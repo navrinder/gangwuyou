@@ -308,6 +308,48 @@ Authorized: `currentUser`, `admin`
 
 Authorized: `currentUser`, `admin`
 
+##Doctors
+
+Doctors information that belongs to a clinic. These doctors are NOT user accounts.
+
+####Create doctor
+	POST /api/v1/clinics/:clinic_id/doctors
+
+Body:
+
+	name
+	position
+	picture
+	hours
+
+Authorized: `admin`
+
+####List all doctors for a clinic
+	GET /api/v1/clinics/:clinic_id/doctors
+
+Authorized: `user`, `doctor`, `admin`
+
+####Show doctor
+	GET /api/v1/clinics/:clinic_id/doctors/:doctor_id
+
+Authorized: `user`, `doctor`, `admin`
+
+####Update doctor
+	POST /api/v1/clinics/:clinic_id/doctors
+
+Body:
+
+	name
+	position
+	picture
+	hours
+
+Authorized: `admin`
+
+####Remove doctor
+	DELETE /api/v1/clinics/:clinic_id/doctors/:doctor_id
+
+Authorized: `admin`
 
 
 ##Login

@@ -51,7 +51,7 @@ module.exports = function(app) {
 
 		show : function (req, res, next) {
 			var Doctor = new DoctorModel({
-				id: req.params.Doctor_id
+				id: req.params.doctor_id
 			});
 
 			Doctor.authenticate(req, res)
@@ -79,6 +79,7 @@ module.exports = function(app) {
 
 		list : function (req, res, next) {
 			new DoctorCollection()
+			.query({ where: { clinic_id: req.params.clinic_id	} })
 			.fetch()
 			.then(function(doctors) {
 				res.status(200).json({
