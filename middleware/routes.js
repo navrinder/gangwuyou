@@ -127,7 +127,7 @@ function v1 (router, models, authUser) {
 
 	// login
 	router.route('/login')
-		.post(models.users.login);
+		.post(bodyParser, models.users.login);
 
 
 	// questions
