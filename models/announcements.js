@@ -67,7 +67,10 @@ module.exports = function(app) {
 		},
 
 		list : function (req, res, next) {
+			var where = req.query || {};
+
 			new AnnouncementCollection()
+			.query({ where: where })
 			.fetch()
 			.then(function(announcements) {
 				res.status(200).json({

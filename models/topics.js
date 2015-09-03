@@ -47,7 +47,10 @@ module.exports = function(app) {
 		},
 
 		list : function (req, res, next) {
+			var where = req.query || {};
+
 			new TopicCollection()
+			.query({ where: where })
 			.fetch()
 			.then(function(topics) {
 				res.status(200).json({

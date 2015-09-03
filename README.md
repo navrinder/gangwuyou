@@ -65,6 +65,10 @@ If `success: false` the status will be >= `400` and the object will contain the 
 
 Some API calls return items with the key `active: Y`. This should be checked for when receiving data. It indicates that the item exists and can be used. Making a `DELETE` call to remove an item sets the key to `active: N` indicating that the item has been removed. This way, the item can be removed from use while still preserving the data.
 
+###Queries
+
+Some data lists support queries. For instance, to list all Articles created by a doctor, include `?user_id=1` in the URL, and only the Articles created by user with `id=1` will be shown. API calls that have this ability will have "Can use query string to provide arguments". Any arguments may be used at this time, though this may change in the future.
+
 
 
 
@@ -127,6 +131,8 @@ Authorized: `doctor`
 
 ####List all announcements
 	GET /api/v1/announcements
+
+Can use query string to provide arguments
 
 Authorized: `user`, `doctor`, `admin`
 
@@ -204,6 +210,8 @@ Authorized: `doctor`, `admin`
 ###List all articles
 	GET /api/v1/articles
 
+Can use query string to provide arguments
+
 Authorized: `user`, `doctor`, `admin`
 
 ###Show article
@@ -261,6 +269,8 @@ Authorized: `admin`
 
 ###List clinics
 	GET /api/v1/clinics
+
+Can use query string to provide arguments
 
 Authorized: `user`, `doctor`, `admin`
 
@@ -572,6 +582,8 @@ Authorized: `user`, `doctor`, `admin`
 ###List all topics
 	GET /api/v1/topics
 
+Can use query string to provide arguments
+
 Authorized: `user`, `doctor`, `admin`
 
 ###Show topic
@@ -626,6 +638,8 @@ Authorized: no authorization
 
 ####List all users
 	GET /api/v1/users
+
+Can use query string to provide arguments
 
 Authorized: `admin`
 
