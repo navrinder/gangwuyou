@@ -67,10 +67,9 @@ Some API calls return items with the key `active: Y`. This should be checked for
 
 ###Queries and query string
 
-Some data lists support queries included in the query string. For instance, to list all Articles created by a doctor, include `?user_id=1` in the URL, and only the Articles created by user with `id=1` will be shown. API calls that have this ability will have "Can use query string to provide arguments". Any arguments may be used at this time, though this may change in the future.
+Some data lists support queries. For instance, to list all Articles created by a doctor, include `?user_id=1` in the URL, and only the Articles created by user with `id=1` will be shown. API calls that have this ability will have "Can use query string to provide arguments". Any arguments may be used.
 
 Additionally, all collections support `limit` and `offset` in the query string.
-
 
 
 
