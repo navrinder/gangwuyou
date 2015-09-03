@@ -46,8 +46,19 @@ module.exports = function(app) {
 		},
 
 		showUserComments : function (req, res, next) {
+			var query = {};
+			if (req.query.limit) {
+				query.limit = +req.query.limit;
+				delete req.query.limit;
+			}
+			if (req.query.offset) {
+				query.offset = +req.query.offset;
+				delete req.query.offset;
+			}
+			query.where = { user_id: req.params.user_id	};
+
 			new CommentCollection()
-			.query({ where: { user_id: req.params.user_id	} })
+			.query(query)
 			.fetch({
 				require: true
 			})
@@ -63,8 +74,19 @@ module.exports = function(app) {
 		},
 
 		showArticleComments : function (req, res, next) {
+			var query = {};
+			if (req.query.limit) {
+				query.limit = +req.query.limit;
+				delete req.query.limit;
+			}
+			if (req.query.offset) {
+				query.offset = +req.query.offset;
+				delete req.query.offset;
+			}
+			query.where = { user_id: req.params.article_id };
+
 			new CommentCollection()
-			.query({ where: { article_id: req.params.article_id	} })
+			.query(query)
 			.fetch({
 				require: true
 			})

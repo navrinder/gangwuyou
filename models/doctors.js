@@ -78,8 +78,19 @@ module.exports = function(app) {
 		},
 
 		list : function (req, res, next) {
+			var query = {};
+			if (req.query.limit) {
+				query.limit = +req.query.limit;
+				delete req.query.limit;
+			}
+			if (req.query.offset) {
+				query.offset = +req.query.offset;
+				delete req.query.offset;
+			}
+			query.where = { clinic_id: req.params.clinic_id	};
+
 			new DoctorCollection()
-			.query({ where: { clinic_id: req.params.clinic_id	} })
+			.query(query)
 			.fetch()
 			.then(function(doctors) {
 				res.status(200).json({
