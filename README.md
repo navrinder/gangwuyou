@@ -95,6 +95,17 @@ The response will contain `message` during development, but will not be shown in
 
 # API calls
 
+- [Announcements](#announcements)
+- [Answers](#answers)
+- [Articles](#articles)
+- [Clinics](#clinics)
+- [Comments](#comments)
+- [Doctors](#doctors)
+- [Questions](#questions)
+- [Reminders](#reminders)
+- [Replies](#replies)
+- [Topics](#topics)
+- [Users](#users)
 
 
 ##Announcements
@@ -114,7 +125,7 @@ Body:
 
 Authorized: `doctor`
 
-####List all announcement
+####List all announcements
 	GET /api/v1/announcements
 
 Authorized: `user`, `doctor`, `admin`
@@ -135,7 +146,7 @@ Body:
 	hospital (optional)
 	location (optional)
 
-####Remove annoucement
+####Remove announcement
 	DELETE /api/v1/announcements/:announcement_id
 
 Authorized: `user`, `doctor`, `admin`
