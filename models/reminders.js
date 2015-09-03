@@ -68,7 +68,17 @@ module.exports = function(app) {
 		},
 
 		list : function (req, res, next) {
-			var query = { where: { user_id: req.params.user_id } };
+			var query = {};
+			if (req.query.limit) {
+				query.limit = +req.query.limit;
+				delete req.query.limit;
+			}
+			if (req.query.offset) {
+				query.offset = +req.query.offset;
+				delete req.query.offset;
+			}
+			query.where = { user_id: req.params.user_id	};
+
 			var Reminders = new ReminderCollection({
 			}).query(query);
 

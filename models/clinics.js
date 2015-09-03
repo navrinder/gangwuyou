@@ -86,10 +86,19 @@ module.exports = function(app) {
 		},
 
 		list : function (req, res, next) {
-			var where = req.query || {};
+			var query = {};
+			if (req.query.limit) {
+				query.limit = +req.query.limit;
+				delete req.query.limit;
+			}
+			if (req.query.offset) {
+				query.offset = +req.query.offset;
+				delete req.query.offset;
+			}
+			query.where = req.query || {};
 
 			new ClinicCollection()
-			.query({ where: where })
+			.query(query)
 			.fetch()
 			.then(function(clinics) {
 				res.status(200).json({

@@ -46,8 +46,19 @@ module.exports = function(app) {
 		},
 
 		showUserReplies : function (req, res, next) {
+			var query = {};
+			if (req.query.limit) {
+				query.limit = +req.query.limit;
+				delete req.query.limit;
+			}
+			if (req.query.offset) {
+				query.offset = +req.query.offset;
+				delete req.query.offset;
+			}
+			query.where = { user_id: req.params.user_id	};
+
 			new ReplyCollection()
-			.query({ where: { user_id: req.params.user_id	} })
+			.query(query)
 			.fetch({
 				require: true
 			})
@@ -63,8 +74,19 @@ module.exports = function(app) {
 		},
 
 		showTopicReplies : function (req, res, next) {
+			var query = {};
+			if (req.query.limit) {
+				query.limit = +req.query.limit;
+				delete req.query.limit;
+			}
+			if (req.query.offset) {
+				query.offset = +req.query.offset;
+				delete req.query.offset;
+			}
+			query.where = { topic_id: req.params.topic_id	};
+
 			new ReplyCollection()
-			.query({ where: {	topic_id: req.params.topic_id	} })
+			.query(query)
 			.fetch({
 				require: true
 			})
