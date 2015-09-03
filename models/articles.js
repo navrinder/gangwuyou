@@ -80,7 +80,10 @@ module.exports = function(app) {
 		},
 
 		list : function (req, res, next) {
+			var where = req.query || {};
+
 			new ArticleCollection()
+			.query({ where: where })
 			.fetch()
 			.then(function(articles) {
 				res.status(200).json({

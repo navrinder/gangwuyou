@@ -86,7 +86,10 @@ module.exports = function(app) {
 		},
 
 		list : function (req, res, next) {
+			var where = req.query || {};
+
 			new ClinicCollection()
+			.query({ where: where })
 			.fetch()
 			.then(function(clinics) {
 				res.status(200).json({

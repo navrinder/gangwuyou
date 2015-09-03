@@ -66,7 +66,10 @@ module.exports = function (app) {
 		},
 
 		list : function (req, res, next) {
+			var where = req.query || {};
+
 			new UserCollection()
+			.query({ where: where })
 			.fetch()
 			.then(function(users) {
 				res.status(200).json({
