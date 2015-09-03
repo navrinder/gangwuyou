@@ -38,7 +38,7 @@ app.use(express.static('public'));
 // basic logging
 app.use(function (req, res, next) {
 	console.log(req.method, req.url);
-	if (app.get('env') === 'development') {
+	if (app.get('env') === 'development' && req.body) {
 		console.log(req.body);
 	}
 	next();
@@ -46,27 +46,7 @@ app.use(function (req, res, next) {
 
 // test route
 app.get('/', function(req, res) {
-	// res.json({ message: 'hello world' });
-	res.writeHead(200, {'content-type': 'text/html'});
-  res.end(
-    '<form action="/api/v1/users" enctype="multipart/form-data" method="post">'+
-    '<input type="text" name="user_name"><br>' +
-		'<input type="text" name="email_address"><br>' +
-		'<input type="text" name="password"><br>' +
-		'<input type="text" name="type"><br>' +
-		'<input type="text" name="sex"><br>' +
-		'<input type="text" name="birth_day"><br>' +
-		'<input type="text" name="birth_month"><br>' +
-		'<input type="text" name="birth_year"><br>' +
-		'<input type="text" name="phone_number"><br>' +
-		'<input type="text" name="occupation"><br>' +
-		'<input type="text" name="hospital"><br>' +
-		'<input type="text" name="department"><br>' +
-		'<input type="text" name="city"><br>' +
-    '<input type="file" name="picture" multiple="multiple"><br>'+
-    '<input type="submit" value="Upload">'+
-    '</form>'
-  );
+	res.json({ message: 'hello world' });
 });
 
 // documentation
