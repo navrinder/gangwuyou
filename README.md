@@ -102,18 +102,13 @@ The response will contain `message` during development, but will not be shown in
 
 - [Users](#users)
 - [Reminders](#reminders)
-
 - [Questions](#questions)
 - [Answers](#answers)
-
 - [Articles](#articles)
 - [Comments](#comments)
-
 - [Announcements](#announcements)
- 
 - [Topics](#topics)
 - [Replies](#replies)
-
 - [Clinics](#clinics)
 - [Doctors](#doctors)
 
