@@ -100,64 +100,189 @@ The response will contain `message` during development, but will not be shown in
 
 # API calls
 
-- [Announcements](#announcements)
-- [Answers](#answers)
-- [Articles](#articles)
-- [Clinics](#clinics)
-- [Comments](#comments)
-- [Doctors](#doctors)
-- [Questions](#questions)
-- [Reminders](#reminders)
-- [Replies](#replies)
-- [Topics](#topics)
 - [Users](#users)
+- [Reminders](#reminders)
+
+- [Questions](#questions)
+- [Answers](#answers)
+
+- [Articles](#articles)
+- [Comments](#comments)
+
+- [Announcements](#announcements)
+ 
+- [Topics](#topics)
+- [Replies](#replies)
+
+- [Clinics](#clinics)
+- [Doctors](#doctors)
 
 
-##Announcements
+##Users
 
-Announcements are short updates created by doctors.
+User accounts for users and doctors. Some optional fields are only for doctors.
 
-####Create announcement
-	POST /api/v1/announcements
+####Create user
+	POST /api/v1/users
 
 Body:
 
-	user_id
-	title
-	body
+	user_name
+	email_address
+	password
+	type ('user' or 'doctor')
+	sex
+	birth_day
+	birth_month
+	birth_year
+	phone_number
+	picture (optional)
+	occupation (optional)
 	hospital (optional)
-	location (optional)
+	department (optional)
+	city (optional)
 
-Authorized: `doctor`
+Authorized: no authorization
 
-####List all announcements
-	GET /api/v1/announcements
+####List all users
+	GET /api/v1/users
 
 Can use query string to provide arguments
 
-Authorized: `user`, `doctor`, `admin`
+Authorized: `admin`
 
-####Show announcement
-	GET /api/v1/announcements/:announcement_id
+####Show user
+	GET /api/v1/users/:user_id
 
-Authorized: `user`, `doctor`, `admin`
+Authorized: `currentUser`, `admin`
 
-####Update announcement
-	PUT /api/v1/announcements/:announcement_id
+####Update user
+	PUT /api/v1/users/:user_id
+
+Body:
+
+	user_name (optional)
+	email_address (optional)
+	password (optional)
+	type ('user' or 'doctor') (optional)
+	sex (optional)
+	birth_day (optional)
+	birth_month (optional)
+	birth_year (optional)
+	phone_number (optional)
+	picture (optional)
+	occupation (optional)
+	hospital (optional)
+	department (optional)
+	city (optional)
+
+Authorized: `currentUser`, `admin`
+
+####Remove user
+	DELETE /api/v1/users/:user_id
+
+Authorized: `admin`
+
+
+##Reminders
+
+Reminders set by the user for appointments, medication, etc.
+
+###Create reminder
+	POST /api/v1/users/:user_id/reminders
 
 Body:
 
 	user_id
-	title (optional)
-	body (optional)
-	hospital (optional)
-	location (optional)
-
-####Remove announcement
-	DELETE /api/v1/announcements/:announcement_id
+	day (optional)
+	time (optional)
+	medicine (y/n)
+	pad (y/n)
+	medicine_name (optional)
+	daily (y/n)
+	weekly (y/n)
 
 Authorized: `user`, `doctor`, `admin`
 
+###List reminders belonging to a user
+	GET /api/v1/users/:user_id/reminders
+
+Authorized: `currentUser`, `admin`
+
+###Show reminder
+	GET /api/v1/users/:user_id/reminders/:reminder_id
+
+Authorized: `currentUser`, `admin`
+
+###Update reminder
+	PUT /api/v1/users/:user_id/reminders/:reminder_id
+
+Body:
+
+	user_id
+	day (optional)
+	time (optional)
+	medicine (y/n)
+	pad (y/n)
+	medicine_name (optional)
+	daily (y/n)
+	weekly (y/n)
+
+Authorized: `admin`
+
+###Remove reminder
+	DELETE /api/v1/users/:user_id/reminders/:reminder_id
+
+Authorized: `currentUser`, `admin`
+
+
+
+
+
+##Questions
+
+Quiz questions can be stored here but should be hardcoded. Adding more than 12 questions may lead to database errors.
+
+###Create question
+	POST /api/v1/questions
+
+Body:
+
+	question
+	answer_a
+	answer_b
+	answer_c
+	answer_d
+
+Authorized: `admin`
+
+###List questions
+	GET /api/v1/questions
+
+Authorized: `user`, `doctor`, `admin`
+
+###Show question
+	GET /api/v1/questions/:question_id
+
+Authorized: `user`, `doctor`, `admin`
+
+###Update question
+	PUT /api/v1/questions/:question_id
+
+Body:
+
+	question (optional)
+	answer_a (optional)
+	answer_b (optional)
+	answer_c (optional)
+	answer_d (optional)
+
+Authorized: `admin`
+
+###Remove question
+	DELETE /api/v1/questions/:question_id
+
+Authorized: `admin`
 
 
 ##Answers
@@ -244,6 +369,208 @@ Authorized: `currentUser`, `admin`
 Authorized: `user`, `doctor`, `admin`
 
 
+##Comments
+
+Comments left by users on articles
+
+###Create comment
+	POST /api/v1/articles/:article_id/comments
+
+Body:
+
+	article_id
+	user_id
+	title
+	body
+
+Authorized: `user`, `doctor`, `admin`
+
+###List all comments belonging to an article
+	GET /api/v1/articles/:article_id/comments
+
+Authorized: `user`, `doctor`, `admin`
+
+###Show comment
+	GET /api/v1/articles/:article_id/comments/:comment_id
+
+Authorized: `user`, `doctor`, `admin`
+
+###Update comment
+	PUT /api/v1/articles/:article_id/comments/:comment_id
+
+Body:
+
+	article_id
+	user_id
+	title (optional)
+	body _(optinal)_
+
+Authorized: `currentUser`, `admin`
+
+###Remove comment
+	DELETE /api/v1/articles/:article_id/comments/:comment_id
+
+Authorized: `currentUser`, `admin`
+
+###List all comments belonging to a user
+	GET /api/v1/users/:user_id/comments
+
+Authorized: `currentUser`, `admin`
+
+
+
+
+
+
+##Announcements
+
+Announcements are short updates created by doctors.
+
+####Create announcement
+	POST /api/v1/announcements
+
+Body:
+
+	user_id
+	title
+	body
+	hospital (optional)
+	location (optional)
+
+Authorized: `doctor`
+
+####List all announcements
+	GET /api/v1/announcements
+
+Can use query string to provide arguments
+
+Authorized: `user`, `doctor`, `admin`
+
+####Show announcement
+	GET /api/v1/announcements/:announcement_id
+
+Authorized: `user`, `doctor`, `admin`
+
+####Update announcement
+	PUT /api/v1/announcements/:announcement_id
+
+Body:
+
+	user_id
+	title (optional)
+	body (optional)
+	hospital (optional)
+	location (optional)
+
+####Remove announcement
+	DELETE /api/v1/announcements/:announcement_id
+
+Authorized: `user`, `doctor`, `admin`
+
+
+
+
+
+
+##Topics
+
+Topics for discussion written by users
+
+###Create topic
+	POST /api/v1/topics
+
+Body:
+
+	user_id
+	title
+	body
+	category
+
+Authorized: `user`, `doctor`, `admin`
+
+###List all topics
+	GET /api/v1/topics
+
+Can use query string to provide arguments
+
+Authorized: `user`, `doctor`, `admin`
+
+###Show topic
+	GET /api/v1/topics/:topic_id
+
+Authorized: `user`, `doctor`, `admin`
+
+###Update topic
+	PUT /api/v1/topics/:topic_id
+
+Body:
+
+	user_id
+	title (optional)
+	body (optional)
+	category (optional)
+
+Authorized: `currentUser`, `admin`
+
+###Remove topic
+	DELETE /api/v1/topics/:topic_id
+
+Authorized: `currentUser`, `admin`
+
+
+
+##Replies
+
+Replies to topics created by other users
+
+###Create replies
+	POST /api/v1/topics/:topic_id/replies
+
+Body:
+
+	topic_id
+	user_id
+	title
+	body
+
+Authorized: `user`, `doctor`, `admin`
+
+###List all replies belonging to an article
+	GET /api/v1/topics/:topic_id/replies
+
+Authorized: `user`, `doctor`, `admin`
+
+###Show reply
+	GET /api/v1/topics/:topic_id/replies/:reply_id
+
+Authorized: `user`, `doctor`, `admin`
+
+###Update reply
+	PUT /api/v1/topics/:topic_id/replies/:reply_id
+
+Body:
+
+	topic_id
+	user_id
+	title (optional)
+	body (optional)
+
+Authorized: `currentUser`, `admin`
+
+###Remove reply
+	DELETE /api/v1/topics/:topic_id/replies/:reply_id
+
+Authorized: `currentUser`, `admin`
+
+###List all replies belonging to a user
+	GET /api/v1/users/:user_id/replies
+
+Authorized: `user`, `doctor`, `admin`
+
+
+
+
+
 
 ##Clinics
 
@@ -306,54 +633,6 @@ Authorized: `admin`
 
 
 
-##Comments
-
-Comments left by users on articles
-
-###Create comment
-	POST /api/v1/articles/:article_id/comments
-
-Body:
-
-	article_id
-	user_id
-	title
-	body
-
-Authorized: `user`, `doctor`, `admin`
-
-###List all comments belonging to an article
-	GET /api/v1/articles/:article_id/comments
-
-Authorized: `user`, `doctor`, `admin`
-
-###Show comment
-	GET /api/v1/articles/:article_id/comments/:comment_id
-
-Authorized: `user`, `doctor`, `admin`
-
-###Update comment
-	PUT /api/v1/articles/:article_id/comments/:comment_id
-
-Body:
-
-	article_id
-	user_id
-	title (optional)
-	body _(optinal)_
-
-Authorized: `currentUser`, `admin`
-
-###Remove comment
-	DELETE /api/v1/articles/:article_id/comments/:comment_id
-
-Authorized: `currentUser`, `admin`
-
-###List all comments belonging to a user
-	GET /api/v1/users/:user_id/comments
-
-Authorized: `currentUser`, `admin`
-
 ##Doctors
 
 Doctors information that belongs to a clinic. These doctors are NOT user accounts.
@@ -411,267 +690,3 @@ Body:
 	password
 
 Authorized: no authorization
-
-
-
-##Questions
-
-Quiz questions can be stored here but should be hardcoded. Adding more than 12 questions may lead to database errors.
-
-###Create question
-	POST /api/v1/questions
-
-Body:
-
-	question
-	answer_a
-	answer_b
-	answer_c
-	answer_d
-
-Authorized: `admin`
-
-###List questions
-	GET /api/v1/questions
-
-Authorized: `user`, `doctor`, `admin`
-
-###Show question
-	GET /api/v1/questions/:question_id
-
-Authorized: `user`, `doctor`, `admin`
-
-###Update question
-	PUT /api/v1/questions/:question_id
-
-Body:
-
-	question (optional)
-	answer_a (optional)
-	answer_b (optional)
-	answer_c (optional)
-	answer_d (optional)
-
-Authorized: `admin`
-
-###Remove question
-	DELETE /api/v1/questions/:question_id
-
-Authorized: `admin`
-
-
-
-##Reminders
-
-Reminders set by the user for appointments, medication, etc.
-
-###Create reminder
-	POST /api/v1/users/:user_id/reminders
-
-Body:
-
-	user_id
-	day (optional)
-	time (optional)
-	medicine (y/n)
-	pad (y/n)
-	medicine_name (optional)
-	daily (y/n)
-	weekly (y/n)
-
-Authorized: `user`, `doctor`, `admin`
-
-###List reminders belonging to a user
-	GET /api/v1/users/:user_id/reminders
-
-Authorized: `currentUser`, `admin`
-
-###Show reminder
-	GET /api/v1/users/:user_id/reminders/:reminder_id
-
-Authorized: `currentUser`, `admin`
-
-###Update reminder
-	PUT /api/v1/users/:user_id/reminders/:reminder_id
-
-Body:
-
-	user_id
-	day (optional)
-	time (optional)
-	medicine (y/n)
-	pad (y/n)
-	medicine_name (optional)
-	daily (y/n)
-	weekly (y/n)
-
-Authorized: `admin`
-
-###Remove reminder
-	DELETE /api/v1/users/:user_id/reminders/:reminder_id
-
-Authorized: `currentUser`, `admin`
-
-
-
-##Replies
-
-Replies to topics created by other users
-
-###Create replies
-	POST /api/v1/topics/:topic_id/replies
-
-Body:
-
-	topic_id
-	user_id
-	title
-	body
-
-Authorized: `user`, `doctor`, `admin`
-
-###List all replies belonging to an article
-	GET /api/v1/topics/:topic_id/replies
-
-Authorized: `user`, `doctor`, `admin`
-
-###Show reply
-	GET /api/v1/topics/:topic_id/replies/:reply_id
-
-Authorized: `user`, `doctor`, `admin`
-
-###Update reply
-	PUT /api/v1/topics/:topic_id/replies/:reply_id
-
-Body:
-
-	topic_id
-	user_id
-	title (optional)
-	body (optional)
-
-Authorized: `currentUser`, `admin`
-
-###Remove reply
-	DELETE /api/v1/topics/:topic_id/replies/:reply_id
-
-Authorized: `currentUser`, `admin`
-
-###List all replies belonging to a user
-	GET /api/v1/users/:user_id/replies
-
-Authorized: `user`, `doctor`, `admin`
-
-
-
-##Topics
-
-Topics for discussion written by users
-
-###Create topic
-	POST /api/v1/topics
-
-Body:
-
-	user_id
-	title
-	body
-	category
-
-Authorized: `user`, `doctor`, `admin`
-
-###List all topics
-	GET /api/v1/topics
-
-Can use query string to provide arguments
-
-Authorized: `user`, `doctor`, `admin`
-
-###Show topic
-	GET /api/v1/topics/:topic_id
-
-Authorized: `user`, `doctor`, `admin`
-
-###Update topic
-	PUT /api/v1/topics/:topic_id
-
-Body:
-
-	user_id
-	title (optional)
-	body (optional)
-	category (optional)
-
-Authorized: `currentUser`, `admin`
-
-###Remove topic
-	DELETE /api/v1/topics/:topic_id
-
-Authorized: `currentUser`, `admin`
-
-
-
-##Users
-
-User accounts for users and doctors. Some optional fields are only for doctors.
-
-####Create user
-	POST /api/v1/users
-
-Body:
-
-	user_name
-	email_address
-	password
-	type ('user' or 'doctor')
-	sex
-	birth_day
-	birth_month
-	birth_year
-	phone_number
-	picture (optional)
-	occupation (optional)
-	hospital (optional)
-	department (optional)
-	city (optional)
-
-Authorized: no authorization
-
-####List all users
-	GET /api/v1/users
-
-Can use query string to provide arguments
-
-Authorized: `admin`
-
-####Show user
-	GET /api/v1/users/:user_id
-
-Authorized: `currentUser`, `admin`
-
-####Update user
-	PUT /api/v1/users/:user_id
-
-Body:
-
-	user_name (optional)
-	email_address (optional)
-	password (optional)
-	type ('user' or 'doctor') (optional)
-	sex (optional)
-	birth_day (optional)
-	birth_month (optional)
-	birth_year (optional)
-	phone_number (optional)
-	picture (optional)
-	occupation (optional)
-	hospital (optional)
-	department (optional)
-	city (optional)
-
-Authorized: `currentUser`, `admin`
-
-####Remove user
-	DELETE /api/v1/users/:user_id
-
-Authorized: `admin`
