@@ -4,6 +4,7 @@ module.exports = function (app) {
 		announcements : require('./announcements')(app),
 		answers       : require('./answers')(app),
 		articles      : require('./articles')(app),
+		categories    : require('./categories')(app),
 		clinics       : require('./clinics')(app),
 		comments      : require('./comments')(app),
 		doctors       : require('./doctors')(app),

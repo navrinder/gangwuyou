@@ -106,6 +106,7 @@ The response will contain `message` during development, but will not be shown in
 - [Answers](#answers)
 - [Articles](#articles)
 - [Comments](#comments)
+- [Categories](#categories)
 - [Announcements](#announcements)
 - [Topics](#topics)
 - [Replies](#replies)
@@ -412,6 +413,45 @@ Authorized: `currentUser`, `admin`
 
 Authorized: `currentUser`, `admin`
 
+
+
+
+##Categories
+
+Categories for articles
+
+###Create category
+	POST /api/v1/categories
+
+Body:
+
+	name
+
+Authorized: `admin`
+
+###List all categories
+	GET /api/v1/categories
+
+Authorized: `user`, `doctor`, `admin`
+
+###Show category
+	GET /api/v1/categories/:category_id
+
+Authorized: `user`, `doctor`, `admin`
+
+###Update category
+	PUT /api/v1/categories/:category_id
+
+Body:
+
+	name
+
+Authorized: `admin`
+
+###Remove category
+	DELETE /api/v1/categories/:category_id
+
+Authorized: `admin`
 
 
 

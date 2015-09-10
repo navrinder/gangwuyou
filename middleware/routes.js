@@ -58,6 +58,22 @@ function v1 (router, models, authUser) {
 		.get(authUser(['user', 'doctor', 'admin']), models.articles.showUserArticles);
 
 
+	// categories
+	router.route('/categories')
+		// list categories
+		.get(authUser(['user', 'doctor', 'admin']), models.categories.list)
+		// create category
+		.post(bodyParser, authUser(['admin']), models.categories.create);
+
+	router.route('/categories/:category_id')
+		// show category
+		.get(authUser(['user', 'doctor', 'admin']), models.categories.show)
+		// update category
+		.put(bodyParser, authUser(['admin']), models.categories.update)
+		// remove category
+		.delete(authUser(['admin']), models.categories.remove);
+
+
 	// clinics
 	router.route('/clinics')
 		// list clinics
