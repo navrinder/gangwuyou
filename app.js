@@ -33,7 +33,7 @@ app.set('Bookshelf', bookshelf);
 // functions called in routes
 var middleware = require('./middleware')(app);
 
-app.use(express.static('public'));
+app.use(express.static(__dirname + '/public'));
 
 // basic logging
 app.use(function (req, res, next) {
