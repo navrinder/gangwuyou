@@ -256,6 +256,27 @@ module.exports = {
 		}
 	},
 
+	categories: {
+		id: {
+			type: 'increments',
+			nullable: false,
+			primary: true
+		},
+		name: {
+			type: 'string',
+			maxlength: 255,
+			nullable: false
+		},
+		created_at: {
+			type: 'dateTime',
+			nullable: false
+		},
+		updated_at: {
+			type: 'dateTime',
+			nullable: true
+		}
+	},
+
 	questions: {
 		id: {
 			type: 'increments',
