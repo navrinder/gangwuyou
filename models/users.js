@@ -56,7 +56,7 @@ module.exports = function (app) {
 						.then(function(user) {
 							res.status(200).json({
 								success: true,
-								data: user
+								data: user.omit('password')
 							});
 						})
 						.catch(cleanup);
@@ -105,7 +105,7 @@ module.exports = function (app) {
 				.then(function(user) {
 					res.status(200).json({
 						success: true,
-						data: user
+						data: user.omit('password')
 					});
 				})
 				.catch(function(error) {
@@ -214,7 +214,7 @@ module.exports = function (app) {
 					res.status(200).json({
 						success: true,
 						token: token,
-						data: user
+						data: user.omit('password')
 					});
 				} else {
 					next({
