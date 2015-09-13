@@ -64,14 +64,18 @@ app.use(function (err, req, res, next) {
 	var response = {
 		success: false,
 		code: err.code,
-		message: 'Error'
+		message: err.message || 'Error'
 	};
 
 	console.error(err.message);
 	console.error(err.stack);
 
-	if (app.get('env') === 'development') {
-		response.message = err.message;
+	if (err.message && err.code) {
+		var readable = err.message.split(err.code + ':');
+		if (readable.length > 1) {
+			response.message = readable[1].trim();
+		}
+
 	}
 
 	res.status(err.status || 400).json(response);
