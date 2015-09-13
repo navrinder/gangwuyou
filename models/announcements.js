@@ -47,6 +47,7 @@ module.exports = function(app) {
 			.then(function(authed) {
 
 				Announcement.fetch({
+					withRelated: ['author'],
 					require: true
 				})
 				.then(function(announcement) {
