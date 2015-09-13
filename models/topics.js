@@ -1,4 +1,5 @@
 // topic posts created by users
+var form = require('../lib/form');
 
 module.exports = function(app) {
 	var Bookshelf = app.get('Bookshelf');
@@ -8,22 +9,43 @@ module.exports = function(app) {
 	return {
 
 		create : function (req, res, next) {
-			new TopicModel({
-				user_id: req.body.user_id,
-				title: req.body.title,
-				body: req.body.body,
-				category: req.body.category,
-				active: 'Y'
-			})
-			.save()
-			.then(function(topic) {
-				res.status(200).json({
-					success: true,
-					data: topic
+			var inForm = form.buildForm();
+
+			inForm.parse(req, function (err, fields, files) {
+				if (err) {
+					return next(err);
+				}
+
+				var picture = files.picture;
+
+				form.checkPicture(picture, function (error, picturePath) {
+					if (error) {
+						return next(error);
+					} else {
+						var cleanup = form.cleanup(picture, next);
+						var Topic = new TopicModel({
+							user_id: fields.user_id,
+							title: fields.title,
+							body: fields.body,
+							category: fields.category,
+							active: 'Y'
+						});
+
+						Topic.authenticate(req, res)
+						.then(function(authed) {
+
+							Topic.save()
+							.then(function(topic) {
+								res.status(200).json({
+									success: true,
+									data: topic
+								});
+							})
+							.catch(cleanup);
+						})
+						.catch(cleanup);
+					}
 				});
-			})
-			.catch(function(error) {
-				next(error);
 			});
 		},
 
@@ -101,34 +123,46 @@ module.exports = function(app) {
 		},
 
 		update : function (req, res, next) {
-			var Topic = new TopicModel({
-				id: req.params.topic_id
-			});
+			var inForm = form.buildForm();
 
-			Topic.authenticate(req, res)
-			.then(function(authed) {
+			inForm.parse(req, function (err, fields, files) {
+				if (err) {
+					return next(err);
+				}
 
-				Topic.save({
-					user_id: req.body.user_id,
-					title: req.body.title,
-					body: req.body.body,
-					category: req.body.category
-				}, {
-					patch: true
-				})
-				.then(function(topic) {
-					res.status(200).json({
-						success: true,
-						data: topic
-					});
-				})
-				.catch(function(error) {
-					next(error);
+				var picture = files.picture;
+
+				form.checkPicture(picture, function (error, picturePath) {
+					if (error) {
+						return next(error);
+					} else {
+						var cleanup = form.cleanup(picture, next);
+						var Topic = new TopicModel({
+							id: req.params.topic_id
+						});
+
+						Topic.authenticate(req, res)
+						.then(function(authed) {
+
+							Topic.save({
+								user_id: fields.user_id,
+								title: fields.title,
+								body: fields.body,
+								category: fields.category
+							}, {
+								patch: true
+							})
+							.then(function(topic) {
+								res.status(200).json({
+									success: true,
+									data: topic
+								});
+							})
+							.catch(cleanup);
+						})
+						.catch(cleanup);
+					}
 				});
-
-			})
-			.catch(function(error) {
-				next(error);
 			});
 		},
 
