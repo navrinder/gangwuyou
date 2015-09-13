@@ -59,7 +59,7 @@ module.exports = function(app) {
 			.then(function(authed) {
 
 				Article.fetch({
-					withRelated: ['comments'],
+					withRelated: ['comments', 'author'],
 					require: true
 				})
 				.then(function(article) {
