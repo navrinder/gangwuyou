@@ -209,13 +209,13 @@ function v1 (router, models, authUser) {
 		// list topics
 		.get(authUser(['user', 'doctor', 'admin']), models.topics.list)
 		// create topic
-		.post(bodyParser, authUser(['user', 'doctor', 'admin']), models.topics.create);
+		.post(authUser(['user', 'doctor', 'admin']), models.topics.create);
 
 	router.route('/topics/:topic_id')
 		// show topic
 		.get(authUser(['user', 'doctor', 'admin']), models.topics.show)
 		// update topic
-		.put(bodyParser, authUser(['currentUser', 'admin']), models.topics.update)
+		.put(authUser(['currentUser', 'admin']), models.topics.update)
 		// remove topic
 		.delete(authUser(['currentUser', 'admin']), models.topics.remove);
 

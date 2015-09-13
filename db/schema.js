@@ -562,7 +562,11 @@ module.exports = {
 		},
 		category: {
 			type: 'string',
-			nullable: false
+			nullable: true
+		},
+		picture: {
+			type: 'string',
+			nullable: true
 		},
 		active: {
 			type: 'string',
