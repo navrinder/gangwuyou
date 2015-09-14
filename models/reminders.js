@@ -16,7 +16,8 @@ module.exports = function(app) {
 				pad: req.body.pad,
 				medicine_name: req.body.medicine_name,
 				daily: req.body.daily,
-				weekly: req.body.weekly
+				weekly: req.body.weekly,
+				active: 'Y'
 			});
 
 			Reminder.authenticate(req, res)
@@ -68,24 +69,18 @@ module.exports = function(app) {
 		},
 
 		list : function (req, res, next) {
-			var query = {};
-			if (req.query.limit) {
-				query.limit = +req.query.limit;
-				delete req.query.limit;
-			}
-			if (req.query.offset) {
-				query.offset = +req.query.offset;
-				delete req.query.offset;
-			}
-			query.where = { user_id: req.params.user_id	};
+			var query = {
+				where : { user_id: req.params.user_id	}
+			};
 
+			// reminders must be authenticated for currentUser scope
 			var Reminders = new ReminderCollection({
 			}).query(query);
 
 			Reminders.authenticate(req, res)
 			.then(function(authed) {
 
-				Reminders.query(query)
+				Reminders.parseQuery(req, query)
 				.fetch()
 				.then(function(reminders) {
 					res.status(200).json({

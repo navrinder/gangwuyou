@@ -45,6 +45,7 @@ module.exports = function(app) {
 
 		list : function (req, res, next) {
 			new InfoCollection()
+			.parseQuery(req)
 			.fetch()
 			.then(function(info) {
 				res.status(200).json({

@@ -62,19 +62,8 @@ module.exports = function(app) {
 		},
 
 		list : function (req, res, next) {
-			var query = {};
-			if (req.query.limit) {
-				query.limit = +req.query.limit;
-				delete req.query.limit;
-			}
-			if (req.query.offset) {
-				query.offset = +req.query.offset;
-				delete req.query.offset;
-			}
-			query.where = req.query || {};
-
 			new CategoryCollection()
-			.query(query)
+			.parseQuery(req)
 			.fetch()
 			.then(function(categories) {
 				res.status(200).json({
