@@ -520,6 +520,7 @@ Body:
 	title
 	body
 	category
+	picture (optional)
 
 Authorized: `user`, `doctor`, `admin`
 
@@ -544,6 +545,7 @@ Body:
 	title (optional)
 	body (optional)
 	category (optional)
+	picture (optional)
 
 Authorized: `currentUser`, `admin`
 
