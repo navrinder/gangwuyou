@@ -28,6 +28,7 @@ module.exports = function(app) {
 							title: fields.title,
 							body: fields.body,
 							category: fields.category,
+							picture: picturePath,
 							active: 'Y'
 						});
 
@@ -148,7 +149,8 @@ module.exports = function(app) {
 								user_id: fields.user_id,
 								title: fields.title,
 								body: fields.body,
-								category: fields.category
+								category: fields.category,
+								picture: picturePath
 							}, {
 								patch: true
 							})
