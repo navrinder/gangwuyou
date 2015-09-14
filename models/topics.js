@@ -70,19 +70,8 @@ module.exports = function(app) {
 		},
 
 		list : function (req, res, next) {
-			var query = {};
-			if (req.query.limit) {
-				query.limit = +req.query.limit;
-				delete req.query.limit;
-			}
-			if (req.query.offset) {
-				query.offset = +req.query.offset;
-				delete req.query.offset;
-			}
-			query.where = req.query || {};
-
 			new TopicCollection()
-			.query(query)
+			.parseQuery(req)
 			.fetch()
 			.then(function(topics) {
 				res.status(200).json({
@@ -96,19 +85,12 @@ module.exports = function(app) {
 		},
 
 		showUserTopics : function (req, res, next) {
-			var query = {};
-			if (req.query.limit) {
-				query.limit = +req.query.limit;
-				delete req.query.limit;
-			}
-			if (req.query.offset) {
-				query.offset = +req.query.offset;
-				delete req.query.offset;
-			}
-			query.where = {	user_id: req.params.user_id	};
+			var query = {
+				where : {	user_id: req.params.user_id	}
+			};
 
 			new TopicCollection()
-			.query(query)
+			.parseQuery(req, query)
 			.fetch({
 				require: true
 			})
