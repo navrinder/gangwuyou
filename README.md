@@ -65,11 +65,19 @@ If `success: false` the status will be >= `400` and the object will contain the 
 
 Some API calls return items with the key `active: Y`. This should be checked for when receiving data. It indicates that the item exists and can be used. Making a `DELETE` call to remove an item sets the key to `active: N` indicating that the item has been removed. This way, the item can be removed from use while still preserving the data.
 
-###Queries and query string
+###Query parameters and limts, offsets, ordering
 
-Some data lists support queries. For instance, to list all Articles created by a doctor, include `?user_id=1` in the URL, and only the Articles created by user with `id=1` will be shown. API calls that have this ability will have "Can use query string to provide arguments". Any arguments may be used.
+All List API calls that return collections can be modified using the query string. The available options are:
 
-Additionally, all collections support `limit` and `offset` in the query string.
+	<column>=<value>
+	limit=<number>
+	offset=<number>
+	sort=<column>,<asc OR desc>
+
+This example will return 20 articles after the first 10 that are in the "medicine" `category` in descending order by their `id`:
+
+	/api/v1/articles?category=medicine&limit=20&offset=10&sort=id,desc
+
 
 
 
@@ -91,10 +99,10 @@ Status: >= `400`
 ```
 {
 	success: false,
-	code: ''
+	code: '',
+	message: ''
 }
 ```
-The response will contain `message` during development, but will not be shown in production. Do not use it in your code.
 
 
 
