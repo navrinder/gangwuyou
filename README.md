@@ -699,7 +699,7 @@ Doctors information that belongs to a clinic. These doctors are NOT user account
 Body:
 
 	name
-	position
+	occupation
 	picture
 	hours
 
@@ -721,7 +721,7 @@ Authorized: `user`, `doctor`, `admin`
 Body:
 
 	name
-	position
+	occupation
 	picture
 	hours
 
