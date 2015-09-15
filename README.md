@@ -75,11 +75,19 @@ All List API calls that return collections can be modified using the query strin
 	sort=<column>,<asc OR desc>
 	after=<YYYY-MM-DD>
 	before=<YYYY-MM-DD>
+	dateType=<number>
 
 
 This example will return articles in the category medicine, limited to 20, after the first 10, sorted by `id` descending, after June 1, and before July 1:
 
 	/api/v1/articles?category=medicine&limit=20&offset=10&sort=id,desc&after=2015-06-01&before=2015-07-01
+
+The `dateType` argument takes an integer input and returns all rows within the specified date. The values are:
+
+	1 : day
+	2 : week
+	3 : month
+	4 : year
 
 
 
