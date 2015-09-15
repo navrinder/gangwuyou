@@ -70,7 +70,9 @@ module.exports = function(app) {
 		list : function (req, res, next) {
 			new AnnouncementCollection()
 			.parseQuery(req)
-			.fetch()
+			.fetch({
+				withRelated: ['author']
+			})
 			.then(function(announcements) {
 				res.status(200).json({
 					success: true,
