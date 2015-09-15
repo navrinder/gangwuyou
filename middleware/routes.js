@@ -229,11 +229,11 @@ function v1 (router, models, authUser) {
 		// create user
 		.post(models.users.create)
 		// list users
-		.get(authUser(['admin']), models.users.list);
+		.get(authUser(['user', 'doctor', 'admin']), models.users.list);
 
 	router.route('/users/:user_id')
 		// show user
-		.get(authUser(['currentUser', 'admin']), models.users.show)
+		.get(authUser(['user', 'doctor', 'admin']), models.users.show)
 		// update user info
 		.put(authUser(['currentUser', 'admin']), models.users.updateUser)
 		// remove user

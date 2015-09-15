@@ -82,7 +82,9 @@ module.exports = function(app) {
 		list : function (req, res, next) {
 			new ArticleCollection()
 			.parseQuery(req)
-			.fetch()
+			.fetch({
+				withRelated: ['author']
+			})
 			.then(function(articles) {
 				res.status(200).json({
 					success: true,

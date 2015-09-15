@@ -156,12 +156,12 @@ Authorized: no authorization
 
 Can use query string to provide arguments
 
-Authorized: `admin`
+Authorized: `user`, `doctor`, `admin`
 
 ####Show user
 	GET /api/v1/users/:user_id
 
-Authorized: `currentUser`, `admin`
+Authorized: `user`, `doctor`, `admin`
 
 ####Update user
 	PUT /api/v1/users/:user_id
