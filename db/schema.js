@@ -461,7 +461,7 @@ module.exports = {
 			maxlength: 255,
 			nullable: false
 		},
-		position: {
+		occupation: {
 			type: 'string',
 			maxlength: 255,
 			nullable: true

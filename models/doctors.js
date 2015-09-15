@@ -25,7 +25,7 @@ module.exports = function(app) {
 						var Doctor = new DoctorModel({
 							name: fields.name,
 							clinic_id: req.params.clinic_id,
-							position: fields.position,
+							occupation: fields.occupation,
 							picture: picturePath,
 							hours: fields.hours,
 							active: 'Y'
@@ -120,7 +120,7 @@ module.exports = function(app) {
 							Doctor.save({
 								name: fields.name,
 								clinic_id: req.params.clinic_id,
-								position: fields.position,
+								occupation: fields.occupation,
 								picture: picturePath,
 								hours: fields.hours
 							}, {
