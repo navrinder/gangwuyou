@@ -73,10 +73,13 @@ All List API calls that return collections can be modified using the query strin
 	limit=<number>
 	offset=<number>
 	sort=<column>,<asc OR desc>
+	after=<YYYY-MM-DD>
+	before=<YYYY-MM-DD>
 
-This example will return 20 articles after the first 10 that are in the "medicine" `category` in descending order by their `id`:
 
-	/api/v1/articles?category=medicine&limit=20&offset=10&sort=id,desc
+This example will return articles in the category medicine, limited to 20, after the first 10, sorted by `id` descending, after June 1, and before July 1:
+
+	/api/v1/articles?category=medicine&limit=20&offset=10&sort=id,desc&after=2015-06-01&before=2015-07-01
 
 
 
