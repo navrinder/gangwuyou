@@ -1,6 +1,7 @@
 var express = require('express');
-var markdown = require('markdown').markdown;
+//var markdown = require('markdown').markdown;
 var fs = require('fs');
+var morgan = require('morgan');
 
 // http://expressjs.com/
 // Web framework for nodejs
@@ -36,13 +37,14 @@ var middleware = require('./middleware')(app);
 app.use(express.static(__dirname + '/public'));
 
 // basic logging
-app.use(function (req, res, next) {
-	console.log(req.method, req.url);
-	if (app.get('env') === 'development' && req.body) {
-		console.log(req.body);
-	}
-	next();
-});
+app.use(morgan('combined'));
+// app.use(function (req, res, next) {
+// 	console.log(req.method, req.url);
+// 	if (app.get('env') === 'development' && req.body) {
+// 		console.log(req.body);
+// 	}
+// 	next();
+// });
 
 // test route
 app.get('/', function(req, res) {
@@ -50,9 +52,9 @@ app.get('/', function(req, res) {
 });
 
 // documentation
-app.get('/readme', function (req, res) {
-	res.status(200).send(markdown.toHTML(fs.readFileSync('./README.md', { encoding: 'utf8' })));
-});
+// app.get('/readme', function (req, res) {
+// 	res.status(200).send(markdown.toHTML(fs.readFileSync('./README.md', { encoding: 'utf8' })));
+// });
 
 
 // register routes
