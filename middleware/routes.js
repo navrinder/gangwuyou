@@ -17,13 +17,13 @@ function v1 (router, models, authUser) {
 	// announcements
 	router.route('/announcements')
 		// list announcements
-		.get(authUser(['user', 'doctor', 'admin']), models.announcements.list)
+		.get(models.announcements.list)
 		// create announcement
 		.post(bodyParser, authUser(['doctor', 'admin']), models.announcements.create);
 
 	router.route('/announcements/:announcement_id')
 		// show announcement
-		.get(authUser(['user', 'doctor', 'admin']), models.announcements.show)
+		.get(models.announcements.show)
 		// update announcement
 		.put(bodyParser, authUser(['currentUser', 'admin']), models.announcements.update)
 		// remove announcement
@@ -41,13 +41,13 @@ function v1 (router, models, authUser) {
 	// articles
 	router.route('/articles')
 		// list articles
-		.get(authUser(['user', 'doctor', 'admin']), models.articles.list)
+		.get(models.articles.list)
 		// create article
 		.post(authUser(['doctor', 'admin']), models.articles.create);
 
 	router.route('/articles/:article_id')
 		// show article
-		.get(authUser(['user', 'doctor', 'admin']), models.articles.show)
+		.get(models.articles.show)
 		// update article
 		.put(authUser(['currentUser', 'admin']), models.articles.update)
 		// remove article
@@ -93,13 +93,13 @@ function v1 (router, models, authUser) {
 	// comments
 	router.route('/articles/:article_id/comments')
 		// show all comments for article
-		.get(authUser(['user', 'doctor', 'admin']), models.comments.showArticleComments)
+		.get(models.comments.showArticleComments)
 		// add comment
 		.post(bodyParser, authUser(['user', 'doctor', 'admin']), models.comments.create);
 
 	router.route('/articles/:article_id/comments/:comment_id')
 		// show comment
-		.get(authUser(['user', 'doctor', 'admin']), models.comments.showComment)
+		.get(models.comments.showComment)
 		// update comment
 		.put(bodyParser, authUser(['currentUser', 'admin']), models.comments.update)
 		// remove comment
@@ -229,11 +229,11 @@ function v1 (router, models, authUser) {
 		// create user
 		.post(models.users.create)
 		// list users
-		.get(authUser(['user', 'doctor', 'admin']), models.users.list);
+		.get(authUser(['admin']), models.users.list);
 
 	router.route('/users/:user_id')
 		// show user
-		.get(authUser(['user', 'doctor', 'admin']), models.users.show)
+		.get(authUser(['currentUser', 'admin']), models.users.show)
 		// update user info
 		.put(authUser(['currentUser', 'admin']), models.users.updateUser)
 		// remove user

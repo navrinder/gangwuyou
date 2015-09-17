@@ -164,12 +164,12 @@ Authorized: no authorization
 
 Can use query string to provide arguments
 
-Authorized: `user`, `doctor`, `admin`
+Authorized: `admin`
 
 ####Show user
 	GET /api/v1/users/:user_id
 
-Authorized: `user`, `doctor`, `admin`
+Authorized: `currentUser`, `admin`
 
 ####Update user
 	PUT /api/v1/users/:user_id
@@ -353,12 +353,12 @@ Authorized: `doctor`, `admin`
 
 Can use query string to provide arguments
 
-Authorized: `user`, `doctor`, `admin`
+Authorized: no authorization
 
 ###Show article
 	GET /api/v1/articles/:article_id
 
-Authorized: `user`, `doctor`, `admin`
+Authorized: no authorization
 
 ###Update article
 	PUT /api/v1/articles/:article_id
@@ -403,12 +403,12 @@ Authorized: `user`, `doctor`, `admin`
 ###List all comments belonging to an article
 	GET /api/v1/articles/:article_id/comments
 
-Authorized: `user`, `doctor`, `admin`
+Authorized: no authorization
 
 ###Show comment
 	GET /api/v1/articles/:article_id/comments/:comment_id
 
-Authorized: `user`, `doctor`, `admin`
+Authorized: no authorization
 
 ###Update comment
 	PUT /api/v1/articles/:article_id/comments/:comment_id
@@ -498,12 +498,12 @@ Authorized: `doctor`
 
 Can use query string to provide arguments
 
-Authorized: `user`, `doctor`, `admin`
+Authorized: no authorization
 
 ####Show announcement
 	GET /api/v1/announcements/:announcement_id
 
-Authorized: `user`, `doctor`, `admin`
+Authorized: no authorization
 
 ####Update announcement
 	PUT /api/v1/announcements/:announcement_id
