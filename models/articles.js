@@ -55,26 +55,17 @@ module.exports = function(app) {
 				id: req.params.article_id
 			});
 
-			Article.authenticate(req, res)
-			.then(function(authed) {
-
-				Article.fetch({
-					withRelated: ['comments', 'author'],
-					require: true
-				})
-				.then(function(article) {
-					res.status(200).json({
-						success: true,
-						data: article
-					});
-				})
-				.catch(function(error) {
-					next(error);
+			Article.fetch({
+				withRelated: ['comments', 'author'],
+				require: true
+			})
+			.then(function(article) {
+				res.status(200).json({
+					success: true,
+					data: article
 				});
-
 			})
 			.catch(function(error) {
-				// authentication errors are caught here
 				next(error);
 			});
 		},

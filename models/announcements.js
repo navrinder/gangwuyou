@@ -43,28 +43,20 @@ module.exports = function(app) {
 				id: req.params.announcement_id
 			});
 
-			Announcement.authenticate(req, res)
-			.then(function(authed) {
-
-				Announcement.fetch({
-					withRelated: ['author'],
-					require: true
-				})
-				.then(function(announcement) {
-					res.status(200).json({
-						success: true,
-						data: announcement
-					});
-				})
-				.catch(function(error) {
-					next(error);
+			Announcement.fetch({
+				withRelated: ['author'],
+				require: true
+			})
+			.then(function(announcement) {
+				res.status(200).json({
+					success: true,
+					data: announcement
 				});
-
 			})
 			.catch(function(error) {
-				// authentication errors are caught here
 				next(error);
 			});
+
 		},
 
 		list : function (req, res, next) {
