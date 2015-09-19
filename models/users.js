@@ -6,7 +6,7 @@ var Promise = require('bluebird');
 var bcrypt = require('bcryptjs');
 var jwt = require('jwt-simple');
 var form = require('../lib/form');
-
+var _ = require('lodash');
 
 module.exports = function (app) {
 	var Bookshelf = app.get('Bookshelf');
@@ -130,25 +130,27 @@ module.exports = function (app) {
 							id: req.params.user_id
 						});
 
+						var updatedInfo = _({
+							user_name: fields.user_name,
+							email_address: fields.email_address,
+							name: fields.name,
+							sex: fields.sex,
+							birth_day: fields.birth_day,
+							birth_month: fields.birth_month,
+							birth_year: fields.birth_year,
+							phone_number: fields.phone_number,
+							picture: picturePath,
+							occupation: fields.occupation,
+							hospital: fields.hospital,
+							department: fields.department,
+							city: fields.city,
+							password: hash
+						}).omit(_.isUndefined).value();
+
 						User.authenticate(req, res)
 						.then(function(authed) {
 
-							User.save({
-								user_name: fields.user_name,
-								email_address: fields.email_address,
-								name: fields.name,
-								sex: fields.sex,
-								birth_day: fields.birth_day,
-								birth_month: fields.birth_month,
-								birth_year: fields.birth_year,
-								phone_number: fields.phone_number,
-								picture: picturePath,
-								occupation: fields.occupation,
-								hospital: fields.hospital,
-								department: fields.department,
-								city: fields.city,
-								password: hash
-							}, {
+							User.save(updatedInfo, {
 								patch: true
 							})
 							.then(function(user) {

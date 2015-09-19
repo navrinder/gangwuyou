@@ -1,4 +1,5 @@
 // these are used to store user's answers in the database
+var _ = require('lodash');
 
 module.exports = function(app) {
 	var Bookshelf = app.get('Bookshelf');
@@ -39,23 +40,25 @@ module.exports = function(app) {
 				user_id: req.params.user_id
 			});
 
+			var updatedInfo = _({
+				question_1  : req.body.question_1,
+				question_2  : req.body.question_2,
+				question_3  : req.body.question_3,
+				question_4  : req.body.question_4,
+				question_5  : req.body.question_5,
+				question_6  : req.body.question_6,
+				question_7  : req.body.question_7,
+				question_8  : req.body.question_8,
+				question_9  : req.body.question_9,
+				question_10 : req.body.question_10,
+				question_11 : req.body.question_11,
+				question_12 : req.body.question_12
+			}).omit(_.isUndefined).value();
+
 			Answer.authenticate(req, res)
 			.then(function(authed) {
 
-				Answer.save({
-					question_1  : req.body.question_1,
-					question_2  : req.body.question_2,
-					question_3  : req.body.question_3,
-					question_4  : req.body.question_4,
-					question_5  : req.body.question_5,
-					question_6  : req.body.question_6,
-					question_7  : req.body.question_7,
-					question_8  : req.body.question_8,
-					question_9  : req.body.question_9,
-					question_10 : req.body.question_10,
-					question_11 : req.body.question_11,
-					question_12 : req.body.question_12
-				}, {
+				Answer.save(updatedInfo, {
 					patch: true
 				})
 				.then(function(answers) {

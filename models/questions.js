@@ -1,4 +1,5 @@
 // questions are static but can be stored in the database
+var _ = require('lodash');
 
 module.exports = function(app) {
 	var Bookshelf = app.get('Bookshelf');
@@ -60,16 +61,18 @@ module.exports = function(app) {
 		},
 
 		update : function (req, res, next) {
-			new QuestionModel({
-				id: req.params.question_id
-			})
-			.save({
+			var updatedInfo = _({
 				question: req.body.question,
 				answer_a: req.body.answer_a,
 				answer_b: req.body.answer_b,
 				answer_c: req.body.answer_c,
 				answer_d: req.body.answer_d
-			}, {
+			}).omit(_.isUndefined).value();
+
+			new QuestionModel({
+				id: req.params.question_id
+			})
+			.save(updatedInfo, {
 				patch: true
 			})
 			.then(function(question) {

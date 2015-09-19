@@ -1,5 +1,6 @@
 // static info
-//
+var _ = require('lodash');
+
 module.exports = function(app) {
 	var Bookshelf = app.get('Bookshelf');
 	var InfoModel = require('../lib/models')(app).InfoModel;
@@ -59,14 +60,16 @@ module.exports = function(app) {
 		},
 
 		update : function (req, res, next) {
-			new InfoModel({
-				id: req.params.article_id
-			})
-			.save({
+			var updatedInfo = _({
 				id: req.body.id,
 				title: req.body.title,
 				body: req.body.body
-			}, {
+			}).omit(_.isUndefined).value();
+
+			new InfoModel({
+				id: req.params.article_id
+			})
+			.save(updatedInfo, {
 				patch: true
 			})
 			.then(function(info) {

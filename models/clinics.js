@@ -1,5 +1,6 @@
 // information for clinics and hospitals
 var form = require('../lib/form');
+var _ = require('lodash');
 
 module.exports = function(app) {
 	var Bookshelf = app.get('Bookshelf');
@@ -109,22 +110,24 @@ module.exports = function(app) {
 							id: req.params.clinic_id
 						});
 
+						var updatedInfo = _({
+							name: fields.name,
+							address_1: fields.address_1,
+							address_2: fields.address_2,
+							address_3: fields.address_3,
+							city: fields.city,
+							province: fields.province,
+							postal_code: fields.postal_code,
+							description: fields.description,
+							picture: picturePath,
+							latitude: fields.latitude,
+							longitude: fields.longitude
+						}).omit(_.isUndefined).value();
+
 						Clinic.authenticate(req, res)
 						.then(function(authed) {
 
-							Clinic.save({
-								name: fields.name,
-								address_1: fields.address_1,
-								address_2: fields.address_2,
-								address_3: fields.address_3,
-								city: fields.city,
-								province: fields.province,
-								postal_code: fields.postal_code,
-								description: fields.description,
-								picture: picturePath,
-								latitude: fields.latitude,
-								longitude: fields.longitude
-							}, {
+							Clinic.save(updatedInfo, {
 								patch: true
 							})
 							.then(function(clinic) {

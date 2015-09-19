@@ -1,4 +1,5 @@
 // replies to user topics
+var _ = require('lodash');
 
 module.exports = function(app) {
 	var Bookshelf = app.get('Bookshelf');
@@ -92,15 +93,17 @@ module.exports = function(app) {
 				id: req.params.reply_id
 			});
 
+			var updatedInfo = _({
+				topic_id: req.params.topic_id,
+				user_id: req.body.user_id,
+				title: req.body.title,
+				body: req.body.body,
+			}).omit(_.isUndefined).value();
+
 			Reply.authenticate(req, res)
 			.then(function(authed) {
 
-				Reply.save({
-					topic_id: req.params.topic_id,
-					user_id: req.body.user_id,
-					title: req.body.title,
-					body: req.body.body,
-				}, {
+				Reply.save(updatedInfo, {
 					patch: true
 				})
 				.then(function(reply) {
