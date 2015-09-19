@@ -18,7 +18,7 @@ module.exports = function(app) {
 
 				var picture = files.picture;
 
-				form.checkPicture(picture, function (error) {
+				form.checkPicture(picture, function (error, picturePath) {
 					if (error) {
 						return next(error);
 					} else {
@@ -61,26 +61,17 @@ module.exports = function(app) {
 				id: req.params.clinic_id
 			});
 
-			Clinic.authenticate(req, res)
-			.then(function(authed) {
-
-				Clinic.fetch({
-					withRelated: ['doctors'],
-					require: true
-				})
-				.then(function(clinic) {
-					res.status(200).json({
-						success: true,
-						data: clinic
-					});
-				})
-				.catch(function(error) {
-					next(error);
+			Clinic.fetch({
+				withRelated: ['doctors'],
+				require: true
+			})
+			.then(function(clinic) {
+				res.status(200).json({
+					success: true,
+					data: clinic
 				});
-
 			})
 			.catch(function(error) {
-				// authentication errors are caught here
 				next(error);
 			});
 		},

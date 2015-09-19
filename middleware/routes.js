@@ -61,13 +61,13 @@ function v1 (router, models, authUser) {
 	// categories
 	router.route('/categories')
 		// list categories
-		.get(authUser(['user', 'doctor', 'admin']), models.categories.list)
+		.get(models.categories.list)
 		// create category
 		.post(bodyParser, authUser(['admin']), models.categories.create);
 
 	router.route('/categories/:category_id')
 		// show category
-		.get(authUser(['user', 'doctor', 'admin']), models.categories.show)
+		.get(models.categories.show)
 		// update category
 		.put(bodyParser, authUser(['admin']), models.categories.update)
 		// remove category
@@ -77,13 +77,13 @@ function v1 (router, models, authUser) {
 	// clinics
 	router.route('/clinics')
 		// list clinics
-		.get(authUser(['user', 'doctor', 'admin']), models.clinics.list)
+		.get(models.clinics.list)
 		// create clinic
 		.post(authUser(['admin']), models.clinics.create);
 
 	router.route('/clinics/:clinic_id')
 		// show clinic
-		.get(authUser(['user', 'doctor', 'admin']), models.clinics.show)
+		.get(models.clinics.show)
 		// update clinic
 		.put(authUser(['admin']), models.clinics.update)
 		// remove clinic
@@ -120,13 +120,13 @@ function v1 (router, models, authUser) {
 	// doctors -- only relates to hospitals, not users
 	router.route('/clinics/:clinic_id/doctors')
 		// show all doctors for clinic
-		.get(authUser(['user', 'doctor', 'admin']), models.doctors.list)
+		.get(models.doctors.list)
 		// add doctor
 		.post(authUser(['admin']), models.doctors.create);
 
 	router.route('/clinics/:clinic_id/doctors/:doctor_id')
 		// show doctor
-		.get(authUser(['user', 'doctor', 'admin']), models.doctors.show)
+		.get(models.doctors.show)
 		// update doctor
 		.put(authUser(['admin']), models.doctors.update)
 		// remove doctor
