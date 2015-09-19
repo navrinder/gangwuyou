@@ -1,5 +1,6 @@
 // information for doctors and hospitals
 var form = require('../lib/form');
+var _ = require('lodash');
 
 module.exports = function(app) {
 	var Bookshelf = app.get('Bookshelf');
@@ -105,16 +106,18 @@ module.exports = function(app) {
 							id: req.params.Doctor_id
 						});
 
+						var updatedInfo = _({
+							name: fields.name,
+							clinic_id: req.params.clinic_id,
+							occupation: fields.occupation,
+							picture: picturePath,
+							hours: fields.hours
+						}).omit(_.isUndefined).value();
+
 						Doctor.authenticate(req, res)
 						.then(function(authed) {
 
-							Doctor.save({
-								name: fields.name,
-								clinic_id: req.params.clinic_id,
-								occupation: fields.occupation,
-								picture: picturePath,
-								hours: fields.hours
-							}, {
+							Doctor.save(updatedInfo, {
 								patch: true
 							})
 							.then(function(doctor) {

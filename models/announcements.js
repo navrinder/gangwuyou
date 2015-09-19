@@ -1,4 +1,5 @@
 // announcements uploaded by admin or doctors
+var _ = require('lodash');
 
 module.exports = function(app) {
 	var Bookshelf = app.get('Bookshelf');
@@ -81,16 +82,18 @@ module.exports = function(app) {
 				id: req.params.announcement_id
 			});
 
+			var updatedInfo = _({
+				user_id: req.body.user_id,
+				title: req.body.title,
+				body: req.body.body,
+				hospital: req.body.hospital,
+				location: req.body.location
+			}).omit(_.isUndefined).value();
+
 			Announcement.authenticate(req, res)
 			.then(function(authed) {
 
-				Announcement.save({
-					user_id: req.body.user_id,
-					title: req.body.title,
-					body: req.body.body,
-					hospital: req.body.hospital,
-					location: req.body.location
-				}, {
+				Announcement.save(updatedInfo, {
 					patch: true
 				})
 				.then(function(announcement) {

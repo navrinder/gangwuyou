@@ -1,4 +1,5 @@
 // reminders for users
+var _ = require('lodash');
 
 module.exports = function(app) {
 	var Bookshelf = app.get('Bookshelf');
@@ -102,19 +103,21 @@ module.exports = function(app) {
 				id: req.params.reminder_id
 			});
 
+			var updatedInfo = _({
+				user_id: req.body.user_id,
+				day: req.body.day,
+				time: req.body.time,
+				medicine: req.body.medicine,
+				pad: req.body.pad,
+				medicine_name: req.body.medicine_name,
+				daily: req.body.daily,
+				weekly: req.body.weekly
+			}).omit(_.isUndefined).value();
+
 			Reminders.authenticate(req, res)
 			.then(function(authed) {
 
-				Reminders.save({
-					user_id: req.body.user_id,
-					day: req.body.day,
-					time: req.body.time,
-					medicine: req.body.medicine,
-					pad: req.body.pad,
-					medicine_name: req.body.medicine_name,
-					daily: req.body.daily,
-					weekly: req.body.weekly
-				}, {
+				Reminders.save(updatedInfo, {
 					patch: true
 				})
 				.then(function(reminder) {

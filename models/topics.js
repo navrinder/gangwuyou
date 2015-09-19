@@ -1,5 +1,6 @@
 // topic posts created by users
 var form = require('../lib/form');
+var _ = require('lodash');
 
 module.exports = function(app) {
 	var Bookshelf = app.get('Bookshelf');
@@ -124,16 +125,18 @@ module.exports = function(app) {
 							id: req.params.topic_id
 						});
 
+						var updatedInfo = _({
+							user_id: fields.user_id,
+							title: fields.title,
+							body: fields.body,
+							category: fields.category,
+							picture: picturePath
+						}).omit(_.isUndefined).value();
+
 						Topic.authenticate(req, res)
 						.then(function(authed) {
 
-							Topic.save({
-								user_id: fields.user_id,
-								title: fields.title,
-								body: fields.body,
-								category: fields.category,
-								picture: picturePath
-							}, {
+							Topic.save(updatedInfo, {
 								patch: true
 							})
 							.then(function(topic) {

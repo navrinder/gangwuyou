@@ -1,4 +1,5 @@
 // comments for articles
+var _ = require('lodash');
 
 module.exports = function(app) {
 	var Bookshelf = app.get('Bookshelf');
@@ -95,12 +96,14 @@ module.exports = function(app) {
 			Comment.authenticate(req, res)
 			.then(function(authed) {
 
-				Comment.save({
+				var updatedInfo = _({
 					article_id: req.params.article_id,
 					user_id: req.body.user_id,
 					title: req.body.title,
 					body: req.body.body,
-				}, {
+				}).omit(_.isUndefined).value();
+
+				Comment.save(updatedInfo, {
 					patch: true
 				})
 				.then(function(comment) {
