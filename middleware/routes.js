@@ -239,5 +239,12 @@ function v1 (router, models, authUser) {
 		// remove user
 		.delete(authUser(['admin']), models.users.remove);
 
+	// users limited
+	router.route('/users-public')
+		.get(models.users.listPublic);
+
+	router.route('/users-public/:user_id')
+		.get(models.users.showPublic);
+
 	return router;
 }

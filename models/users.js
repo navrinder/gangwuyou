@@ -81,6 +81,27 @@ module.exports = function (app) {
 			});
 		},
 
+		listPublic : function (req, res, next) {
+			new UserCollection()
+			.parseQuery(req)
+			.fetch()
+			.then(function(users) {
+				var usersPublic = _.map(users.models, function (user) {
+					return {
+						id: user.attributes.id,
+						user_name: user.attributes.user_name
+					};
+				});
+				res.status(200).json({
+					success: true,
+					data: usersPublic
+				});
+			})
+			.catch(function(error) {
+				next(error);
+			});
+		},
+
 		show : function (req, res, next) {
 			var User = new UserModel({
 				id: req.params.user_id
@@ -102,6 +123,29 @@ module.exports = function (app) {
 					next(error);
 				});
 
+			})
+			.catch(function(error) {
+				next(error);
+			});
+		},
+
+		showPublic : function (req, res, next) {
+			var User = new UserModel({
+				id: req.params.user_id
+			});
+
+			User.fetch({
+				require: true
+			})
+			.then(function(user) {
+				var userPublic = {
+					id: user.attributes.id,
+					user_name: user.attributes.user_name
+				};
+				res.status(200).json({
+					success: true,
+					data: userPublic
+				});
 			})
 			.catch(function(error) {
 				next(error);
