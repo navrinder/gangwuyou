@@ -54,25 +54,16 @@ module.exports = function(app) {
 				id: req.params.doctor_id
 			});
 
-			Doctor.authenticate(req, res)
-			.then(function(authed) {
-
-				Doctor.fetch({
-					require: true
-				})
-				.then(function(doctor) {
-					res.status(200).json({
-						success: true,
-						data: doctor
-					});
-				})
-				.catch(function(error) {
-					next(error);
+			Doctor.fetch({
+				require: true
+			})
+			.then(function(doctor) {
+				res.status(200).json({
+					success: true,
+					data: doctor
 				});
-
 			})
 			.catch(function(error) {
-				// authentication errors are caught here
 				next(error);
 			});
 		},

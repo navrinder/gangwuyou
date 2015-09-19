@@ -38,25 +38,16 @@ module.exports = function(app) {
 				id: req.params.category_id
 			});
 
-			Category.authenticate(req, res)
-			.then(function(authed) {
-
-				Category.fetch({
-					require: true
-				})
-				.then(function(category) {
-					res.status(200).json({
-						success: true,
-						data: category
-					});
-				})
-				.catch(function(error) {
-					next(error);
+			Category.fetch({
+				require: true
+			})
+			.then(function(category) {
+				res.status(200).json({
+					success: true,
+					data: category
 				});
-
 			})
 			.catch(function(error) {
-				// authentication errors are caught here
 				next(error);
 			});
 		},
