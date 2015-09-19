@@ -200,6 +200,16 @@ Authorized: `currentUser`, `admin`
 
 Authorized: `admin`
 
+####List users' public info
+	GET /api/v1/users-public
+
+Authorized: no authorization
+
+####Show user's public info
+	GET /api/v1/users-public/:user_id
+
+Authorized: no authorization
+
 
 ##Reminders
 
