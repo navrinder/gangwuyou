@@ -534,6 +534,10 @@ module.exports = {
 			maxlength: 1,
 			nullable: true
 		},
+		therapy_start_date: {
+			type: 'dateTime',
+			nullable: true
+		},
 		active: {
 			type: 'string',
 			maxlength: 1,
