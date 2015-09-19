@@ -27,22 +27,32 @@ module.exports = {
 			maxlength: 50,
 			nullable: false
 		},
+		name: {
+			type: 'string',
+			maxlength: 255,
+			nullable: true
+		},
 		sex: {
 			type: 'string',
-			maxlength: 1
+			maxlength: 1,
+			nullable: true
 		},
 		birth_day: {
-			type: 'integer'
+			type: 'integer',
+			nullable: true
 		},
 		birth_month: {
-			type: 'integer'
+			type: 'integer',
+			nullable: true
 		},
 		birth_year: {
-			type: 'integer'
+			type: 'integer',
+			nullable: true
 		},
 		phone_number: {
 			type: 'string',
-			maxlength: 20
+			maxlength: 20,
+			nullable: true
 		},
 		picture: {
 			type: 'text',

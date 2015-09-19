@@ -146,11 +146,12 @@ Body:
 	email_address
 	password
 	type ('user' or 'doctor')
-	sex
-	birth_day
-	birth_month
-	birth_year
-	phone_number
+	name (optional)
+	sex (optional)
+	birth_day (optional)
+	birth_month (optional)
+	birth_year (optional)
+	phone_number (optional)
 	picture (optional)
 	occupation (optional)
 	hospital (optional)
@@ -180,6 +181,7 @@ Body:
 	email_address (optional)
 	password (optional)
 	type ('user' or 'doctor') (optional)
+	name (optional)
 	sex (optional)
 	birth_day (optional)
 	birth_month (optional)

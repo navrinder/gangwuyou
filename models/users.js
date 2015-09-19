@@ -41,6 +41,7 @@ module.exports = function (app) {
 							type: type,
 							verified: type === 'user' ? 'Y' : 'N',
 							active: 'Y',
+							name: fields.name,
 							sex: fields.sex,
 							birth_day: fields.birth_day,
 							birth_month: fields.birth_month,
@@ -135,6 +136,7 @@ module.exports = function (app) {
 							User.save({
 								user_name: fields.user_name,
 								email_address: fields.email_address,
+								name: fields.name,
 								sex: fields.sex,
 								birth_day: fields.birth_day,
 								birth_month: fields.birth_month,
