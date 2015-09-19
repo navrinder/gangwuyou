@@ -68,7 +68,7 @@ module.exports = function(app) {
 
 		showArticleComments : function (req, res, next) {
 			var query = {
-				where : { user_id: req.params.article_id }
+				where : { article_id: req.params.article_id }
 			};
 
 			new CommentCollection()
