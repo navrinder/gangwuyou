@@ -18,6 +18,7 @@ module.exports = function(app) {
 				medicine_name: req.body.medicine_name,
 				daily: req.body.daily,
 				weekly: req.body.weekly,
+				therapy_start_date: req.body.therapy_start_date,
 				active: 'Y'
 			});
 
@@ -111,7 +112,8 @@ module.exports = function(app) {
 				pad: req.body.pad,
 				medicine_name: req.body.medicine_name,
 				daily: req.body.daily,
-				weekly: req.body.weekly
+				weekly: req.body.weekly,
+				therapy_start_date: req.body.therapy_start_date
 			}).omit(_.isUndefined).value();
 
 			Reminders.authenticate(req, res)
