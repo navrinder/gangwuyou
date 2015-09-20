@@ -116,10 +116,10 @@ module.exports = function(app) {
 				therapy_start_date: req.body.therapy_start_date
 			}).omit(_.isUndefined).value();
 
-			Reminders.authenticate(req, res)
+			Reminder.authenticate(req, res)
 			.then(function(authed) {
 
-				Reminders.save(updatedInfo, {
+				Reminder.save(updatedInfo, {
 					patch: true
 				})
 				.then(function(reminder) {
@@ -143,10 +143,10 @@ module.exports = function(app) {
 				id: req.params.reminder_id
 			});
 
-			Reminders.authenticate(req, res)
+			Reminder.authenticate(req, res)
 			.then(function(authed) {
 
-				Reminders.fetch()
+				Reminder.fetch()
 				.then(function(reminder) {
 					reminder.destroy()
 					.then(function() {
