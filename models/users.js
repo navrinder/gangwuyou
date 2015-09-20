@@ -89,7 +89,10 @@ module.exports = function (app) {
 				var usersPublic = _.map(users.models, function (user) {
 					return {
 						id: user.attributes.id,
-						user_name: user.attributes.user_name
+						user_name: user.attributes.user_name,
+						occupation: user.attributes.occupation,
+						hospital: user.attributes.hospital,
+						picture: user.attributes.picture
 					};
 				});
 				res.status(200).json({
@@ -140,7 +143,10 @@ module.exports = function (app) {
 			.then(function(user) {
 				var userPublic = {
 					id: user.attributes.id,
-					user_name: user.attributes.user_name
+					user_name: user.attributes.user_name,
+					occupation: user.attributes.occupation,
+					hospital: user.attributes.hospital,
+					picture: user.attributes.picture
 				};
 				res.status(200).json({
 					success: true,
