@@ -1,0 +1,39 @@
+<h3>Log in</h3>
+<div>
+	<form id="login" action="/login">
+		<label for="email">Email</label>
+		<input id="email" type="text" name="email">
+		<label for="password">Password</label>
+		<input id="password" type="text" name="password">
+		<input type="submit">
+	</form>
+	<span id="message"></span>
+</div>
+<script>
+	$('#login').submit(function (event) {
+		event.preventDefault();
+		$('#message').text('');
+		$.ajax({
+			type: 'POST',
+			url: 'api/v1/login',
+			data: {
+				email_address: $('#email').val(),
+				password: $('#password').val()
+			},
+			dataType: 'json',
+			statusCode: {
+				200: function (response) {
+					Cookies.set('golden-leaf_token', response.token);
+					Cookies.set('golden-leaf_id', response.data.id);
+					window.location = '/';
+				},
+				400: function (response) {
+					$('#message').text('Invalid username').css({'color':'red'});
+				},
+				401: function (response) {
+					$('#message').text('Invalid password').css({'color':'red'});
+				}
+			}
+		});
+	});
+</script>
