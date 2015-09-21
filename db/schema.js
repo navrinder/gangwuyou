@@ -506,7 +506,7 @@ module.exports = {
 		},
 		time: {
 			type: 'string',
-			maxlength: 30,
+			maxlength: 50,
 			nullable: true
 		},
 		medicine: {
