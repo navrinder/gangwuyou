@@ -4,15 +4,57 @@ var bodyParser = require('body-parser').urlencoded({ extended: true });
 module.exports = function (app) {
 	var authUser = require('./authUser')(app);
 	var models = require('../models')(app);
-	var router = express.Router();
 
 	return {
-		v1: v1(router, models, authUser)
+		v1: v1(models, authUser),
+		views: views()
 	};
 };
 
 
-function v1 (router, models, authUser) {
+function views () {
+	var router = express.Router();
+
+	router.route('/')
+		.get(function (req, res, next) {
+			res.render('index', {
+				title: 'Golden Leaf Index',
+				layout: 'layout'
+			});
+		});
+
+
+	router.route('/login')
+		.get(function (req, res, next) {
+			res.render('login', {
+				title: 'Golden Leaf Login',
+				layout: 'layout'
+			});
+		});
+
+	router.route('/articles')
+		.get(function (req, res, next) {
+			res.render('articles', {
+				title: 'Golden Leaf Articles',
+				layout: 'layout'
+			});
+		});
+
+	router.route('/clinics')
+		.get(function (req, res, next) {
+			res.render('login', {
+				title: 'Golden Leaf Clinics',
+				layout: 'layout'
+			});
+		});
+
+
+	return router;
+}
+
+
+function v1 (models, authUser) {
+	var router = express.Router();
 
 	// announcements
 	router.route('/announcements')

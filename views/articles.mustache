@@ -1,0 +1,80 @@
+<h3>Articles</h3>
+<div>
+	<form id="article" action="/articles">
+		<label for="user-id">User Id</label>
+		<input id="user-id" type="text" name="user_id">
+
+		<label>Category</label>
+		<select id="category"></select>
+
+		<label for="title">Title</label>
+		<input id="title" type="text" name="title">
+
+		<label for="body">Body</label>
+		<textarea id="body" name="body" rows="15" cols="60"></textarea>
+
+		<label for="picture">Picture</label>
+		<input id="picture" type="file" name="picture">
+
+		<input type="submit">
+	</form>
+	<span id="message"></span>
+</div>
+<div>
+	<ul class="result"></ul>
+</div>
+
+<script>
+	$('#user-id').val(Cookies.get('golden-leaf_id'));
+
+	$.ajax({
+		type: 'GET',
+		url: 'api/v1/categories',
+		success: function (result) {
+			$.each(result.data, function (i, v) {
+				$('#category')
+					.append($('<option></option>')
+						.attr('value', v.name)
+						.text(v.name));
+			});
+		}
+	})
+
+
+	$('#article').submit(function (event) {
+		event.preventDefault();
+		$('#message').text('');
+
+		var formData = new FormData($(this)[0]);
+
+		$.ajax({
+			type: 'POST',
+			url: 'api/v1/articles',
+			headers: {
+				'Authorization': Cookies.get('golden-leaf_token')
+			},
+			data: formData,
+			contentType: false,
+			processData: false,
+			statusCode: {
+				200: function (response) {
+					$('#message').text('Success');
+					$.each(response.data, function (k, v) {
+						$('.result')
+							.append($('<li></li>')
+								.text(k + ': ' + v));
+					});
+				},
+				400: function (response) {
+					$('#message').text(response.responseJSON.message).css({'color':'red'});
+				},
+				401: function (response) {
+					window.location = '/login';
+				},
+				415: function (response) {
+					$('#message').text('Image is required').css({'color':'red'});
+				}
+			}
+		});
+	});
+</script>

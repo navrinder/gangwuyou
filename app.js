@@ -2,6 +2,8 @@ var express = require('express');
 //var markdown = require('markdown').markdown;
 var fs = require('fs');
 var morgan = require('morgan');
+var cookieParser = require('cookie-parser');
+var path = require('path');
 
 // http://expressjs.com/
 // Web framework for nodejs
@@ -13,6 +15,10 @@ process.env.NODE_ENV = app.get('env');
 var config = require('./config')[app.get('env')];
 app.set('config', config);
 
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'mustache');
+app.engine('mustache', require('hogan-express'));
 
 // KnexJS and BookshelfJS are used to access
 // the MySQL database. These modules use promises
@@ -33,7 +39,7 @@ app.set('Bookshelf', bookshelf);
 
 // functions called in routes
 var middleware = require('./middleware')(app);
-
+app.use(cookieParser());
 app.use(express.static(__dirname + '/public'));
 
 // basic logging
@@ -47,9 +53,9 @@ app.use(morgan('combined'));
 // });
 
 // test route
-app.get('/', function(req, res) {
-	res.json({ message: 'hello world' });
-});
+// app.get('/', function(req, res) {
+// 	res.json({ message: 'hello world' });
+// });
 
 // documentation
 // app.get('/readme', function (req, res) {
@@ -60,6 +66,12 @@ app.get('/', function(req, res) {
 // register routes
 // all routes must start with "/api/v1"
 app.use('/api/v1', middleware.routes.v1);
+
+// views
+app.use(middleware.routes.views);
+
+// scripts
+app.use('/scripts/js-cookie', express.static(__dirname + '/node_modules/js-cookie'));
 
 // error handler
 app.use(function (err, req, res, next) {
