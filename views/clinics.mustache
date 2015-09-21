@@ -1,0 +1,82 @@
+<h3>Clinics</h3>
+<div>
+	<form id="clinic" action="/clinics">
+		<label for="name">Name</label>
+		<input id="name" type="text" name="name">
+
+		<label>Address 1</label>
+		<input id="address-1" type="text" name="address_1">
+
+		<label>Address 2</label>
+		<input id="address-2" type="text" name="address_2">
+
+		<label>Address 3</label>
+		<input id="address-3" type="text" name="address_3">
+
+		<label for="city">City</label>
+		<input id="city" type="text" name="city">
+
+		<label for="province">Province</label>
+		<input id="province" type="text" name="province">
+
+		<label for="postal-code">Postal code</label>
+		<input id="postal-code" type="text" name="postal_code">
+
+		<label for="description">Description</label>
+		<textarea id="description" name="description" rows="15" cols="60"></textarea>
+
+		<label for="picture">Picture</label>
+		<input id="picture" type="file" name="picture">
+
+		<label for="latitude">Latitude</label>
+		<input id="latitude" type="text" name="latitude">
+
+		<label for="longitude">Longitude</label>
+		<input id="longitude" type="text" name="longitude">
+
+		<input type="submit">
+	</form>
+	<span id="message"></span>
+</div>
+<div>
+	<ul class="result"></ul>
+</div>
+
+<script>
+	$('#clinic').submit(function (event) {
+		event.preventDefault();
+		$('#message').text('');
+
+		var formData = new FormData($(this)[0]);
+
+		$.ajax({
+			type: 'POST',
+			url: 'api/v1/clinics',
+			headers: {
+				'Authorization': Cookies.get('golden-leaf_token')
+			},
+			data: formData,
+			contentType: false,
+			processData: false,
+			statusCode: {
+				200: function (response) {
+					$('#message').text('Success');
+					$.each(response.data, function (k, v) {
+						$('.result')
+							.append($('<li></li>')
+								.text(k + ': ' + v));
+					});
+				},
+				400: function (response) {
+					$('#message').text(response.responseJSON.message).css({'color':'red'});
+				},
+				401: function (response) {
+					window.location = '/login';
+				},
+				415: function (response) {
+					$('#message').text('Image is required').css({'color':'red'});
+				}
+			}
+		});
+	});
+</script>

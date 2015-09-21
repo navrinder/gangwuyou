@@ -42,7 +42,7 @@ function views () {
 
 	router.route('/clinics')
 		.get(function (req, res, next) {
-			res.render('login', {
+			res.render('clinics', {
 				title: 'Golden Leaf Clinics',
 				layout: 'layout'
 			});
