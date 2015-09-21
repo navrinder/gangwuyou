@@ -2,7 +2,6 @@ var express = require('express');
 //var markdown = require('markdown').markdown;
 var fs = require('fs');
 var morgan = require('morgan');
-var cookieParser = require('cookie-parser');
 var path = require('path');
 
 // http://expressjs.com/
@@ -39,7 +38,6 @@ app.set('Bookshelf', bookshelf);
 
 // functions called in routes
 var middleware = require('./middleware')(app);
-app.use(cookieParser());
 app.use(express.static(__dirname + '/public'));
 
 // basic logging
