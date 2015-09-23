@@ -484,6 +484,19 @@ module.exports = {
 			type: 'string',
 			maxlength: 255,
 			nullable: true
+		},
+		active: {
+			type: 'string',
+			maxlength: 1,
+			nullable: false
+		},
+		created_at: {
+			type: 'dateTime',
+			nullable: false
+		},
+		updated_at: {
+			type: 'dateTime',
+			nullable: true
 		}
 	},
 
