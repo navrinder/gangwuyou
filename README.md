@@ -117,7 +117,7 @@ Status: >= `400`
 
 ####Invalid API version
 
-Status: >= `410`
+Status: `410`
 ```
 {
 	success: false,
