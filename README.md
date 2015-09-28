@@ -115,6 +115,17 @@ Status: >= `400`
 }
 ```
 
+####Invalid API version
+
+Status: >= `410`
+```
+{
+	success: false,
+	code: 'DEPRECATED',
+	message: ''
+}
+```
+This response indicates that the API is invalid and the user should upgrade their app.
 
 
 # API calls
