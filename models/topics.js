@@ -6,6 +6,9 @@ module.exports = function(app) {
 	var Bookshelf = app.get('Bookshelf');
 	var TopicModel = require('../lib/models')(app).TopicModel;
 	var TopicCollection = require('../lib/collections')(app).TopicCollection;
+	var ReplyModel = require('../lib/models')(app).ReplyModel;
+	var ReplyCollection = require('../lib/collections')(app).ReplyCollection;
+
 
 	return {
 
@@ -56,13 +59,19 @@ module.exports = function(app) {
 				id: req.params.topic_id
 			})
 			.fetch({
-				withRelated: ['replies'],
+				withRelated: ['user'],
 				require: true
 			})
 			.then(function(topic) {
-				res.status(200).json({
-					success: true,
-					data: topic
+				topic.replyCount(function (error, count) {
+					if (error) {
+						return next(error);
+					}
+					topic.set('replyCount', count);
+					res.status(200).json({
+						success: true,
+						data: topic
+					});
 				});
 			})
 			.catch(function(error) {
@@ -73,11 +82,25 @@ module.exports = function(app) {
 		list : function (req, res, next) {
 			new TopicCollection()
 			.parseQuery(req)
-			.fetch()
+			.fetch({
+				withRelated: ['user']
+			})
 			.then(function(topics) {
-				res.status(200).json({
-					success: true,
-					data: topics
+				var length = topics.models.length;
+				_.forEach(topics.models, function (topic, i) {
+					topic.replyCount(function (error, count) {
+						if (error) {
+							next(error);
+							return false;
+						}
+						topics.models[i].set('replyCount', count);
+						if (--length === 0) {
+							res.status(200).json({
+								success: true,
+								data: topics
+							});
+						}
+					});
 				});
 			})
 			.catch(function(error) {

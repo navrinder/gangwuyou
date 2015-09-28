@@ -223,13 +223,13 @@ function v1 (models, authUser) {
 	// replies
 	router.route('/topics/:topic_id/replies')
 		// show all replies for article
-		.get(authUser(['user', 'doctor', 'admin']), models.replies.showTopicReplies)
+		.get(models.replies.showTopicReplies)
 		// add reply
 		.post(bodyParser, authUser(['user', 'doctor', 'admin']), models.replies.create);
 
 	router.route('/topics/:topic_id/replies/:reply_id')
 		// show reply
-		.get(authUser(['user', 'doctor', 'admin']), models.replies.showReply)
+		.get(models.replies.showReply)
 		// update reply
 		.put(bodyParser, authUser(['currentUser', 'admin']), models.replies.update)
 		// remove reply
@@ -249,13 +249,13 @@ function v1 (models, authUser) {
 	// topics
 	router.route('/topics')
 		// list topics
-		.get(authUser(['user', 'doctor', 'admin']), models.topics.list)
+		.get(models.topics.list)
 		// create topic
 		.post(authUser(['user', 'doctor', 'admin']), models.topics.create);
 
 	router.route('/topics/:topic_id')
 		// show topic
-		.get(authUser(['user', 'doctor', 'admin']), models.topics.show)
+		.get(models.topics.show)
 		// update topic
 		.put(authUser(['currentUser', 'admin']), models.topics.update)
 		// remove topic

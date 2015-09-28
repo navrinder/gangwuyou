@@ -122,7 +122,7 @@ Status: >= `410`
 {
 	success: false,
 	code: 'DEPRECATED',
-	message: ''
+	message: 'The API version is deprecated or does not exist.'
 }
 ```
 This response indicates that the API is invalid and the user should upgrade their app.

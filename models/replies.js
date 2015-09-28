@@ -33,6 +33,7 @@ module.exports = function(app) {
 				id: req.params.reply_id
 			})
 			.fetch({
+				withRelated: ['user'],
 				require: true
 			})
 			.then(function(reply) {
@@ -75,6 +76,7 @@ module.exports = function(app) {
 			new ReplyCollection()
 			.parseQuery(req, query)
 			.fetch({
+				withRelated: ['user'],
 				require: true
 			})
 			.then(function(replies) {
