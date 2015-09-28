@@ -63,7 +63,18 @@ app.use(morgan('combined'));
 
 // register routes
 // all routes must start with "/api/v1"
-app.use('/api/v1', middleware.routes.v1);
+app.use('/api/v:version', function (req, res, next) {
+	var version = app.get('config').version;
+	if (req.params.version == version) {
+		middleware.routes['v' + version](req, res, next);
+	} else {
+		next({
+			status: 410,
+			code: 'DEPRECATED',
+			message: 'The API version is deprecated or does not exist.'
+		});
+	}
+});
 
 // views
 app.use(middleware.routes.views);

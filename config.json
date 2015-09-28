@@ -1,23 +1,23 @@
 {
 	"development" : {
+		"version" : 1,
 		"database" : {
 			"host" : "",
 			"port" : 0,
 			"user" : "",
 			"password" : "",
-			"database" : "",
-			"charset" : ""
+			"database" : ""
 		},
 		"secret" : "super.secret.key"
 	},
 	"production" : {
+		"version" : 0,
 		"database" : {
 			"host" : "",
 			"port" : 0,
 			"user" : "",
 			"password" : "",
-			"database" : "",
-			"charset" : ""
+			"database" : ""
 		},
 		"secret" : ""
 	}
