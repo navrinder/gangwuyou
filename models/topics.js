@@ -68,9 +68,15 @@ module.exports = function(app) {
 						return next(error);
 					}
 					topic.set('replyCount', count);
-					res.status(200).json({
-						success: true,
-						data: topic
+					topic.lastReply(function (error, last) {
+						if (error) {
+							return next(error);
+						}
+						topic.set('lastReply', last);
+						res.status(200).json({
+							success: true,
+							data: topic
+						});
 					});
 				});
 			})
@@ -94,12 +100,19 @@ module.exports = function(app) {
 							return false;
 						}
 						topics.models[i].set('replyCount', count);
-						if (--length === 0) {
-							res.status(200).json({
-								success: true,
-								data: topics
-							});
-						}
+						topic.lastReply(function (error, last) {
+							if (error) {
+								next(error);
+								return false;
+							}
+							topics.models[i].set('lastReply', last);
+							if (--length === 0) {
+								res.status(200).json({
+									success: true,
+									data: topics
+								});
+							}
+						});
 					});
 				});
 			})
