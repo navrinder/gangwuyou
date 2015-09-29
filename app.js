@@ -1,3 +1,5 @@
+var http = require('http');
+var https = require('https');
 var express = require('express');
 //var markdown = require('markdown').markdown;
 var fs = require('fs');
@@ -13,6 +15,19 @@ var port = process.env.PORT || 8080;
 process.env.NODE_ENV = app.get('env');
 var config = require('./config')[app.get('env')];
 app.set('config', config);
+
+// SSL certificate check
+var sslOptions = {};
+try {
+	sslOptions.key = fs.readFileSync(config.ssl.key);
+} catch (e) {
+	console.error(e);
+}
+try {
+	sslOptions.cert = fs.readFileSync(config.ssl.cert);
+} catch (e) {
+	console.error(e);
+}
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -106,4 +121,8 @@ app.use(function (err, req, res, next) {
 
 // start server
 app.listen(port);
+if (sslOptions.key && sslOptions.cert) {
+	http.createServer(app).listen(80);
+	https.createServer(sslOptions, app).listen(443);
+}
 console.log('Golden Leaf running in %s mode on port %d', app.get('env'), port);
