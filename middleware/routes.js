@@ -23,7 +23,6 @@ function views () {
 			});
 		});
 
-
 	router.route('/login')
 		.get(function (req, res, next) {
 			res.render('login', {
@@ -44,6 +43,14 @@ function views () {
 		.get(function (req, res, next) {
 			res.render('clinics', {
 				title: 'Golden Leaf Clinics',
+				layout: 'layout'
+			});
+		});
+
+	router.route('/doctors')
+		.get(function (req, res, next) {
+			res.render('doctors', {
+				title: 'Golden Leaf Doctors',
 				layout: 'layout'
 			});
 		});
