@@ -128,6 +128,11 @@ Status: `410`
 This response indicates that the API is invalid and the user should upgrade their app.
 
 
+#Frontend
+
+Visit 120.26.113.30 to log in.
+
+
 # API calls
 
 - [Users](#users)
