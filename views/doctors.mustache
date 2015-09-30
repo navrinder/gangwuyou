@@ -1,38 +1,20 @@
 <h3>Clinics</h3>
 <div>
-	<form id="clinic" action="/clinics">
+	<form id="doctor" action="/doctors">
 		<label for="name">Name</label>
 		<input id="name" type="text" name="name">
 
-		<label>Address 1</label>
-		<input id="address-1" type="text" name="address_1">
+		<label>Clinic</label>
+		<select id="clinic"></select>
 
-		<label>Address 2</label>
-		<input id="address-2" type="text" name="address_2">
+		<label>Occupation</label>
+		<input id="occupation" type="text" name="occupation">
 
-		<label>Address 3</label>
-		<input id="address-3" type="text" name="address_3">
-
-		<label for="city">City</label>
-		<input id="city" type="text" name="city">
-
-		<label for="province">Province</label>
-		<input id="province" type="text" name="province">
-
-		<label for="postal-code">Postal code</label>
-		<input id="postal-code" type="text" name="postal_code">
-
-		<label for="description">Description</label>
-		<textarea id="description" name="description" rows="15" cols="60"></textarea>
+		<label>Hours</label>
+		<input id="hours" type="text" name="hours">
 
 		<label for="picture">Picture</label>
 		<input id="picture" type="file" name="picture">
-
-		<label for="latitude">Latitude</label>
-		<input id="latitude" type="text" name="latitude">
-
-		<label for="longitude">Longitude</label>
-		<input id="longitude" type="text" name="longitude">
 
 		<input type="submit">
 	</form>
@@ -43,7 +25,21 @@
 </div>
 
 <script>
-	$('#clinic').submit(function (event) {
+	$.ajax({
+		type: 'GET',
+		url: 'api/v1/clinics',
+		success: function (result) {
+			$.each(result.data, function (i, v) {
+				$('#clinic')
+					.append($('<option></option>')
+						.attr('value', v.id)
+						.text(v.name));
+			});
+		}
+	})
+
+
+	$('#doctor').submit(function (event) {
 		event.preventDefault();
 		$('#message').text('');
 		$('.result').empty();
@@ -52,7 +48,7 @@
 
 		$.ajax({
 			type: 'POST',
-			url: 'api/v1/clinics',
+			url: 'api/v1/clinics/' + $('#clinic').find(':selected').val() + '/doctors',
 			headers: {
 				'Authorization': Cookies.get('golden-leaf_token')
 			},
