@@ -1,7 +1,6 @@
 var http = require('http');
 var https = require('https');
 var express = require('express');
-//var markdown = require('markdown').markdown;
 var fs = require('fs');
 var morgan = require('morgan');
 var path = require('path');
@@ -18,15 +17,19 @@ app.set('config', config);
 
 // SSL certificate check
 var sslOptions = {};
-try {
-	sslOptions.key = fs.readFileSync(config.ssl.key);
-} catch (e) {
-	console.error(e);
+if (config.ssl.key) {
+	try {
+		sslOptions.key = fs.readFileSync(config.ssl.key);
+	} catch (e) {
+		console.error(e);
+	}
 }
-try {
-	sslOptions.cert = fs.readFileSync(config.ssl.cert);
-} catch (e) {
-	console.error(e);
+if (config.ssl.cert) {
+	try {
+		sslOptions.cert = fs.readFileSync(config.ssl.cert);
+	} catch (e) {
+		console.error(e);
+	}
 }
 
 // view engine setup
@@ -57,24 +60,6 @@ app.use(express.static(__dirname + '/public'));
 
 // basic logging
 app.use(morgan('combined'));
-// app.use(function (req, res, next) {
-// 	console.log(req.method, req.url);
-// 	if (app.get('env') === 'development' && req.body) {
-// 		console.log(req.body);
-// 	}
-// 	next();
-// });
-
-// test route
-// app.get('/', function(req, res) {
-// 	res.json({ message: 'hello world' });
-// });
-
-// documentation
-// app.get('/readme', function (req, res) {
-// 	res.status(200).send(markdown.toHTML(fs.readFileSync('./README.md', { encoding: 'utf8' })));
-// });
-
 
 // register routes
 // all routes must start with "/api/v1"

@@ -20,12 +20,13 @@ The admin account has full access to the API and create all items.
 
 #####Requirements
 
-- Node.js
-- MySQL
+- [Node.js](https://nodejs.org/)
+- [MySQL](https://www.mysql.com/)
 
 Clone the project, `cd` into it and run `npm install`.
 
 To start the project, run `node app` in the root of the directory.
+
 
 #####Environment
 
@@ -33,15 +34,15 @@ The default environment is `development`. To run in production mode, run `NODE_E
 
 #####Config
 
-You must create a MySQL database locally and add the necessary info to `config.json`. You must also add a `secret` that will be used during authentication token creation.
+You must create a MySQL database locally and add the necessary info to `config.json`. You must also add a `secret` that will be used during authentication token creation. `version` determines the api version in the URL. `ssl` should point to the directory and filename of your SSL key file and certificate.
 
 #####Database
 
-Before running locally, run `node db/createDatabase.js` to create the tables. You must specify the database credentials in `config.json`.
+Before running locally, run `npm run database` to create the tables. You must specify the database credentials in `config.json`.
 
 ###Routes
 
-All routes begin with `/api/v1`. `v1` indicates that this is version 1. The base URL `/` should respond with `hello world`. These documents can be viewed by visiting `/readme`.
+All routes begin with `/api/v1`. `v1` indicates that this is version 1. The version can be set in `config.json`.
 
 ###Authorization
 
@@ -131,6 +132,12 @@ This response indicates that the API is invalid and the user should upgrade thei
 #Frontend
 
 Visit 120.26.113.30 to log in.
+
+#Deployment
+
+`npm install -g pm2`
+
+`npm run deploy`
 
 
 # API calls
