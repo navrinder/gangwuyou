@@ -182,12 +182,13 @@ function v1 (models, authUser) {
 		.delete(authUser(['admin']), models.doctors.remove);
 
 
-	// info
-	// router.route('/information')
-	// 	// TODO
-	// 	.get(function(req, res) {
-	// 		res.status(500).end();
-	// 	});
+	// app version info
+	router.route('/latest')
+		.get(authUser(['admin']), models.info.list);
+
+	router.route('/latest/:os')
+		.get(models.info.showLatest)
+		.post(bodyParser, authUser(['admin']), models.info.create);
 
 
 	// login
