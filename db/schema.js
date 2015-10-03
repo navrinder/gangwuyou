@@ -326,12 +326,24 @@ module.exports = {
 			nullable: false,
 			primary: true
 		},
-		title: {
+		os: {
 			type: 'string',
 			maxlength: 255
 		},
-		body: {
-			type: 'text'
+		version: {
+			type: 'integer'
+		},
+		url: {
+			type: 'string',
+			maxlength: 255
+		},
+		created_at: {
+			type: 'dateTime',
+			nullable: false
+		},
+		updated_at: {
+			type: 'dateTime',
+			nullable: true
 		}
 	},
 
