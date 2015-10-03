@@ -142,6 +142,7 @@ Visit 120.26.113.30 to log in.
 
 # API calls
 
+- [Latest Version](#latest-version)
 - [Users](#users)
 - [Reminders](#reminders)
 - [Questions](#questions)
@@ -154,6 +155,56 @@ Visit 120.26.113.30 to log in.
 - [Replies](#replies)
 - [Clinics](#clinics)
 - [Doctors](#doctors)
+
+
+
+
+##Latest Version
+
+These routes display the latest version of the app and the URL where it can be downloaded.
+
+####Add Android version
+	POST /api/v1/latest/android
+
+Body:
+
+	version (integer)
+	url
+
+Authorized: `admin`
+
+####Add iOS version
+	POST /api/v1/latest/ios
+
+Body:
+
+	version (integer)
+	url
+
+Authorized: `admin`
+
+###Display Android version
+	GET /api/v1/latest/android
+
+Authorized: no authorization
+
+####Display iOS version
+	GET /api/v1/latest/ios
+
+Body:
+
+	version (integer)
+	url
+
+Authorized: no authorization
+
+####List all versions
+	GET /api/v1/latest
+
+Can use query string to provide arguments
+
+Authorized: `admin`
+
 
 
 ##Users
