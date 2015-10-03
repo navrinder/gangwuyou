@@ -193,7 +193,7 @@ Authorized: no authorization
 
 Authorized: no authorization
 
-####List all versions
+####List all previous versions
 	GET /api/v1/latest
 
 Can use query string to provide arguments
