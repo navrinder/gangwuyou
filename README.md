@@ -191,11 +191,6 @@ Authorized: no authorization
 ####Display iOS version
 	GET /api/v1/latest/ios
 
-Body:
-
-	version (integer)
-	url
-
 Authorized: no authorization
 
 ####List all versions
