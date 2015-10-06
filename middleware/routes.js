@@ -55,6 +55,14 @@ function views () {
 			});
 		});
 
+	router.route('/download')
+		.get(function (req, res, next) {
+			res.render('download', {
+				title: 'download'
+			});
+		});
+
+
 
 	return router;
 }
