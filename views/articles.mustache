@@ -66,6 +66,7 @@
 							.append($('<li></li>')
 								.text(k + ': ' + v));
 					});
+					$('input:not(:submit), textarea').val('');
 				},
 				400: function (response) {
 					$('#message').text(response.responseJSON.message).css({'color':'red'});

@@ -13,6 +13,9 @@
 		<label>Address 3</label>
 		<input id="address-3" type="text" name="address_3">
 
+		<label for="district">District</label>
+		<input id="district" type="text" name="district">
+
 		<label for="city">City</label>
 		<input id="city" type="text" name="city">
 
@@ -33,6 +36,63 @@
 
 		<label for="longitude">Longitude</label>
 		<input id="longitude" type="text" name="longitude">
+
+		<label for="website">Website</label>
+		<input id="website" type="text" name="website">
+
+		<label for="telephone_1">Telephone 1</label>
+		<input id="telephone_1" type="text" name="telephone_1">
+
+		<label for="telephone_name_1">Telephone 1 Name</label>
+		<input id="telephone_name_1" type="text" name="telephone_name_1">
+
+		<label for="telephone_2">Telephone 2</label>
+		<input id="telephone_2" type="text" name="telephone_2">
+
+		<label for="telephone_name_2">Telephone 2 Name</label>
+		<input id="telephone_name_2" type="text" name="telephone_name_2">
+
+		<label for="telephone_3">Telephone 3</label>
+		<input id="telephone_3" type="text" name="telephone_3">
+
+		<label for="telephone_name_3">Telephone 3 Name</label>
+		<input id="telephone_name_3" type="text" name="telephone_name_3">
+
+		<label for="telephone_4">Telephone 4</label>
+		<input id="telephone_4" type="text" name="telephone_4">
+
+		<label for="telephone_name_4">Telephone 4 Name</label>
+		<input id="telephone_name_4" type="text" name="telephone_name_4">
+
+		<label for="telephone_5">Telephone 5</label>
+		<input id="telephone_5" type="text" name="telephone_5">
+
+		<label for="telephone_name_5">Telephone 5 Name</label>
+		<input id="telephone_name_5" type="text" name="telephone_name_5">
+
+		<label for="telephone_6">Telephone 6</label>
+		<input id="telephone_6" type="text" name="telephone_6">
+
+		<label for="telephone_name_6">Telephone 6 Name</label>
+		<input id="telephone_name_6" type="text" name="telephone_name_6">
+
+		<label for="transportation_1">Transportation 1</label>
+		<input id="transportation_1" type="text" name="transportation_1">
+
+		<label for="transportation_2">Transportation 2</label>
+		<input id="transportation_2" type="text" name="transportation_2">
+
+		<label for="transportation_3">Transportation 3</label>
+		<input id="transportation_3" type="text" name="transportation_3">
+
+		<label for="transportation_4">Transportation 4</label>
+		<input id="transportation_4" type="text" name="transportation_4">
+
+		<label for="transportation_5">Transportation 5</label>
+		<input id="transportation_5" type="text" name="transportation_5">
+
+		<label for="transportation_6">Transportation 6</label>
+		<input id="transportation_6" type="text" name="transportation_6">
 
 		<input type="submit">
 	</form>
@@ -67,6 +127,7 @@
 							.append($('<li></li>')
 								.text(k + ': ' + v));
 					});
+					$('input:not(:submit), textarea').val('');
 				},
 				400: function (response) {
 					$('#message').text(response.responseJSON.message).css({'color':'red'});

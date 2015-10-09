@@ -13,6 +13,27 @@
 		<label>Hours</label>
 		<input id="hours" type="text" name="hours">
 
+		<label>Hours 1</label>
+		<input id="hours_1" type="text" name="hours_1">
+
+		<label>Hours 2</label>
+		<input id="hours_2" type="text" name="hours_2">
+
+		<label>Hours 3</label>
+		<input id="hours_3" type="text" name="hours_3">
+
+		<label>Hours 4</label>
+		<input id="hours_4" type="text" name="hours_4">
+
+		<label>Hours 5</label>
+		<input id="hours_5" type="text" name="hours_5">
+
+		<label>Hours 6</label>
+		<input id="hours_6" type="text" name="hours_6">
+
+		<label>Hours 7</label>
+		<input id="hours_7" type="text" name="hours_7">
+
 		<label for="picture">Picture</label>
 		<input id="picture" type="file" name="picture">
 
@@ -63,6 +84,7 @@
 							.append($('<li></li>')
 								.text(k + ': ' + v));
 					});
+					$('input:not(:submit), textarea').val('');
 				},
 				400: function (response) {
 					$('#message').text(response.responseJSON.message).css({'color':'red'});

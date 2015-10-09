@@ -55,6 +55,14 @@ function views () {
 			});
 		});
 
+	router.route('/categories')
+		.get(function (req, res, next) {
+			res.render('categories', {
+				title: 'Golden Leaf Categories',
+				layout: 'layout'
+			});
+		});
+
 	router.route('/download')
 		.get(function (req, res, next) {
 			res.render('download', {
