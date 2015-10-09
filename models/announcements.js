@@ -45,7 +45,23 @@ module.exports = function(app) {
 			});
 
 			Announcement.fetch({
-				withRelated: ['author'],
+				withRelated: [{'author': function(qb) {
+					qb.column(
+						'id',
+						'user_name',
+						'type',
+						'name',
+						'sex',
+						'birth_day',
+						'birth_month',
+						'birth_year',
+						'picture',
+						'occupation',
+						'hospital',
+						'department',
+						'city'
+					);
+				}}],
 				require: true
 			})
 			.then(function(announcement) {
@@ -64,7 +80,23 @@ module.exports = function(app) {
 			new AnnouncementCollection()
 			.parseQuery(req)
 			.fetch({
-				withRelated: ['author']
+				withRelated: [{'author': function(qb) {
+					qb.column(
+						'id',
+						'user_name',
+						'type',
+						'name',
+						'sex',
+						'birth_day',
+						'birth_month',
+						'birth_year',
+						'picture',
+						'occupation',
+						'hospital',
+						'department',
+						'city'
+					);
+				}}]
 			})
 			.then(function(announcements) {
 				res.status(200).json({

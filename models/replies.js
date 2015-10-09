@@ -33,7 +33,23 @@ module.exports = function(app) {
 				id: req.params.reply_id
 			})
 			.fetch({
-				withRelated: ['user'],
+				withRelated: [{'user': function(qb) {
+					qb.column(
+						'id',
+						'user_name',
+						'type',
+						'name',
+						'sex',
+						'birth_day',
+						'birth_month',
+						'birth_year',
+						'picture',
+						'occupation',
+						'hospital',
+						'department',
+						'city'
+					);
+				}}],
 				require: true
 			})
 			.then(function(reply) {
@@ -76,7 +92,23 @@ module.exports = function(app) {
 			new ReplyCollection()
 			.parseQuery(req, query)
 			.fetch({
-				withRelated: ['user'],
+				withRelated: [{'user': function(qb) {
+					qb.column(
+						'id',
+						'user_name',
+						'type',
+						'name',
+						'sex',
+						'birth_day',
+						'birth_month',
+						'birth_year',
+						'picture',
+						'occupation',
+						'hospital',
+						'department',
+						'city'
+					);
+				}}],
 				require: true
 			})
 			.then(function(replies) {

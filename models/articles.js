@@ -57,7 +57,23 @@ module.exports = function(app) {
 			});
 
 			Article.fetch({
-				withRelated: ['comments', 'author'],
+				withRelated: ['comments', {'author': function(qb) {
+					qb.column(
+						'id',
+						'user_name',
+						'type',
+						'name',
+						'sex',
+						'birth_day',
+						'birth_month',
+						'birth_year',
+						'picture',
+						'occupation',
+						'hospital',
+						'department',
+						'city'
+					);
+				}}],
 				require: true
 			})
 			.then(function(article) {
@@ -75,7 +91,23 @@ module.exports = function(app) {
 			new ArticleCollection()
 			.parseQuery(req)
 			.fetch({
-				withRelated: ['author']
+				withRelated: [{'author': function(qb) {
+					qb.column(
+						'id',
+						'user_name',
+						'type',
+						'name',
+						'sex',
+						'birth_day',
+						'birth_month',
+						'birth_year',
+						'picture',
+						'occupation',
+						'hospital',
+						'department',
+						'city'
+					);
+				}}]
 			})
 			.then(function(articles) {
 				res.status(200).json({

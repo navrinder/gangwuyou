@@ -59,7 +59,23 @@ module.exports = function(app) {
 				id: req.params.topic_id
 			})
 			.fetch({
-				withRelated: ['user'],
+				withRelated: [{'user': function(qb) {
+					qb.column(
+						'id',
+						'user_name',
+						'type',
+						'name',
+						'sex',
+						'birth_day',
+						'birth_month',
+						'birth_year',
+						'picture',
+						'occupation',
+						'hospital',
+						'department',
+						'city'
+					);
+				}}],
 				require: true
 			})
 			.then(function(topic) {
@@ -89,7 +105,23 @@ module.exports = function(app) {
 			new TopicCollection()
 			.parseQuery(req)
 			.fetch({
-				withRelated: ['user']
+				withRelated: [{'user': function(qb) {
+					qb.column(
+						'id',
+						'user_name',
+						'type',
+						'name',
+						'sex',
+						'birth_day',
+						'birth_month',
+						'birth_year',
+						'picture',
+						'occupation',
+						'hospital',
+						'department',
+						'city'
+					);
+				}}]
 			})
 			.then(function(topics) {
 				var length = topics.models.length;
