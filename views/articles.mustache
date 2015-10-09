@@ -47,6 +47,7 @@
 		$('.result').empty();
 
 		var formData = new FormData($(this)[0]);
+		formData.append('category', $('#category option:selected').val());
 
 		$.ajax({
 			type: 'POST',
