@@ -722,6 +722,7 @@ Body:
 	address_1
 	address_2 (optional)
 	address_3 (optional)
+	district (optional)
 	city
 	province
 	postal_code
@@ -729,6 +730,25 @@ Body:
 	picture (optional)
 	latitude (optional)
 	longitude (optional)
+	website (optional)
+	telephone_1 (optional)
+	telephone_name_1 (optional)
+	telephone_2 (optional)
+	telephone_name_2 (optional)
+	telephone_3 (optional)
+	telephone_name_3 (optional)
+	telephone_4 (optional)
+	telephone_name_4 (optional)
+	telephone_5 (optional)
+	telephone_name_5 (optional)
+	telephone_6 (optional)
+	telephone_name_6 (optional)
+	transportation_1 (optional)
+	transportation_2 (optional)
+	transportation_3 (optional)
+	transportation_4 (optional)
+	transportation_5 (optional)
+	transportation_6 (optional)
 
 Authorized: `admin`
 
@@ -753,6 +773,7 @@ Body:
 	address_1 (optional)
 	address_2 (optional)
 	address_3 (optional)
+	district (optional)
 	city (optional)
 	province (optional)
 	postal_code (optional)
@@ -760,6 +781,25 @@ Body:
 	picture (optional)
 	latitude (optional)
 	longitude (optional)
+	website (optional)
+	telephone_1 (optional)
+	telephone_name_1 (optional)
+	telephone_2 (optional)
+	telephone_name_2 (optional)
+	telephone_3 (optional)
+	telephone_name_3 (optional)
+	telephone_4 (optional)
+	telephone_name_4 (optional)
+	telephone_5 (optional)
+	telephone_name_5 (optional)
+	telephone_6 (optional)
+	telephone_name_6 (optional)
+	transportation_1 (optional)
+	transportation_2 (optional)
+	transportation_3 (optional)
+	transportation_4 (optional)
+	transportation_5 (optional)
+	transportation_6 (optional)
 
 Authorized: `admin`
 
@@ -783,6 +823,13 @@ Body:
 	occupation
 	picture
 	hours
+	hours_1 (optional)
+	hours_2 (optional)
+	hours_3 (optional)
+	hours_4 (optional)
+	hours_5 (optional)
+	hours_6 (optional)
+	hours_7 (optional)
 
 Authorized: `admin`
 
@@ -805,6 +852,13 @@ Body:
 	occupation
 	picture
 	hours
+	hours_1 (optional)
+	hours_2 (optional)
+	hours_3 (optional)
+	hours_4 (optional)
+	hours_5 (optional)
+	hours_6 (optional)
+	hours_7 (optional)
 
 Authorized: `admin`
 
