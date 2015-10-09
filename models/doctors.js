@@ -29,6 +29,13 @@ module.exports = function(app) {
 							occupation: fields.occupation,
 							picture: picturePath,
 							hours: fields.hours,
+							hours_1: fields.hours_1,
+							hours_2: fields.hours_2,
+							hours_3: fields.hours_3,
+							hours_4: fields.hours_4,
+							hours_5: fields.hours_5,
+							hours_6: fields.hours_6,
+							hours_7: fields.hours_7,
 							active: 'Y'
 						});
 
@@ -111,7 +118,14 @@ module.exports = function(app) {
 							clinic_id: req.params.clinic_id,
 							occupation: fields.occupation,
 							picture: picturePath,
-							hours: fields.hours
+							hours: fields.hours,
+							hours_1: fields.hours_1,
+							hours_2: fields.hours_2,
+							hours_3: fields.hours_3,
+							hours_4: fields.hours_4,
+							hours_5: fields.hours_5,
+							hours_6: fields.hours_6,
+							hours_7: fields.hours_7,
 						}).omit(_.isUndefined).value();
 
 						Doctor.authenticate(req, res)

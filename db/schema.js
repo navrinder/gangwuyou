@@ -420,6 +420,11 @@ module.exports = {
 			maxlength: 255,
 			nullable: true
 		},
+		district: {
+			type: 'string',
+			maxlength: 255,
+			nullable: true
+		},
 		city: {
 			type: 'string',
 			maxlength: 255,
@@ -448,6 +453,88 @@ module.exports = {
 			nullable: true
 		},
 		longitude: {
+			type: 'string',
+			nullable: true
+		},
+		website: {
+			type: 'string',
+			nullable: true
+		},
+		telephone_1: {
+			type: 'integer',
+			nullable: true
+		},
+		telephone_name_1: {
+			type: 'string',
+			maxlength: 255,
+			nullable: true
+		},
+		telephone_2: {
+			type: 'integer',
+			nullable: true
+		},
+		telephone_name_2: {
+			type: 'string',
+			maxlength: 255,
+			nullable: true
+		},
+		telephone_3: {
+			type: 'integer',
+			nullable: true
+		},
+		telephone_name_3: {
+			type: 'string',
+			maxlength: 255,
+			nullable: true
+		},
+		telephone_4: {
+			type: 'integer',
+			nullable: true
+		},
+		telephone_name_4: {
+			type: 'string',
+			maxlength: 255,
+			nullable: true
+		},
+		telephone_5: {
+			type: 'integer',
+			nullable: true
+		},
+		telephone_name_5: {
+			type: 'string',
+			maxlength: 255,
+			nullable: true
+		},
+		telephone_6: {
+			type: 'integer',
+			nullable: true
+		},
+		telephone_name_6: {
+			type: 'string',
+			maxlength: 255,
+			nullable: true
+		},
+		transportation_1: {
+			type: 'string',
+			nullable: true
+		},
+		transportation_2: {
+			type: 'string',
+			nullable: true
+		},
+		transportation_3: {
+			type: 'string',
+			nullable: true
+		},
+		transportation_4: {
+			type: 'string',
+			nullable: true
+		},
+		transportation_5: {
+			type: 'string',
+			nullable: true
+		},
+		transportation_6: {
 			type: 'string',
 			nullable: true
 		},
@@ -493,6 +580,41 @@ module.exports = {
 			nullable: true
 		},
 		hours: {
+			type: 'string',
+			maxlength: 255,
+			nullable: true
+		},
+		hours_1: {
+			type: 'string',
+			maxlength: 255,
+			nullable: true
+		},
+		hours_2: {
+			type: 'string',
+			maxlength: 255,
+			nullable: true
+		},
+		hours_3: {
+			type: 'string',
+			maxlength: 255,
+			nullable: true
+		},
+		hours_4: {
+			type: 'string',
+			maxlength: 255,
+			nullable: true
+		},
+		hours_5: {
+			type: 'string',
+			maxlength: 255,
+			nullable: true
+		},
+		hours_6: {
+			type: 'string',
+			maxlength: 255,
+			nullable: true
+		},
+		hours_7: {
 			type: 'string',
 			maxlength: 255,
 			nullable: true
