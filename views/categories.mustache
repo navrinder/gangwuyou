@@ -1,0 +1,53 @@
+<h3>Categories</h3>
+<div>
+	<form id="category" action="/categories">
+		<label for="name">Name</label>
+		<input id="name" type="text" name="name">
+
+		<input type="submit">
+	</form>
+	<span id="message"></span>
+</div>
+<div>
+	<ul class="result"></ul>
+</div>
+
+<script>
+	$('#category').submit(function (event) {
+		event.preventDefault();
+		$('#message').text('');
+		$('.result').empty();
+
+		$.ajax({
+			type: 'POST',
+			url: 'api/v1/categories',
+			headers: {
+				'Authorization': Cookies.get('golden-leaf_token')
+			},
+			data: {
+				name: $('#name').val()
+			},
+			dataType: 'json',
+			statusCode: {
+				200: function (response) {
+					$('#message').text('Success');
+					$.each(response.data, function (k, v) {
+						$('.result')
+							.append($('<li></li>')
+								.text(k + ': ' + v));
+					});
+					$('input:not(:submit), textarea').val('');
+				},
+				400: function (response) {
+					$('#message').text(response.responseJSON.message).css({'color':'red'});
+				},
+				401: function (response) {
+					window.location = '/login';
+				},
+				415: function (response) {
+					$('#message').text('Image is required').css({'color':'red'});
+				}
+			}
+		});
+	});
+</script>
