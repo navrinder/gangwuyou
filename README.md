@@ -226,6 +226,7 @@ Body:
 	hospital (optional)
 	department (optional)
 	city (optional)
+	author (Y/N)
 
 Authorized: no authorization
 
@@ -261,6 +262,7 @@ Body:
 	hospital (optional)
 	department (optional)
 	city (optional)
+	author (Y/N)
 
 Authorized: `currentUser`, `admin`
 
@@ -318,11 +320,11 @@ Body:
 	user_id
 	day (optional)
 	time (optional)
-	medicine (y/n)
-	pad (y/n)
+	medicine (Y/N)
+	pad (Y/N)
 	medicine_name (optional)
-	daily (y/n)
-	weekly (y/n)
+	daily (Y/N)
+	weekly (Y/N)
 
 Authorized: `admin`
 
@@ -499,7 +501,7 @@ Body:
 	article_id
 	user_id
 	title (optional)
-	body _(optinal)_
+	body (optinal)
 
 Authorized: `currentUser`, `admin`
 
