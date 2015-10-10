@@ -1,8 +1,8 @@
 <h3>Articles</h3>
 <div>
 	<form id="article" action="/articles">
-		<label for="user-id">User Id</label>
-		<input id="user-id" type="text" name="user_id">
+		<label for="user-id">Author</label>
+		<select id="user-id"></select>
 
 		<label>Category</label>
 		<select id="category"></select>
@@ -38,7 +38,41 @@
 						.text(v.name));
 			});
 		}
-	})
+	});
+
+	$.ajax({
+		type: 'GET',
+		url: 'api/v1/users?type=admin',
+		headers: {
+			'Authorization': Cookies.get('golden-leaf_token')
+		},
+		success: function (result) {
+			$.each(result.data, function (i, v) {
+				$('#user-id')
+					.append($('<option></option>')
+						.attr('value', v.id)
+						.text(v.user_name));
+
+			});
+		}
+	});
+
+	$.ajax({
+		type: 'GET',
+		url: 'api/v1/users?type=doctor',
+		headers: {
+			'Authorization': Cookies.get('golden-leaf_token')
+		},
+		success: function (result) {
+			$.each(result.data, function (i, v) {
+				$('#user-id')
+					.append($('<option></option>')
+						.attr('value', v.id)
+						.text(v.user_name));
+
+			});
+		}
+	});
 
 
 	$('#article').submit(function (event) {
@@ -47,6 +81,7 @@
 		$('.result').empty();
 
 		var formData = new FormData($(this)[0]);
+		formData.append('user_id', $('#user-id option:selected').val());
 		formData.append('category', $('#category option:selected').val());
 
 		$.ajax({
