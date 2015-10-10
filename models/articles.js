@@ -6,6 +6,7 @@ module.exports = function(app) {
 	var Bookshelf = app.get('Bookshelf');
 	var ArticleModel = require('../lib/models')(app).ArticleModel;
 	var ArticleCollection = require('../lib/collections')(app).ArticleCollection;
+	var UserModel = require('../lib/models')(app).UserModel;
 
 	return {
 
@@ -37,10 +38,23 @@ module.exports = function(app) {
 
 							Article.save()
 							.then(function(article) {
-								res.status(200).json({
-									success: true,
-									data: article
+								var User = new UserModel({
+									id: fields.user_id
 								});
+
+								User.save({
+									author: 'Y'
+								}, {
+									patch: true
+								})
+								.then(function(user) {
+									res.status(200).json({
+										success: true,
+										data: article
+									});
+								})
+								.catch(cleanup);
+
 							})
 							.catch(cleanup);
 						})
@@ -71,7 +85,8 @@ module.exports = function(app) {
 						'occupation',
 						'hospital',
 						'department',
-						'city'
+						'city',
+						'author'
 					);
 				}}],
 				require: true
@@ -105,7 +120,8 @@ module.exports = function(app) {
 						'occupation',
 						'hospital',
 						'department',
-						'city'
+						'city',
+						'author'
 					);
 				}}]
 			})
@@ -172,10 +188,22 @@ module.exports = function(app) {
 								patch: true
 							})
 							.then(function(article) {
-								res.status(200).json({
-									success: true,
-									data: article
+								var User = new UserModel({
+									id: fields.user_id
 								});
+
+								User.save({
+									author: 'Y'
+								}, {
+									patch: true
+								})
+								.then(function(user) {
+									res.status(200).json({
+										success: true,
+										data: article
+									});
+								})
+								.catch(cleanup);
 							})
 							.catch(cleanup);
 						})

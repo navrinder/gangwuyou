@@ -73,7 +73,8 @@ module.exports = function(app) {
 						'occupation',
 						'hospital',
 						'department',
-						'city'
+						'city',
+						'author'
 					);
 				}}],
 				require: true
@@ -119,7 +120,8 @@ module.exports = function(app) {
 						'occupation',
 						'hospital',
 						'department',
-						'city'
+						'city',
+						'author'
 					);
 				}}]
 			})

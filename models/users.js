@@ -51,7 +51,8 @@ module.exports = function (app) {
 							occupation: fields.occupation,
 							hospital: fields.hospital,
 							department: fields.department,
-							city: fields.city
+							city: fields.city,
+							author: fields.author || 'N'
 						})
 						.save()
 						.then(function(user) {
@@ -84,20 +85,20 @@ module.exports = function (app) {
 		listPublic : function (req, res, next) {
 			new UserCollection()
 			.parseQuery(req)
-			.fetch()
+			.fetch({
+				columns: [
+					'id',
+					'user_name',
+					'occupation',
+					'hospital',
+					'picture',
+					'author'
+				]
+			})
 			.then(function(users) {
-				var usersPublic = _.map(users.models, function (user) {
-					return {
-						id: user.get('id'),
-						user_name: user.get('user_name'),
-						occupation: user.get('occupation'),
-						hospital: user.get('hospital'),
-						picture: user.get('picture')
-					};
-				});
 				res.status(200).json({
 					success: true,
-					data: usersPublic
+					data: users
 				});
 			})
 			.catch(function(error) {
@@ -138,19 +139,20 @@ module.exports = function (app) {
 			});
 
 			User.fetch({
+				columns: [
+					'id',
+					'user_name',
+					'occupation',
+					'hospital',
+					'picture',
+					'author'
+				],
 				require: true
 			})
 			.then(function(user) {
-				var userPublic = {
-					id: user.get('id'),
-					user_name: user.get('user_name'),
-					occupation: user.get('occupation'),
-					hospital: user.get('hospital'),
-					picture: user.get('picture')
-				};
 				res.status(200).json({
 					success: true,
-					data: userPublic
+					data: user
 				});
 			})
 			.catch(function(error) {
@@ -194,6 +196,7 @@ module.exports = function (app) {
 							hospital: fields.hospital,
 							department: fields.department,
 							city: fields.city,
+							author: fields.author,
 							password: hash
 						}).omit(_.isUndefined).value();
 

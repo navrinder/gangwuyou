@@ -83,6 +83,11 @@ module.exports = {
 			maxlength: 1,
 			nullable: false
 		},
+		author: {
+			type: 'string',
+			maxlength: 1,
+			nullable: true
+		},
 		active: {
 			type: 'string',
 			maxlength: 1,
