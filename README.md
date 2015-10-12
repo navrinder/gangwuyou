@@ -243,7 +243,7 @@ Body:
 	hospital (optional)
 	department (optional)
 	city (optional)
-	author (Y/N)
+	announcement_author (Y/N)
 
 Authorized: no authorization
 
@@ -279,7 +279,7 @@ Body:
 	hospital (optional)
 	department (optional)
 	city (optional)
-	author (Y/N)
+	announcement_author (Y/N)
 
 Authorized: `currentUser`, `admin`
 
