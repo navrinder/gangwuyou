@@ -241,9 +241,11 @@ module.exports = function (app) {
 		},
 
 		login : function (req, res, next) {
-			new UserModel({
-				email_address: req.body.email_address
-			})
+			new UserModel(_({
+				email_address: req.body.email_address,
+				phone_number: req.body.phone_number,
+				user_name: req.body.user_name
+			}).omit(_.isUndefined).value())
 			.fetch({
 				require: true
 			})
