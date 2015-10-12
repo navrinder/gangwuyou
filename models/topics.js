@@ -55,27 +55,13 @@ module.exports = function(app) {
 		},
 
 		show : function (req, res, next) {
-			new TopicModel({
+			var Topic = new TopicModel({
 				id: req.params.topic_id
-			})
-			.fetch({
+			});
+
+			Topic.fetch({
 				withRelated: [{'user': function(qb) {
-					qb.column(
-						'id',
-						'user_name',
-						'type',
-						'name',
-						'sex',
-						'birth_day',
-						'birth_month',
-						'birth_year',
-						'picture',
-						'occupation',
-						'hospital',
-						'department',
-						'city',
-						'author'
-					);
+					qb.column.apply(this, Topic.user_columns);
 				}}],
 				require: true
 			})
@@ -103,26 +89,11 @@ module.exports = function(app) {
 		},
 
 		list : function (req, res, next) {
-			new TopicCollection()
-			.parseQuery(req)
-			.fetch({
+			var Topics = new TopicCollection().parseQuery(req);
+
+			Topics.fetch({
 				withRelated: [{'user': function(qb) {
-					qb.column(
-						'id',
-						'user_name',
-						'type',
-						'name',
-						'sex',
-						'birth_day',
-						'birth_month',
-						'birth_year',
-						'picture',
-						'occupation',
-						'hospital',
-						'department',
-						'city',
-						'author'
-					);
+					qb.column.apply(this, Topics.user_columns);
 				}}]
 			})
 			.then(function(topics) {

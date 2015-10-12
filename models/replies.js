@@ -29,27 +29,13 @@ module.exports = function(app) {
 		},
 
 		showReply : function (req, res, next) {
-			new ReplyModel({
+			var Reply = new ReplyModel({
 				id: req.params.reply_id
-			})
-			.fetch({
+			});
+
+			Reply.fetch({
 				withRelated: [{'user': function(qb) {
-					qb.column(
-						'id',
-						'user_name',
-						'type',
-						'name',
-						'sex',
-						'birth_day',
-						'birth_month',
-						'birth_year',
-						'picture',
-						'occupation',
-						'hospital',
-						'department',
-						'city',
-						'author'
-					);
+					qb.column.apply(this, Reply.user_columns);
 				}}],
 				require: true
 			})
@@ -90,26 +76,11 @@ module.exports = function(app) {
 				where : { topic_id: req.params.topic_id	}
 			};
 
-			new ReplyCollection()
-			.parseQuery(req, query)
-			.fetch({
+			var Replies = new ReplyCollection().parseQuery(req, query);
+
+			Replies.fetch({
 				withRelated: [{'user': function(qb) {
-					qb.column(
-						'id',
-						'user_name',
-						'type',
-						'name',
-						'sex',
-						'birth_day',
-						'birth_month',
-						'birth_year',
-						'picture',
-						'occupation',
-						'hospital',
-						'department',
-						'city',
-						'author'
-					);
+					qb.column.apply(this, Replies.user_columns);
 				}}],
 				require: true
 			})
