@@ -1,6 +1,6 @@
-// user account information is stored here.
-// passwords are hashed using bcrypt in order to
-// securely store them in the database
+// article authors are fake user accounts
+// only admin can create and impersonate authors
+
 var Promise = require('bluebird');
 //var bcrypt = Promise.promisfyAll(require('bcryptjs'));
 var bcrypt = require('bcryptjs');
@@ -9,7 +9,6 @@ var form = require('../lib/form');
 var _ = require('lodash');
 
 module.exports = function (app) {
-	var Bookshelf = app.get('Bookshelf');
 	var secret = app.get('config').secret;
 	var UserModel = require('../lib/models')(app).UserModel;
 	var UserCollection = require('../lib/collections')(app).UserCollection;
@@ -18,6 +17,7 @@ module.exports = function (app) {
 
 		create : function (req, res, next) {
 			var inForm = form.buildForm();
+			var now = Date.now();
 
 			inForm.parse(req, function (err, fields, files) {
 				if (err) {
@@ -25,8 +25,8 @@ module.exports = function (app) {
 				}
 
 				var salt = bcrypt.genSaltSync(10);
-				var hash = bcrypt.hashSync(fields.password, salt);
-				var type = fields.type === 'doctor' ? 'doctor' : 'user';
+				var hash = bcrypt.hashSync(now.toString(36), salt);
+				var type = 'author';
 				var picture = files.picture;
 
 				form.checkPicture(picture, function (error, picturePath) {
@@ -35,18 +35,18 @@ module.exports = function (app) {
 					} else {
 						var cleanup = form.cleanup(picture, next);
 						new UserModel({
-							user_name: fields.user_name,
-							email_address: fields.email_address,
+							user_name: 'author_' + now,
+							email_address: 'author_' + now,
 							password: hash,
 							type: type,
-							verified: type === 'user' ? 'Y' : 'N',
+							verified: 'Y',
 							active: 'Y',
 							name: fields.name,
 							sex: fields.sex,
 							birth_day: fields.birth_day,
 							birth_month: fields.birth_month,
 							birth_year: fields.birth_year,
-							phone_number: fields.phone_number,
+							phone_number: now,
 							picture: picturePath,
 							occupation: fields.occupation,
 							hospital: fields.hospital,
@@ -55,10 +55,10 @@ module.exports = function (app) {
 							announcement_author: fields.announcement_author || 'N'
 						})
 						.save()
-						.then(function(user) {
+						.then(function(author) {
 							res.status(200).json({
 								success: true,
-								data: user.omit('password')
+								data: author.omit('password')
 							});
 						})
 						.catch(cleanup);
@@ -68,99 +68,39 @@ module.exports = function (app) {
 		},
 
 		list : function (req, res, next) {
-			new UserCollection()
-			.parseQuery(req)
-			.fetch()
-			.then(function(users) {
-				res.status(200).json({
-					success: true,
-					data: users
-				});
-			})
-			.catch(function(error) {
-				next(error);
-			});
-		},
+			var Authors = new UserCollection().parseQuery(req, {where: {type: 'author'}});
 
-		listPublic : function (req, res, next) {
-			new UserCollection()
-			.parseQuery(req)
-			.fetch({
-				columns: [
-					'id',
-					'user_name',
-					'occupation',
-					'hospital',
-					'picture',
-					'announcement_author'
-				]
+			Authors.fetch({
+				columns: Authors.user_columns
 			})
-			.then(function(users) {
+			.then(function(authors) {
 				res.status(200).json({
 					success: true,
-					data: users
+					data: authors
 				});
 			})
-			.catch(function(error) {
-				next(error);
-			});
+			.catch(next);
 		},
 
 		show : function (req, res, next) {
-			var User = new UserModel({
-				id: req.params.user_id
+			var Author = new UserModel({
+				id: req.params.author_id
 			});
 
-			User.authenticate(req, res)
-			.then(function(authed) {
-
-				User.fetch({
-					require: true
-				})
-				.then(function(user) {
-					res.status(200).json({
-						success: true,
-						data: user.omit('password')
-					});
-				})
-				.catch(function(error) {
-					next(error);
-				});
-
-			})
-			.catch(function(error) {
-				next(error);
-			});
-		},
-
-		showPublic : function (req, res, next) {
-			var User = new UserModel({
-				id: req.params.user_id
-			});
-
-			User.fetch({
-				columns: [
-					'id',
-					'user_name',
-					'occupation',
-					'hospital',
-					'picture',
-					'announcement_author'
-				],
+			Author.fetch({
+				columns: Author.user_columns,
 				require: true
 			})
-			.then(function(user) {
+			.then(function(author) {
 				res.status(200).json({
 					success: true,
-					data: user
+					data: author
 				});
 			})
-			.catch(function(error) {
-				next(error);
-			});
+			.catch(next);
 		},
 
-		updateUser : function (req, res, next) {
+		update : function (req, res, next) {
 			var inForm = form.buildForm();
 
 			inForm.parse(req, function (err, fields, files) {
@@ -168,8 +108,8 @@ module.exports = function (app) {
 					return next(err);
 				}
 
-				var salt = bcrypt.genSaltSync(10);
-				var hash = fields.password && bcrypt.hashSync(fields.password, salt);
+				// var salt = bcrypt.genSaltSync(10);
+				// var hash = fields.password && bcrypt.hashSync(fields.password, salt);
 
 				var picture = files.picture;
 
@@ -197,7 +137,7 @@ module.exports = function (app) {
 							department: fields.department,
 							city: fields.city,
 							announcement_author: fields.announcement_author,
-							password: hash
+							//password: hash
 						}).omit(_.isUndefined).value();
 
 						User.authenticate(req, res)
@@ -235,51 +175,7 @@ module.exports = function (app) {
 					data: user
 				});
 			})
-			.catch(function(error) {
-				next(error);
-			});
-		},
-
-		login : function (req, res, next) {
-			new UserModel(_({
-				email_address: req.body.email_address,
-				phone_number: req.body.phone_number,
-				user_name: req.body.user_name
-			}).omit(_.isUndefined).value())
-			.fetch({
-				require: true
-			})
-			.then(function(user) {
-				if (user.get('type') === 'author') {
-					return next({
-						status: 401,
-						message: 'Unauthorized.'
-					});
-				}
-				if (bcrypt.compareSync(req.body.password, user.get('password'))) {
-					var payload = {
-						iat: Date.now(),
-						id: user.get('id'),
-						scopes: [user.get('type')],
-						verified: user.get('verified') === 'Y' ? true : false
-					};
-
-					var token = jwt.encode(payload, secret);
-					res.status(200).json({
-						success: true,
-						token: token,
-						data: user.omit('password')
-					});
-				} else {
-					next({
-						status: 401,
-						message: 'Unauthorized.'
-					});
-				}
-			})
-			.catch(function(error) {
-				next(error);
-			});
+			.catch(next);
 		}
 	};
 };

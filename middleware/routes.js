@@ -108,7 +108,7 @@ function v1 (models, authUser) {
 		// list articles
 		.get(models.articles.list)
 		// create article
-		.post(authUser(['doctor', 'admin']), models.articles.create);
+		.post(authUser(['admin']), models.articles.create);
 
 	router.route('/articles/:article_id')
 		// show article
@@ -121,6 +121,22 @@ function v1 (models, authUser) {
 	router.route('/users/:user_id/articles')
 		// show all user articles
 		.get(authUser(['user', 'doctor', 'admin']), models.articles.showUserArticles);
+
+
+	// authors
+	router.route('/authors')
+		// create author
+		.post(authUser(['admin']), models.authors.create)
+		// list authors
+		.get(models.authors.list);
+
+	router.route('/authors/:author_id')
+		// show author
+		.get(models.authors.show)
+		// update author info
+		.put(authUser(['admin']), models.authors.update)
+		// remove author
+		.delete(authUser(['admin']), models.authors.remove);
 
 
 	// categories
