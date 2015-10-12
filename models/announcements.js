@@ -5,6 +5,7 @@ module.exports = function(app) {
 	var Bookshelf = app.get('Bookshelf');
 	var AnnouncementModel = require('../lib/models')(app).AnnouncementModel;
 	var AnnouncementCollection = require('../lib/collections')(app).AnnouncementCollection;
+	var UserModel = require('../lib/models')(app).UserModel;
 
 	return {
 
@@ -23,14 +24,25 @@ module.exports = function(app) {
 
 				Announcement.save()
 				.then(function(announcement) {
-					res.status(200).json({
-						success: true,
-						data: announcement
+
+					var User = new UserModel({
+						id: req.body.user_id
 					});
+
+					User.save({
+						announcement_author: 'Y'
+					}, {
+						patch: true
+					})
+					.then(function(user) {
+						res.status(200).json({
+							success: true,
+							data: announcement
+						});
+					})
+					.catch(next);
 				})
-				.catch(function(error) {
-					next(error);
-				});
+				.catch(next);
 
 			})
 			.catch(function(error) {
@@ -46,22 +58,7 @@ module.exports = function(app) {
 
 			Announcement.fetch({
 				withRelated: [{'author': function(qb) {
-					qb.column(
-						'id',
-						'user_name',
-						'type',
-						'name',
-						'sex',
-						'birth_day',
-						'birth_month',
-						'birth_year',
-						'picture',
-						'occupation',
-						'hospital',
-						'department',
-						'city',
-						'author'
-					);
+					qb.column.apply(this, Announcement.user_columns);
 				}}],
 				require: true
 			})
@@ -71,33 +68,15 @@ module.exports = function(app) {
 					data: announcement
 				});
 			})
-			.catch(function(error) {
-				next(error);
-			});
-
+			.catch(next);
 		},
 
 		list : function (req, res, next) {
-			new AnnouncementCollection()
-			.parseQuery(req)
-			.fetch({
+			var Announcements = new AnnouncementCollection().parseQuery(req);
+
+			Announcements.fetch({
 				withRelated: [{'author': function(qb) {
-					qb.column(
-						'id',
-						'user_name',
-						'type',
-						'name',
-						'sex',
-						'birth_day',
-						'birth_month',
-						'birth_year',
-						'picture',
-						'occupation',
-						'hospital',
-						'department',
-						'city',
-						'author'
-					);
+					qb.column.apply(this, Announcements.user_columns);
 				}}]
 			})
 			.then(function(announcements) {
@@ -106,9 +85,7 @@ module.exports = function(app) {
 					data: announcements
 				});
 			})
-			.catch(function(error) {
-				next(error);
-			});
+			.catch(next);
 		},
 
 		update : function (req, res, next) {
@@ -131,15 +108,24 @@ module.exports = function(app) {
 					patch: true
 				})
 				.then(function(announcement) {
-					res.status(200).json({
-						success: true,
-						data: announcement
+					var User = new UserModel({
+						id: req.body.user_id
 					});
-				})
-				.catch(function(error) {
-					next(error);
-				});
 
+					User.save({
+						announcement_author: 'Y'
+					}, {
+						patch: true
+					})
+					.then(function(user) {
+						res.status(200).json({
+							success: true,
+							data: announcement
+						});
+					})
+					.catch(next);
+				})
+				.catch(next);
 			})
 			.catch(function(error) {
 				// authentication errors are caught here
@@ -166,9 +152,7 @@ module.exports = function(app) {
 						data: announcement
 					});
 				})
-				.catch(function(error) {
-					next(error);
-				});
+				.catch(next);
 
 			})
 			.catch(function(error) {

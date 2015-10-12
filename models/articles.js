@@ -6,7 +6,6 @@ module.exports = function(app) {
 	var Bookshelf = app.get('Bookshelf');
 	var ArticleModel = require('../lib/models')(app).ArticleModel;
 	var ArticleCollection = require('../lib/collections')(app).ArticleCollection;
-	var UserModel = require('../lib/models')(app).UserModel;
 
 	return {
 
@@ -38,23 +37,10 @@ module.exports = function(app) {
 
 							Article.save()
 							.then(function(article) {
-								var User = new UserModel({
-									id: fields.user_id
+								res.status(200).json({
+									success: true,
+									data: article
 								});
-
-								User.save({
-									author: 'Y'
-								}, {
-									patch: true
-								})
-								.then(function(user) {
-									res.status(200).json({
-										success: true,
-										data: article
-									});
-								})
-								.catch(cleanup);
-
 							})
 							.catch(cleanup);
 						})
@@ -72,22 +58,7 @@ module.exports = function(app) {
 
 			Article.fetch({
 				withRelated: ['comments', {'author': function(qb) {
-					qb.column(
-						'id',
-						'user_name',
-						'type',
-						'name',
-						'sex',
-						'birth_day',
-						'birth_month',
-						'birth_year',
-						'picture',
-						'occupation',
-						'hospital',
-						'department',
-						'city',
-						'author'
-					);
+					qb.column.apply(this, Article.user_columns);
 				}}],
 				require: true
 			})
@@ -103,26 +74,11 @@ module.exports = function(app) {
 		},
 
 		list : function (req, res, next) {
-			new ArticleCollection()
-			.parseQuery(req)
-			.fetch({
+			var Articles = new ArticleCollection().parseQuery(req);
+
+			Articles.fetch({
 				withRelated: [{'author': function(qb) {
-					qb.column(
-						'id',
-						'user_name',
-						'type',
-						'name',
-						'sex',
-						'birth_day',
-						'birth_month',
-						'birth_year',
-						'picture',
-						'occupation',
-						'hospital',
-						'department',
-						'city',
-						'author'
-					);
+					qb.column.apply(this, Articles.user_columns);
 				}}]
 			})
 			.then(function(articles) {
@@ -188,22 +144,10 @@ module.exports = function(app) {
 								patch: true
 							})
 							.then(function(article) {
-								var User = new UserModel({
-									id: fields.user_id
+								res.status(200).json({
+									success: true,
+									data: article
 								});
-
-								User.save({
-									author: 'Y'
-								}, {
-									patch: true
-								})
-								.then(function(user) {
-									res.status(200).json({
-										success: true,
-										data: article
-									});
-								})
-								.catch(cleanup);
 							})
 							.catch(cleanup);
 						})

@@ -52,7 +52,7 @@ module.exports = function (app) {
 							hospital: fields.hospital,
 							department: fields.department,
 							city: fields.city,
-							author: fields.author || 'N'
+							announcement_author: fields.announcement_author || 'N'
 						})
 						.save()
 						.then(function(user) {
@@ -92,7 +92,7 @@ module.exports = function (app) {
 					'occupation',
 					'hospital',
 					'picture',
-					'author'
+					'announcement_author'
 				]
 			})
 			.then(function(users) {
@@ -145,7 +145,7 @@ module.exports = function (app) {
 					'occupation',
 					'hospital',
 					'picture',
-					'author'
+					'announcement_author'
 				],
 				require: true
 			})
@@ -196,7 +196,7 @@ module.exports = function (app) {
 							hospital: fields.hospital,
 							department: fields.department,
 							city: fields.city,
-							author: fields.author,
+							announcement_author: fields.announcement_author,
 							password: hash
 						}).omit(_.isUndefined).value();
 

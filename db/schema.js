@@ -84,7 +84,7 @@ module.exports = {
 			maxlength: 1,
 			nullable: false
 		},
-		author: {
+		announcement_author: {
 			type: 'string',
 			maxlength: 1,
 			nullable: true
