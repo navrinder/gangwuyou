@@ -39,6 +39,14 @@ function views () {
 			});
 		});
 
+	router.route('/authors')
+		.get(function (req, res, next) {
+			res.render('authors', {
+				title: 'Golden Leaf Authors',
+				layout: 'layout'
+			});
+		});
+
 	router.route('/clinics')
 		.get(function (req, res, next) {
 			res.render('clinics', {

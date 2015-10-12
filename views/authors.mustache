@@ -1,0 +1,81 @@
+<h3>Authors</h3>
+<div>
+	<form id="author" action="/authors">
+		<label for="name">Name</label>
+		<input id="name" type="text" name="name">
+
+		<label for="picture">Picture</label>
+		<input id="picture" type="file" name="picture">
+
+		<label for="occupation">Occupation</label>
+		<input id="occupation" type="text" name="occupation">
+
+		<label for="hospital">Hospital</label>
+		<input id="hospital" type="text" name="hospital">
+
+		<label for="department">Department</label>
+		<input id="department" type="text" name="department">
+
+		<label for="city">City</label>
+		<input id="city" type="text" name="city">
+
+		<input type="submit">
+	</form>
+	<span id="message"></span>
+</div>
+<div>
+	<ul class="result"></ul>
+</div>
+
+<script>
+	$('#author').submit(function (event) {
+		event.preventDefault();
+		$('#message').text('');
+		$('.result').empty();
+
+		var formData = new FormData();
+
+		$.each($(this)[0], function (i, v) {
+			var value = $(v).val();
+			if (value) {
+				formData.append(v.name, value);
+			}
+		});
+
+		$.each($('#picture')[0].files, function (i, f) {
+			formData.append('picture', f);
+		});
+
+
+		$.ajax({
+			type: 'POST',
+			url: 'api/v1/authors',
+			headers: {
+				'Authorization': Cookies.get('golden-leaf_token')
+			},
+			data: formData,
+			contentType: false,
+			processData: false,
+			statusCode: {
+				200: function (response) {
+					$('#message').text('Success');
+					$.each(response.data, function (k, v) {
+						$('.result')
+							.append($('<li></li>')
+								.text(k + ': ' + v));
+					});
+					$('input:not(:submit), textarea').val('');
+				},
+				400: function (response) {
+					$('#message').text(response.responseJSON.message).css({'color':'red'});
+				},
+				401: function (response) {
+					window.location = '/login';
+				},
+				415: function (response) {
+					$('#message').text('Image is required').css({'color':'red'});
+				}
+			}
+		});
+	});
+</script>
