@@ -143,6 +143,7 @@ Visit 120.26.113.30 to log in.
 # API calls
 
 - [Latest Version](#latest-version)
+- [Log In](#log-in)
 - [Users](#users)
 - [Reminders](#reminders)
 - [Questions](#questions)
@@ -199,6 +200,22 @@ Authorized: no authorization
 Can use query string to provide arguments
 
 Authorized: `admin`
+
+
+
+##Login
+
+Responds with an authentication token
+
+###Log in
+	POST /api/v1/login
+
+Body:
+
+	email_address OR user_name OR phone_number
+	password
+
+Authorized: no authorization
 
 
 
@@ -868,18 +885,3 @@ Authorized: `admin`
 	DELETE /api/v1/clinics/:clinic_id/doctors/:doctor_id
 
 Authorized: `admin`
-
-
-##Login
-
-Responds with an authentication token
-
-###Log in
-	POST /api/v1/login
-
-Body:
-
-	email_address
-	password
-
-Authorized: no authorization

@@ -17,6 +17,12 @@ module.exports = {
 			nullable: false,
 			unique: true
 		},
+		phone_number: {
+			type: 'string',
+			maxlength: 20,
+			nullable: false,
+			unique: true
+		},
 		password: {
 			type: 'string',
 			maxlength: 255,
@@ -47,11 +53,6 @@ module.exports = {
 		},
 		birth_year: {
 			type: 'integer',
-			nullable: true
-		},
-		phone_number: {
-			type: 'string',
-			maxlength: 20,
 			nullable: true
 		},
 		picture: {
