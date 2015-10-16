@@ -42,16 +42,17 @@
 
 	$.ajax({
 		type: 'GET',
-		url: 'api/v1/authors',
+		url: 'api/v1/users?type=doctor',
 		headers: {
 			'Authorization': Cookies.get('golden-leaf_token')
 		},
 		success: function (result) {
 			$.each(result.data, function (i, v) {
+console.log(v.id, v.name)
 				$('#user-id')
 					.append($('<option></option>')
 						.attr('value', v.id)
-						.text(v.name));
+						.text(v.user_name));
 
 			});
 		}
