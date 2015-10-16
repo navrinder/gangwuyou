@@ -555,7 +555,6 @@ Body:
 	hospital (optional)
 	department (optional)
 	city (optional)
-	announcement_author (Y/N)
 
 Authorized: `admin`
 
@@ -589,7 +588,6 @@ Body:
 	hospital (optional)
 	department (optional)
 	city (optional)
-	announcement_author (Y/N)
 
 Authorized: `admin`
 
