@@ -57,23 +57,6 @@
 		}
 	});
 
-	$.ajax({
-		type: 'GET',
-		url: 'api/v1/users?type=doctor',
-		headers: {
-			'Authorization': Cookies.get('golden-leaf_token')
-		},
-		success: function (result) {
-			$.each(result.data, function (i, v) {
-				$('#user-id')
-					.append($('<option></option>')
-						.attr('value', v.id)
-						.text(v.user_name));
-
-			});
-		}
-	});
-
 
 	$('#article').submit(function (event) {
 		event.preventDefault();
