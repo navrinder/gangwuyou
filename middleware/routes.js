@@ -132,19 +132,19 @@ function v1 (models, authUser) {
 
 
 	// authors
-	router.route('/authors')
-		// create author
-		.post(authUser(['admin']), models.authors.create)
-		// list authors
-		.get(models.authors.list);
+	// router.route('/authors')
+	// 	// create author
+	// 	.post(authUser(['admin']), models.authors.create)
+	// 	// list authors
+	// 	.get(models.authors.list);
 
-	router.route('/authors/:author_id')
-		// show author
-		.get(models.authors.show)
-		// update author info
-		.put(authUser(['admin']), models.authors.update)
-		// remove author
-		.delete(authUser(['admin']), models.authors.remove);
+	// router.route('/authors/:author_id')
+	// 	// show author
+	// 	.get(models.authors.show)
+	// 	// update author info
+	// 	.put(authUser(['admin']), models.authors.update)
+	// 	// remove author
+	// 	.delete(authUser(['admin']), models.authors.remove);
 
 
 	// categories
