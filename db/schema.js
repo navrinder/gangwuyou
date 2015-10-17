@@ -84,6 +84,11 @@ module.exports = {
 			maxlength: 1,
 			nullable: false
 		},
+		article_author: {
+			type: 'string',
+			maxlength: 1,
+			nullable: true
+		},
 		announcement_author: {
 			type: 'string',
 			maxlength: 1,
