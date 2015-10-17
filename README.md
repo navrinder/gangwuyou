@@ -150,7 +150,6 @@ Visit 120.26.113.30 to log in.
 - [Answers](#answers)
 - [Articles](#articles)
 - [Comments](#comments)
-- [Authors](#authors)
 - [Categories](#categories)
 - [Announcements](#announcements)
 - [Topics](#topics)
@@ -245,6 +244,7 @@ Body:
 	department (optional)
 	city (optional)
 	announcement_author (Y/N)
+	article_author (Y/N)
 
 Authorized: no authorization
 
@@ -281,6 +281,7 @@ Body:
 	department (optional)
 	city (optional)
 	announcement_author (Y/N)
+	article_author (Y/N)
 
 Authorized: `currentUser`, `admin`
 
@@ -447,7 +448,7 @@ Body:
 	category
 	picture
 
-Authorized: `admin`
+Authorized: `doctor`, `admin`
 
 ###List all articles
 	GET /api/v1/articles
@@ -534,67 +535,6 @@ Authorized: `currentUser`, `admin`
 Authorized: `currentUser`, `admin`
 
 
-
-##Authors
-
-Authors are dummy user accounts for article uploads
-
-####Create author
-	POST /api/v1/authors
-
-Body:
-
-	name (optional)
-	sex (optional)
-	birth_day (optional)
-	birth_month (optional)
-	birth_year (optional)
-	phone_number (optional)
-	picture (optional)
-	occupation (optional)
-	hospital (optional)
-	department (optional)
-	city (optional)
-
-Authorized: `admin`
-
-####List all authors
-	GET /api/v1/authors
-
-Can use query string to provide arguments
-
-Authorized: no authorization
-
-####Show author
-	GET /api/v1/authors/:author_id
-
-Authorized: no authorization
-
-####Update author
-	PUT /api/v1/authors/:author_id
-
-Body:
-
-	user_name (optional)
-	email_address (optional)
-	name (optional)
-	sex (optional)
-	birth_day (optional)
-	birth_month (optional)
-	birth_year (optional)
-	phone_number (optional)
-	picture (optional)
-	occupation (optional)
-	hospital (optional)
-	department (optional)
-	city (optional)
-
-Authorized: `admin`
-
-####Remove author
-	DELETE /api/v1/authors/:author_id
-
-Authorized: `admin`
 
 
 
