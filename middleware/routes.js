@@ -116,7 +116,7 @@ function v1 (models, authUser) {
 		// list articles
 		.get(models.articles.list)
 		// create article
-		.post(authUser(['admin']), models.articles.create);
+		.post(authUser(['doctor', 'admin']), models.articles.create);
 
 	router.route('/articles/:article_id')
 		// show article
