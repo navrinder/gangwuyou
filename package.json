@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start" : "pm2 start app.js --name app -i 0",
-    "deploy" : "NODE_ENV=production pm2 start app.js --name app -i 0 -e err.log",
+    "deploy" : "NODE_ENV=production pm2 start app.js --name app -i 0 -e err.log -o out.log",
     "develop" : "PORT=8888 pm2 start app.js --name develop",
     "database" : "node db/createDatabase.js",
     "test": "echo \"Error: no test specified\" && exit 1"
