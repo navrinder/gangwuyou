@@ -8,7 +8,7 @@ module.exports = {
 		email_address: {
 			type: 'string',
 			maxlength: 255,
-			nullable: false
+			nullable: true
 		},
 		user_name: {
 			type: 'string',
