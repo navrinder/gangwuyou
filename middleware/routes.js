@@ -79,6 +79,14 @@ function views () {
 			});
 		});
 
+	router.route('/users/doctors/edit')
+		.get(function (req, res, next) {
+			res.render('users-edit', {
+				title: 'Golden Leaf Edit Doctor Accounts',
+				layout: 'layout'
+			});
+		});
+
 	router.route('/download')
 		.get(function (req, res, next) {
 			res.render('download', {

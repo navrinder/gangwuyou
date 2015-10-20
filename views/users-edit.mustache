@@ -1,0 +1,151 @@
+<h3>Edit Doctor Account</h3>
+<div>
+	<form id="users-edit" action="/users-edit">
+		<label for="user_name">Username*</label>
+		<select id="user-name"></select>
+
+		<label for="phone_number">Phone number*</label>
+		<input id="phone_number" type="text" name="phone_number">
+
+		<label for="password">Password*</label>
+		<input id="password" type="text" name="password">
+
+		<label for="picture">Picture</label><a href="" id="db-picture"></a>
+		<input id="picture" type="file" name="picture">
+
+		<label for="email_address">Email address</label>
+		<input id="email_address" type="text" name="email_address">
+
+		<label for="name">Name</label>
+		<input id="name" type="text" name="name">
+
+		<label for="occupation">Occupation</label>
+		<input id="occupation" type="text" name="occupation">
+
+		<label for="hospital">Hospital</label>
+		<input id="hospital" type="text" name="hospital">
+
+		<label for="department">Department</label>
+		<input id="department" type="text" name="department">
+
+		<label for="city">City</label>
+		<input id="city" type="text" name="city">
+
+		<label for="sex">Sex</label>
+		<input id="sex" type="text" name="sex">
+
+
+		<input type="submit">
+	</form>
+	<span id="message"></span>
+</div>
+<div>
+	<ul class="result"></ul>
+</div>
+
+<script>
+	$('input:not(:submit), textarea').val('');
+	$('#db-picture').text('').val('');
+
+	$.ajax({
+		type: 'GET',
+		url: '/api/v1/users?type=doctor',
+		headers: {
+			'Authorization': Cookies.get('golden-leaf_token')
+		},
+		success: function (result) {
+			$.each(result.data, function (i, v) {
+				$('#user-name')
+					.append($('<option></option>')
+						.attr('value', v.id)
+						.text(v.user_name));
+
+			});
+
+			populateForm.call({value: result.data[0].id})
+		}
+	});
+
+	function populateForm () {
+		$.ajax({
+			type: 'GET',
+			url: '/api/v1/users/' + this.value,
+			headers: {
+				'Authorization': Cookies.get('golden-leaf_token')
+			},
+			success: function (result) {
+				$('input:not(:submit), textarea').val('');
+				$('#db-picture').text('').val('');
+
+				$.each(result.data, function (i, v) {
+					console.log(i, v)
+					if (i === 'picture') {
+						$('#db-picture').text(v).attr('href', v);
+					} else {
+						$('#' + i).val(v);
+					}
+
+				});
+			}
+		});
+	}
+
+	$('#user-name').change(populateForm);
+
+
+	$('#users-edit').submit(function (event) {
+		event.preventDefault();
+		$('#message').text('');
+		$('.result').empty();
+
+		var formData = new FormData();
+
+		$.each($(this)[0], function (i, v) {
+			var value = $(v).val();
+			if (value) {
+				formData.append(v.name, value);
+			}
+		});
+
+		// DOCTORS ONLY
+		formData.append('type', 'doctor');
+
+		$.each($('#picture')[0].files, function (i, f) {
+			formData.append('picture', f);
+		});
+
+
+		$.ajax({
+			type: 'PUT',
+			url: '/api/v1/users/' + $('#user-name option:selected').val(),
+			headers: {
+				'Authorization': Cookies.get('golden-leaf_token')
+			},
+			data: formData,
+			contentType: false,
+			processData: false,
+			statusCode: {
+				200: function (response) {
+					$('#message').text('Success');
+					$.each(response.data, function (k, v) {
+						$('.result')
+							.append($('<li></li>')
+								.text(k + ': ' + v));
+					});
+					$('input:not(:submit), textarea').val('');
+					$('#db-picture').text('').val('');
+					populateForm.call({value: response.data.id})
+				},
+				400: function (response) {
+					$('#message').text(response.responseJSON.message).css({'color':'red'});
+				},
+				401: function (response) {
+					window.location = '/login';
+				},
+				415: function (response) {
+					$('#message').text('Image is required').css({'color':'red'});
+				}
+			}
+		});
+	});
+</script>
