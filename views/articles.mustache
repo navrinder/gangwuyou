@@ -48,7 +48,6 @@
 		},
 		success: function (result) {
 			$.each(result.data, function (i, v) {
-console.log(v.id, v.name)
 				$('#user-id')
 					.append($('<option></option>')
 						.attr('value', v.id)
