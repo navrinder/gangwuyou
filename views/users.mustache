@@ -1,0 +1,161 @@
+<h3>Doctor Accounts</h3>
+<div>
+	<form id="users" action="/users">
+		<label for="user_name">Username*</label>
+		<input id="user_name" type="text" name="user_name">
+
+		<label for="phone_number">Phone number*</label>
+		<input id="phone_number" type="text" name="phone_number">
+
+		<label for="password">Password*</label>
+		<input id="password" type="text" name="password">
+
+		<label for="picture">Picture</label>
+		<input id="picture" type="file" name="picture">
+
+		<label for="email_address">Email address</label>
+		<input id="email_address" type="text" name="email_address">
+
+		<label for="name">Name</label>
+		<input id="name" type="text" name="name">
+
+		<label for="occupation">Occupation</label>
+		<input id="occupation" type="text" name="occupation">
+
+		<label for="hospital">Hospital</label>
+		<input id="hospital" type="text" name="hospital">
+
+		<label for="department">Department</label>
+		<input id="department" type="text" name="department">
+
+		<label for="city">City</label>
+		<input id="city" type="text" name="city">
+
+		<label for="sex">Sex</label>
+		<input id="sex" type="text" name="sex">
+
+		<label for="birth_day">Birth day</label>
+		<select id="birth_day">
+			<option value="01">01</option>
+			<option value="02">02</option>
+			<option value="03">03</option>
+			<option value="04">04</option>
+			<option value="05">05</option>
+			<option value="06">06</option>
+			<option value="07">07</option>
+			<option value="08">08</option>
+			<option value="09">09</option>
+			<option value="10">10</option>
+			<option value="11">11</option>
+			<option value="12">12</option>
+			<option value="13">13</option>
+			<option value="14">14</option>
+			<option value="15">15</option>
+			<option value="16">16</option>
+			<option value="17">17</option>
+			<option value="18">18</option>
+			<option value="19">19</option>
+			<option value="20">20</option>
+			<option value="21">21</option>
+			<option value="22">22</option>
+			<option value="23">23</option>
+			<option value="24">24</option>
+			<option value="25">25</option>
+			<option value="26">26</option>
+			<option value="27">27</option>
+			<option value="28">28</option>
+			<option value="29">29</option>
+			<option value="30">30</option>
+			<option value="31">31</option>
+		</select>
+
+		<label for="birth_month">Birth month</label>
+		<select id="birth_month">
+			<option value="01">01</option>
+			<option value="02">02</option>
+			<option value="03">03</option>
+			<option value="04">04</option>
+			<option value="05">05</option>
+			<option value="06">06</option>
+			<option value="07">07</option>
+			<option value="08">08</option>
+			<option value="09">09</option>
+			<option value="10">10</option>
+			<option value="11">11</option>
+			<option value="12">12</option>
+		</select>
+
+		<label for="birth_year">Birth year</label>
+		<input id="birth_year" type="text" name="birth_year">
+
+		<input type="submit">
+	</form>
+	<span id="message"></span>
+</div>
+<div>
+	<ul class="result"></ul>
+</div>
+
+<script>
+	$('#users').submit(function (event) {
+		event.preventDefault();
+		$('#message').text('');
+		$('.result').empty();
+
+		var formData = new FormData();
+
+		$.each($(this)[0], function (i, v) {
+			var value = $(v).val();
+			if (value) {
+				formData.append(v.name, value);
+			}
+		});
+
+		// DOCTORS ONLY
+		formData.append('type', 'doctor');
+
+		formData.append('birth_day', $('#birth_day	 option:selected').val());
+		formData.append('birth_month', $('#birth_month option:selected').val());
+
+		if (!$('#password').val()) {
+			$('#message').text('Password required').css({'color':'red'});
+			return;
+		}
+
+		$.each($('#picture')[0].files, function (i, f) {
+			formData.append('picture', f);
+		});
+
+
+		$.ajax({
+			type: 'POST',
+			url: '/api/v1/users',
+			headers: {
+				'Authorization': Cookies.get('golden-leaf_token')
+			},
+			data: formData,
+			contentType: false,
+			processData: false,
+			statusCode: {
+				200: function (response) {
+					$('#message').text('Success');
+					$.each(response.data, function (k, v) {
+						$('.result')
+							.append($('<li></li>')
+								.text(k + ': ' + v));
+					});
+					$('input:not(:submit), textarea').val('');
+				},
+				400: function (response) {
+					$('#message').text(response.responseJSON.message).css({'color':'red'});
+				},
+				401: function (response) {
+					window.location = '/login';
+				},
+				415: function (response) {
+					$('#message').text('Image is required').css({'color':'red'});
+				}
+			}
+		});
+	});
+</script>
