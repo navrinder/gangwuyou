@@ -94,6 +94,12 @@ function views () {
 			});
 		});
 
+	router.route('/failed')
+		.get(function (req, res, next) {
+			res.render('failed', {
+				title: 'failed'
+			});
+		});
 
 
 	return router;
