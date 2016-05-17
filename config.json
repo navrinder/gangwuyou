@@ -2,31 +2,33 @@
 	"development" : {
 		"version" : 1,
 		"database" : {
-			"host" : "",
-			"port" : 0,
-			"user" : "",
-			"password" : "",
-			"database" : ""
+			"host" : "localhost",
+			"port" : 3306,
+			"user" : "root",
+			"password" : "goodluck",
+			"database" : "golden_leaf_test",
+			"charset" : "utf8"
 		},
-		"secret" : "",
+		"secret" : "test.secret",
 		"ssl" : {
-			"key" : "",
-			"cert" : ""
+			"key" : "./domain.key",
+			"cert" : "./domain.crt"
 		}
 	},
 	"production" : {
-		"version" : 0,
+		"version" : 1,
 		"database" : {
-			"host" : "",
-			"port" : 0,
-			"user" : "",
-			"password" : "",
-			"database" : ""
+			"host" : "localhost",
+			"port" : 3306,
+			"user" : "root",
+			"password" : "goodwill",
+			"database" : "golden_leaf",
+			"charset" : "utf8"
 		},
-		"secret" : "",
+		"secret" : "good.luck",
 		"ssl" : {
-			"key" : "",
-			"cert" : ""
+			"key" : "./domain.key",
+			"cert" : "./domain.crt"
 		}
 	}
 }
